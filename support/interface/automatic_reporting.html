@@ -1,0 +1,27 @@
+<!--
+title: Automatic Reporting
+description: FluidNC can send automatic status reports when something changes
+published: true
+date: 2023-03-05T18:42:45.602Z
+tags: 
+editor: ckeditor
+dateCreated: 2023-03-05T18:40:41.525Z
+-->
+
+<h1>Automatic Reporting</h1>
+<p>FluidNC can optionally send status reports automatically, so a GCode sender or other user interface agent does not have to issue periodic ‘?’ requests for status or <code>$G</code> requests for the GCode mode. &nbsp;This can result in lower latency for user interface status updates, and can simplify sender coding by eliminating the need for sending requests at difficult-to-optimize time intervals. The sender must explicitly enable such automatic reports, which apply only to the channel (for example the USB serial connection) of that sender.</p>
+<p>When the machine is not moving, reports are sent when some reported value changes. &nbsp;When moving, reports are sent at the time interval that the sender requested.</p>
+<h2>Enabling Automatic Reporting</h2>
+<p>Automatic reporting is off by default, for compatibility with senders that do not expect it. To turn on automatic reporting, the sender issues the command <code>$Report/Interval=N</code>, where N is the time interval in milliseconds for motion-state reporting. &nbsp;During motion, the most common change is in the position, so such reports typically update the “DRO” position readouts. N should be chosen to match the characteristics of the user interface engine. Values in the range of 50 to 200 milliseconds typically result in a pleasant user experience - but some UI devices cannot update that fast so larger values might be needed. &nbsp;Values less than 50 milliseconds are probably not useful because of human visual processing time.</p>
+<p><code>$Report/Interval=0</code> turns off automatic reporting.</p>
+<p>If a channel is disconnected and subsequently reconnects, <code>$Report/Interval=N</code> must be re-issued if the user interface agent wishes to use auto-reporting.</p>
+<h2>Reports Affected</h2>
+<p>The reports that are send automatically are</p>
+<ol>
+  <li>The status report that would otherwise be sent in response to ‘?’, for example <code>&lt;Idle|MPos:0.000,0.000,0.000|FS:0,0|Ov:100,100,100&gt;</code> . &nbsp;It is in the <a href="https://github.com/gnea/grbl/wiki/Grbl-v1.1-Interface#real-time-status-reports">standard Grbl status report format</a> . &nbsp;In non-motion states, this report will be issued automatically only when some non-position field changes - for example with the state changes or one of the pins change. &nbsp;In motion states, this report will be issued automatically at the requested time intervals.</li>
+  <li>The GCode mode report that would otherwise be sent in response to <code>$G</code>, for example <code>[GC:G0 G54 G17 G21 G90 G94 M5 M9 T0 F0 S0]</code>. This report is sent only when one of its values changes, regardless of motion vs. non-motion.</li>
+  <li>A coordinate offset change report such as <code>[G92: 10.000, 5.000, 0.000]</code> . The complete set of offsets is the work coordinate offsets <strong>G54..G59</strong>, the zero position offsets <strong>G28</strong> and <strong>G30</strong>,<strong> </strong>the temporary offset <strong>G92</strong>, and&nbsp;the tool length offset <strong>TLO</strong>. The complete set of such offsets is send in response to <code>$#</code>. &nbsp;When auto-reporting is enabled, only the one that changed is automatically reported.</li>
+</ol>
+<h2>Per-Channel Behavior</h2>
+<p>When a user interface agent issues <code>$Report/Interval=N</code> on the channel that connects it to FluidNC, auto-reporting applies only to that channel. &nbsp;Other channels are not affected. &nbsp;Each channel can independently control auto-reporting. &nbsp;Thus a sender that is unaware of auto-reporting could connect on USB serial using the old explicit-? reporting style, while WebUI on a websocket channel could use auto-reporting with some interval, and an LCD display on an I2C or secondary UART channel could use auto-reporting with a different interval.</p>
+<p>&nbsp;</p>

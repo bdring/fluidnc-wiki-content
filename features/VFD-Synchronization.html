@@ -1,0 +1,23 @@
+<!--
+title: VFD Synchronization
+description: Issues surrounding VFD synchronization and initialization
+published: true
+date: 2026-08-01T19:35:23.410Z
+tags: 
+editor: ckeditor
+dateCreated: 2025-07-06T07:49:22.935Z
+-->
+
+<h1>VFD Synchronization</h1>
+<p>Spindles that are driven by Variable Frequency Drives (VFDs) that are connected to the FluidNC controller via RS485 Modbus present special challenges, especially when the FluidNC controller is turned on or reset when the VFD is off.</p>
+<h2>VFD Interactions</h2>
+<p>FluidNC communicates with an RS485 Modbus VFD via a separate task that handles all serial messages to and from the VFD. &nbsp;When other FluidNC code, notably the GCode parser, needs to perform a spindle action like turn-on (in either the clockwise or counterclockwise direction), turn off, or change the speed, it queues a message to the VFD task, which eventually receives that message and performs the operation by sending a Modbus RTU message.</p>
+<p>When FluidNC starts, it initializes the VFD spindle driver. &nbsp;For most VFD types, that involves issuing one or more Modbus RTU messages to, for example, determine things like min and max frequencies. &nbsp;That is done directly by the VFD task, not as a result of a inter-task queued message. &nbsp;If the VFD is not responsive, either as a result of some connection problem, a configuration mistake, &nbsp;or the VFD not having power, the VFD task will periodically retry the first such initial message until a response is received. &nbsp;After some number of retries, the driver will issue a console message indicating that the VFD is not responding. &nbsp;At present, that does not cause an alarm, because the user has not done anything that requires the spindle.</p>
+<p>When FluidNC starts or resets, there is an additional VFD interaction to turn off the spindle “just in case”. &nbsp;It is similar to the effect of “M5”, but it does not go through the GCode parser and thus there is no actual “M5” command. &nbsp;If the VFD has not responded to the initialization noted above, the “turn off” message will not go through.</p>
+<p>If the user issues an M3 command when the VFD is not responding, the inter-task message will be queued but the VFD task will not process it because it is still trying to perform the initialization messages. &nbsp;If the VFD type is set up for time-based spinup/spindown delays, the M3 will appear to succeed as far as the GCode is concerned, and motion that should occur with the spindle turning might happen with the spindle off. &nbsp;Subsequent spindle commands like set-speed (via an S word), M5 (spindle off), and other M3 commands will be similarly entered into the inter-task queue, but not removed because the VFD task is still trying to perform the initialization. &nbsp;Eventually the queue will fill up, resulting in a message - but no alarm</p>
+<p>It has been suggested that FluidNC should alarm on queue-full, and in fact it does do so in some situations, but it is likely that bad things may have already happened, such as cutting moves where the spindle should be on but is not.</p>
+<h2>Suggested Improvements</h2>
+<p>It would be better to synchronize GCode-initiated VFD interactions like M3, M4, M5 and S, blocking further GCode interaction until a positive Modbus RTU response message has been received. &nbsp;If one is not received after a timeout and some small number of retries, the GCode program should be stopped with an alarm.</p>
+<p>In the case where FluidNC starts before the VFD has been powered on, there should be a few rapid retries of the early init messages. &nbsp;If no response is received, the VFD driver could be marked as “unresponsive” and retries could cease, logging an info message to the console. &nbsp;Then, if a GCode-initiated VFD interaction occurs, the driver would again try to initialize. &nbsp;If that succeeds, the (for example) M3 would be handled, other an alarm would occur.</p>
+<p>It is probably best to add the plumbing for this in the Spindle base class, so that it could be used or any kind of spindle for which feedback is possible. &nbsp;At present, the only spindles with feedback are VFDs, but that might not always be the case. &nbsp;Also, doing it at the base Spindle level means that the GCode parser would not need to distinguish between VFDs and other spindle types.</p>
+<p>&nbsp;</p>

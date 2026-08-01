@@ -1,0 +1,228 @@
+<!--
+title: HTTP REST API
+description: How to interact with FluidNC over HTTP
+published: true
+date: 2026-01-13T20:27:30.793Z
+tags: http, api
+editor: ckeditor
+dateCreated: 2025-11-12T04:18:06.900Z
+-->
+
+<p>The WiFi version of FluidNC can execute commands and manage files via HTTP.</p>
+<h2>REST API</h2>
+<p>This API is not REST-ful in the strict sense; REST is used in the colloquial sense of an API that is driven by sending HTTP GET and POST requests.</p>
+<h3>Hostname</h3>
+<p>HTTP requests can be sent to http://fluidnc.local (or <i>HOSTNAME</i>.local where <i>HOSTNAME</i> is the value of the NVS setting <strong>$hostname</strong>) or to http://<i>IP_ADDRESS </i>(the dotted decimal IP address assigned to FluidNC). &nbsp;https is not supported.</p>
+<h3>Volume/File/Path</h3>
+<p>FluidNC supports two different file storage devices (volumes)</p>
+<ul>
+  <li><strong>LocalFS </strong>is a volume on the same FLASH chip that contains the FluidNC firmware, using the <i>LittleFS</i> format. &nbsp;Its total space is rather limited because most of the FLASH is used for the firmware. &nbsp;For typical systems with a 4MB FLASH, <strong>LocalFS </strong>only has enough space for the WebUI <i>index.html.gz</i> file plus a few YAML config files, preferences files, and a few short macros. &nbsp;It is generally not good for storing or executing large GCode files.</li>
+  <li><strong>SD </strong>is a volume on a plug-in SDCard, with much more storage space than <strong>LocalFS</strong>. &nbsp;This is where you store GCode files for later execution.</li>
+</ul>
+<p>A path is a /-separated list of folders leading to the location of a file, for example “folder1/folder1”. &nbsp;The volume to use depends on the HTTP endpoint (<code>files</code><i> </i>for <strong>SD </strong>or <code>upload</code>for <strong>LocalFS</strong>) but you can override that by including the volume name at the start of the path, for example “/sd/folder1/folder2” or “/localfs/folder1/folder2”. &nbsp;A path starting with an explicit volume name applies to that volume regardless of which HTTP endpoint is used.</p>
+<h3>Encoding</h3>
+<p>As with any HTTP URL, certain special characters must be encoded with %NN notation according to the normal rules of the web. &nbsp;For example the space character is encoded as %20</p>
+<h3>Endpoints</h3>
+<p>&nbsp;</p>
+<figure class="table">
+  <table style="background-color:transparent;">
+    <thead>
+      <tr>
+        <th style="background-color:transparent;">Endpoint</th>
+        <th style="background-color:transparent;">Method</th>
+        <th style="background-color:transparent;">Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="background-color:transparent;"><code>/</code></td>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">Fetches the WebUI application for execution in a browser from either LocalFS:/index.html or LocalFS:/index.html.gz (usually the latter for space reasons). &nbsp;If neither of those files is present on the localfs filesystem, or if the URL argument “forcefallback=yes” is&nbsp;present, returns a rudimentary web page that will let you upload files to localfs.&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/command</code></td>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">
+          <p>Executes GCode or FluidNC $ or [ESP commands. &nbsp;If there is a URL argument “plain=COMMAND”, &nbsp;COMMAND is executed as if it were sent over a serial channel and any resulting text (up to the next “ok” or “error…” line) is returned as the HTTP response. &nbsp;If there is a URL argument “cmd=COMMAND” or “commandText=COMMAND", COMMAND is executed and the response depends on what is in COMMAND. &nbsp;If COMMAND begins with either “[ESP” or “$/”, the behavior is the same as with “plain=COMMAND”, returning the result in the HTTP response. &nbsp;Otherwise, the command is started and the HTTP request returns immediately, with any later output from the command sent back via the associated websocket. &nbsp;This complicated behavior accommodates several different versions of WebUI, and accounts for the fact that some GCode operations can take arbitrarily long to complete (hence the use of a websocket to return later status).</p>
+          <p>Example: &nbsp;http://fluidnc.local/command?cmd=G0X10</p>
+          <p>TBD: Explain the PAGEID argument that directs the response to the correct websocket.</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/command_silent</code></td>
+        <td style="background-color:transparent;">ANY</td>
+        <td style="background-color:transparent;">Like /command, but any subsequent websocket response text is suppressed.</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/files</code></td>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">
+          <p>LocalFS file operations according to the URL arguments:</p>
+          <ul>
+            <li>path=path/to/folder &nbsp; If this argument is present, it names a folder on the filesystem. &nbsp;If not present, the root of the filesystem is used.</li>
+            <li>filename=name &nbsp; Names a file or folder within the folder to which path refers</li>
+            <li>action=ACTION &nbsp; Selects the filesystem operation to perform (and filename must be present). &nbsp;The ACTION values are:<ul>
+                <li>delete - deletes the referenced file</li>
+                <li>deletedir - recursively deletes the referenced path/folder and its contents</li>
+                <li>createdir - creates a new folder within path</li>
+                <li>rename - requires an additional argument “newname" and changes the filename to that new name</li>
+              </ul>
+            </li>
+          </ul>
+          <p>The response value of /files (after performing ACTION or if no action argument is present) is a list of files in the path. &nbsp;That response can be suppressed by including an argument “dontlist=yes”. &nbsp;The list reflects the state of the filesystem after the action.</p>
+          <p>Example: <i>http://fluidnc.local/files?path=folder1/folder2&amp;filename=foo.nc&amp;action=delete</i></p>
+        </td>
+      </tr>
+      <tr>
+        <td><code>/files</code></td>
+        <td>POST</td>
+        <td>Upload a file to LocalFS</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/upload</code></td>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">SD card file operations - same as with /files but operates on the SD filesytem</td>
+      </tr>
+      <tr>
+        <td><code>/upload</code></td>
+        <td>POST</td>
+        <td>Upload a file to the SD filesystem</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/updatefw</code></td>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">After a firmware update with /updatefw POST, returns a response indicating the status of that update. &nbsp;If the update was successful, FluidNC reboots 1 second after responding.</td>
+      </tr>
+      <tr>
+        <td><code>/updatefw</code></td>
+        <td>POST</td>
+        <td>Initiates an Over The Air (OTA) firmware update</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/feedhold_reload</code></td>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">Sends a feedhold (like !) to pause ongoing GCode execution, then redirects to the “/” endpoint. &nbsp;This is useful when an attempt to refresh WebUI by reloading index.html.gz is blocked due to ongoing motion.</td>
+      </tr>
+      <tr>
+        <td><code>/cyclestart_reload</code></td>
+        <td>GET</td>
+        <td>Sends a cyclestart (like ~) to resume previously-paused GCode execution, then redirects to the “/” endpoint. &nbsp;Typically what will then happen is that new reload will again be blocked. &nbsp;Essentially this is a way to undo a previous /feedhold_reload and get back to the state that existed before it, with GCode running.</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/restart_reload</code></td>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">Sends a reset (like CTRL-X) to stop GCode execution, then redirects to the “/did_restart” endpoint. &nbsp;This is useful when an attempt to refresh WebUI by reloading index.html.gz is blocked due to ongoing motion, and you want to cancel that ongoing activity.</td>
+      </tr>
+      <tr>
+        <td><code>/did_restart</code></td>
+        <td>GET</td>
+        <td>Responds with a message saying that the GCode program was stopped.</td>
+      </tr>
+      <tr>
+        <td><code>/<i><u>path/to/filename</u></i></code></td>
+        <td>GET</td>
+        <td>Downloads the named file, defaulting to the localfs volume. &nbsp;Example: <i>http://fluidnc.local/config.yaml&nbsp;</i> or &nbsp;<i>http://fluidnc.local/sd/myprogram.gcode</i></td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h2>WebSockets</h2>
+<p>To be supplied</p>
+<h2>WebDAV</h2>
+<p>FluidNC implements WebDAV starting with FluidNV version 4. &nbsp;WebDAV is a standard HTTP-based API for file management and access. The HTTP endpoints are <code>/flash</code> to access LocalFS files and <code>/sd</code> to access SD files. &nbsp;The HTTP method controls the action to be performed. &nbsp;The complete URL is, for example, <code>/http://fluidnc.local/flash/<i>resource_path</i></code> where /<i>resource_path </i>is a path to a resource (file or folder) within the filesystem. &nbsp;If /<i>resource_path</i> is omitted, the resource is the filesystem's root folder.</p>
+<p>&nbsp;</p>
+<figure class="table">
+  <table style="background-color:transparent;">
+    <thead>
+      <tr>
+        <th style="background-color:transparent;">Method</th>
+        <th style="background-color:transparent;">Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="background-color:transparent;">PROPFIND</td>
+        <td style="background-color:transparent;">
+          <p>Returns an XML-encoded list of file names, sizes, and modification dates. &nbsp;If the resource is a regular file, the list describes that one file. &nbsp;If the resource is a folder, the result depends on the value of the “Depth: XX” header option:</p>
+          <ul>
+            <li>Depth: 0 &nbsp; &nbsp;The list describes that folder only</li>
+            <li>Depth: 1 &nbsp; &nbsp;The list describes that folder and all of it direct contents (files or folders)</li>
+            <li>Depth: 1,noroot &nbsp;The list describes the folder's direct contents, but does not list the folder itself</li>
+            <li>Depth: infinity &nbsp; The list describes that folder and all of its contents, recursing into subfolders to arbitrary depth.</li>
+            <li>The list describes the folder's contents, recursing into subfolders to arbitrary depth, but does not list the top-level folder itself.</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">Returns the contents of the resource, which must be a file, in the HTTP response.</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;">HEAD</td>
+        <td style="background-color:transparent;">HEAD is like GET but it does not return the contents of the file, only metadata about the file's existence, etc. &nbsp;It can be used to check whether a file is present without actually downloading all of its contents.</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;">PUT</td>
+        <td style="background-color:transparent;">Creates a new resource file with contents supplied by the HTTP transaction.</td>
+      </tr>
+      <tr>
+        <td>MKCOL</td>
+        <td>Creates a new resource folder.</td>
+      </tr>
+      <tr>
+        <td>MOVE</td>
+        <td>Given a “Destination: PATH” header option, moves or renames to the named resource to the destination.</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;">COPY</td>
+        <td style="background-color:transparent;">Given a “Destination: PATH” header option, copies to the named resource to the destination.</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;">DELETE</td>
+        <td style="background-color:transparent;">Deletes the named resource.</td>
+      </tr>
+      <tr>
+        <td>OPTIONS</td>
+        <td>Returns a list of the supported methods for the resource.</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<h3>Using WebDAV with Windows</h3>
+<p>You can use Windows Explorer to manage FluidNC files by mapping a network drive to, for example, http://fluidnc.local/sd.</p>
+<p>To set it up, open Windows Explorer, scroll down to the bottom of the left sidebar, and right-click on This PC. &nbsp;Then select Map Network Drive from the popup menu.</p>
+<figure class="image image_resized" style="width:44.14%;"><img src="/thispc.png">
+  <figcaption>ThisPC Right-Click Menu</figcaption>
+</figure>
+<p>That will open up a “Map Network Drive” dialog where you can choose a drive letter (I used S: below as a mnemonic for “SD”) and enter a folder name. &nbsp;I am not sure what the folder name is for, but a valid folder must be entered otherwise the process will fail later. &nbsp;After choosing Drive and Folder, click the “Connect to a Web site…” link.</p>
+<figure class="image image_resized" style="width:45.26%;"><img src="/map3.png">
+  <figcaption>Map Network Drive Dialog</figcaption>
+</figure>
+<p>That starts up a Wizard that asks you question after question. &nbsp;The first one is a boring “Welcome” dialog that does nothing, so click on the Next button to get to the next boring “Where do you want to create this network location” dialog. &nbsp;On my machine the only option it presents is “Choose a custom network location” so select that and hit the Next button.</p>
+<p>Then you get to the “Specify the location of your website” dialog, where you can enter the FluidNC WebDAV address (the one for SD in this case). &nbsp;Then click Next.</p>
+<figure class="image image_resized" style="width:45.31%;"><img src="/specifylocation.png">
+  <figcaption>Specify Location Dialog</figcaption>
+</figure>
+<p>Finally, you get to enter a name for the connection in the “What do you want to name this location?" dialog. &nbsp;That name will show up in the Explorer sidebar under “ThisPC”. &nbsp;I used the name “FluidNC_SD”.</p>
+<figure class="image image_resized" style="width:44.89%;"><img src="/connectionname.png">
+  <figcaption>Location Name Dialog</figcaption>
+</figure>
+<p>After you click Next it will try to access the FluidNC WebDAV server to make sure everything works, so FluidNC needs to be running at this point. &nbsp;If everything is okay, you will then see a “Completing the Add Network Location Wizard” dialog congratulating you on your success. &nbsp;Go you! &nbsp;Finish out of that dialog and rour share will appear in Explorer, where you can manage FluidNC files.</p>
+<figure class="image image_resized" style="width:78.15%;"><img src="/final.png">
+  <figcaption>Explorer Shows FluidNC files</figcaption>
+</figure>
+<p>Repeat the process with /flash instead of /sd and you can access FluidNC files from the LocalFS filesystem.</p>
+<p>Easy, right? &nbsp;(Hint: documenting it was not.)</p>
+<h3>Using Windows Command Line</h3>
+<p>Enter this in a windows console, like PowerShell. This will create a Z drive of the SD filesystem on the FluidNC controller.<br><br><code>net use Z: http://192.168.1.32/sd</code><br>&nbsp;</p>
+<h3>Using WebDAV with MacOS</h3>
+<p><a href="https://support.apple.com/guide/mac-help/connect-disconnect-a-webdav-server-mac-mchlp1546/mac">Here is what Apple says&nbsp;</a></p>
+<p>Use http://fluidnc.local/sd/ or http://fluidnc.local/flash/ as the server address.</p>
+<h3>Using WebDAV with Linux</h3>
+<p>You can use WebDAV with Linux by mounting a share using the <code>davfs2</code> client for full filesystem integration, or by connecting through your file manager for a more temporary, browse-only connection. &nbsp;Consult the internet for more details.</p>
+<h3>Accessing WebDAV with the Curl Command Line Utility</h3>
+<p><code>curl</code> is a command line program that can perform HTTP operations.</p>
+<p>Here is a <a href="https://github.com/WebDAVDevs/webdav-request-samples/blob/master/webdav_curl.md">good list of examples for accessing WebDAV from curl</a></p>
+<p>Instead of “http://example.com/dav” as shown in that document, you would use either &nbsp;“http://fluidnc.local/sd” or “http://fluidnc.local/flash”. &nbsp;FluidNC does not support authentication, so omit the “-u user:pass” portion of the command.</p>
+<p>&nbsp;</p>

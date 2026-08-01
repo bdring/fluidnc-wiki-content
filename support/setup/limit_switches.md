@@ -1,0 +1,245 @@
+---
+title: Limit Switch and Homing Setup Flowchart
+description: Help with setting up limits and homing
+published: true
+date: 2026-04-22T19:49:08.853Z
+tags: 
+editor: markdown
+dateCreated: 2024-04-18T18:00:07.634Z
+---
+
+# Limit switch and homing setup flowchart
+
+> Before you start be sure your startup messages are free of all errors and warnings. See the [troubleshooting guide](http://wiki.fluidnc.com/en/support/troubleshooting_config_files) for help with that.
+{.is-warning}
+
+
+# Flowchart
+
+
+
+```diagram
+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHdpZHRoPSI1MjFweCIgaGVpZ2h0PSI2MTFweCIgdmlld0JveD0iLTAuNSAtMC41IDUyMSA2MTEiIGNvbnRlbnQ9IiZsdDtteGZpbGUgaG9zdD0mcXVvdDtlbWJlZC5kaWFncmFtcy5uZXQmcXVvdDsgbW9kaWZpZWQ9JnF1b3Q7MjAyNC0wNC0yMVQxMzozMDo1Ny4yNThaJnF1b3Q7IGFnZW50PSZxdW90O01vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS8xMjQuMC4wLjAgU2FmYXJpLzUzNy4zNiZxdW90OyBldGFnPSZxdW90OzlZZnBJWndyZEg5Qm40eUt4TnFKJnF1b3Q7IHZlcnNpb249JnF1b3Q7MjQuMi43JnF1b3Q7IHR5cGU9JnF1b3Q7ZW1iZWQmcXVvdDsmZ3Q7Jmx0O2RpYWdyYW0gaWQ9JnF1b3Q7RURDZzVueTVJSkZPQlJ3Q0VKRlomcXVvdDsgbmFtZT0mcXVvdDtQYWdlLTEmcXVvdDsmZ3Q7N1Z2YmNxTTRFUDBhUHlyRnhXRDdNWmZKekZiTjdrNnRkeXM3VHlrWmhORUVrRXVTWTN1K2ZpV1F1Tm9KY2NDUW1uMUlnbG8zMU4ybmo5UWlFL3MyM24rbWNCUCtUbndVVFN6RDMwL3N1NGxsdWFZcGZrdkJJUlBZTXlNVHJDbjJNNUZaQ0piNEoxSkMzV3lMZmNRcURUa2hFY2VicXRBalNZSThYcEZCU3NtdTJpd2dVWFhXRFZ5amhtRHB3YWdwZmNBK0R6UHAzREVLK1JlRTE2R2UyVFJVVFF4MVl5VmdJZlRKcmlTeVAwM3NXMG9JejU3aS9TMktwTzYwWHJKKzl5ZHE4eGVqS09GdE9sanpyTWN6akxacWNlckYrRUd2RnZsaThhcElLQS9KbWlRdytsUklieWpaSmo2U1F4cWlWTFQ1U3NoR0NFMGgvSUU0UHloTHdpMG5Rb1QybVA4cisxdzVxdlJkTlpiUGQzczFYRm80NkVMQzZhSFVTUmEvbCt1S2JtbEo5MnZxUmFtS2tTMzExRUxWMGpta2E2UmFhWm5VUWFtZlV1Wm5SR0lrcGhFTktJb2d4ODlWQjRIS3o5WjV1OElVNGtGWkl5Myt3eEQ5Yy9WRGVxdGxSSEFsQUpOMlhTSXAyRzR5Ync3d2VtSzVFOHMyNWFJQ0xMU2ZUaFRoNUNsckgzSXVWSDR0cDdIdWQvZ0pYd1dSUUV2aVhYa2tGaUtVaUY5c3U5a0lLOGtueE9YWTl4R09NWDlrTzh5OVVDRExzclBKZ0p3Q3FFWlcyVzlLV2xBdVZmS1l3aC9NN0RXald4SVJtbGJhdm9QbS9sVElHYWZrQ1pWcTV0YktkdDJYclBXTUtFZjdGdzJoYXpYa1ZJalJnTnNWZURXMUxDeGgxVFhlYkRwUkxGbnZCREJIZ0RPemhMSUNjNi9ocklLeUFuVHZ3ZG0waVRNZDJYdkhXVE1DR2czTC9FR08ydVpyaHNxYmtNZVJVaWVNOERvUno1NVlMaEplZkNNZEZBdWl1RllWTWZiOXpIU0k0Wjl3bFk0bkZiVWhPT0hwYXpzM0UrZnV1T3EwMDlTOVBtYzJOV0NGUEk2aEFSaFhxbU5yL2FteHZzbjNMRFVoUWNCa1NLb3BPSit5bGM3dHBzNS9YZFk1Z2diTEhnb050dHV3ekhmSkJ5L0FvVjhNNUs3U0JRWXMxNTJOQ0FiVGhxN3ZpUFNFRUdXMnpUZzZwM3VQVUNyV0c0blI3eHNXb1NHSlYxdDJoRzRobWdmZU1icDF2VGxhQmYzUXJibG95YmVtK1hiQ2JYcXROWHc4R1EyN09rZml5WFN3ZU5MMDhWZll0ZWR3b2oybGkzQmlhMTBmS2dPTklyYlk5dkNRR0EzRkhvT0VPUmdrbkxGUnJIYVZUaWgydElob3F2MU9WSWw2T2RPTzBLY1BRS3ZUdHNmWVRtalZiRzdUSDBJbzFSWEN6UVlsSWpBMDlQWFN5VDhJQXNzN3FqUGZYYmxPUnlmLy9BaXZULzZtMDA1blp4ejlUMlp0ZG5BenViVW0xMFpwL3pheHIwTXhXenJXZFVSMnBTcklPY1dyTGU4dG5RTkJWZ0NNUTQ1QXRyZGtBQ2VwWHBVZGM3dVhGZnpXN0k3aElXUWRzN0hqT3VZTWRXUGo2YXkyM1p3UG5ONXBzd0ZOL0d1WmU1WnhQSUtNWWE5QnNLUGJTK29JVUVuVnRHWE9raTJjSTZiUXNuUEpRYnRDL2VSaDEweWNyVWYxS3F6Y0hNaXBEalN2alpQcG9ER09zQ2s4bEpvcHhqMzl2bFk5UEZVeTlPSWhHL0ZjbWpPYkc3K2x4THhzd2tvaDU3Y0s5QWZaZU9TbzZTUy81ZGp6aW1LQk5kem00eFF2M0liSWUwcjVrL283b1luZXczMkNoSElCOUlRQ2hBOHdRQ2pBRE1Cb0J3OHNFNk5hN0hjK1d1elBZL3BRc2IrWk1udFA3RGV1Rmd1M0d2OW5yekNBS0h4REZJdkZTSXdPeEFyT3FGbkJya2Z6YzFuQnJ0TkxYN1N3NkpnV1prMWFTRU9Fa0tWQm9yd2IxZUZpU0c3UXFPcUNHNHlGVWMzVWdBRVBwaTF1ZWlVOXlGa1N2MlFWUm9LMGg0ejFyQy9pU0N1QW5GOVNoWndTbENmTUw4M2VjMElZNVA3WG1RM0xFdGFpQlV2OEt2azR2Zll5Z1Z3cVJYMEtmbjhqSmlYTEhBdjlBRXhFVlE1WVpaTGNSYXlQQnFvOHl6UVFxR3k5Z3Y5QlZWd2FsMEhWZGxQV002aStrQmduNi80NEsvRkJ1SmRKTFFRNUNBUnh3U2dDY0MvT096QVFleE1nOU1IRkN3QUV4WkdJSkFod0F0S01ieFYvOWtmRFg3NFpIWXJVbXJkN0h6QkJQSjFlUGtHc0VnSDU1bTVER0pZQWZQU3h2T1BISkVtUjBROWdRdkhhTXZjTGVJakFqaEtCakdMYUtpUStYRGJBdm13Mm9LMTlZN2gvNUJRK28rZ3hqbnMwTGVOa3c4QUtpU0NJOHJBbnpTeC9tRHJ3VlN6c2p0M0NUdjBPYkRvS0MvK0ZvRHlqQ2IweVZENmxiZGRyUVhvQ1NiMXRJZjB0akVCTXVPUzVQV1lnVE5rVkJCQkhtdkFDVE1VMms1TnR3OXl6c1p1N0RtaG40QzkzN1JFYzNNNjZENUo1RDNOV1MvL043VmUybW1tcG5rMXN0Lzg4OWlHamU2RU5hUFBidXViV1pDbGk0MFp1U1F3RWFYUTRhc1VMZlhHaGZlcmR5UzE1NzdGd0s0QlI3am1LYnk2bWJRNW9MWExqWFdlekt6NDZyc3gxbnFuV2REZXJ4Yld6TTljWHV0QzBPODVjVDVzWG1nOG9mWUYwNnlyL3dpSEJQRDFGY1dkOVBtVVpvL3BDMmVvV3Y1S1RMS2NHNG9LazNzSkpKN2d4STdnMzNaV2R6MjZ6VVVXTytwMlgwOVdYRU5NTFJRN0hNYnVOSE0xUC9wYXlmNWdtb3d3VU1UUmszTkRZNnVSVFpNT2VWWFE1NUEyWEtCYi93Wm8xTC80TjJQNzBIdz09Jmx0Oy9kaWFncmFtJmd0OyZsdDsvbXhmaWxlJmd0OyI+PGRlZnMvPjxnPjxnPjxwYXRoIGQ9Ik0gNjAgNjAgTCA2MCA4My42MyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9InN0cm9rZSIvPjxwYXRoIGQ9Ik0gNjAgODguODggTCA1Ni41IDgxLjg4IEwgNjAgODMuNjMgTCA2My41IDgxLjg4IFoiIGZpbGw9InJnYigwLCAwLCAwKSIgc3Ryb2tlPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjwvZz48YSB4bGluazpocmVmPSJodHRwOi8vd2lraS5mbHVpZG5jLmNvbS9lbi9zdXBwb3J0L3NldHVwL2xpbWl0X3N3aXRjaGVzI2NvbmZpZy1maWxlLXNldHVwIj48Zz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjYwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiNkNWU4ZDQiIHN0cm9rZT0iIzgyYjM2NiIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjwvZz48Zz48ZyBmaWxsPSJyZ2IoMCwgMCwgMCkiIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTJweCI+PHRleHQgeD0iNTkuNSIgeT0iMjcuNSI+U2V0IHVwIGNvbmZpZzwvdGV4dD48dGV4dCB4PSI1OS41IiB5PSI0MS41Ij5maWxlPC90ZXh0PjwvZz48L2c+PC9hPjxnPjxwYXRoIGQ9Ik0gMTIwIDIyNSBMIDE1My42MyAyMjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiKDAsIDAsIDApIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJzdHJva2UiLz48cGF0aCBkPSJNIDE1OC44OCAyMjUgTCAxNTEuODggMjI4LjUgTCAxNTMuNjMgMjI1IEwgMTUxLjg4IDIyMS41IFoiIGZpbGw9InJnYigwLCAwLCAwKSIgc3Ryb2tlPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjwvZz48Zz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC41IC0wLjUpIj48c3dpdGNoPjxmb3JlaWduT2JqZWN0IHBvaW50ZXItZXZlbnRzPSJub25lIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiByZXF1aXJlZEZlYXR1cmVzPSJodHRwOi8vd3d3LnczLm9yZy9UUi9TVkcxMS9mZWF0dXJlI0V4dGVuc2liaWxpdHkiIHN0eWxlPSJvdmVyZmxvdzogdmlzaWJsZTsgdGV4dC1hbGlnbjogbGVmdDsiPjxkaXYgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0bWwiIHN0eWxlPSJkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogdW5zYWZlIGNlbnRlcjsganVzdGlmeS1jb250ZW50OiB1bnNhZmUgY2VudGVyOyB3aWR0aDogMXB4OyBoZWlnaHQ6IDFweDsgcGFkZGluZy10b3A6IDIyNXB4OyBtYXJnaW4tbGVmdDogMTM4cHg7Ij48ZGl2IGRhdGEtZHJhd2lvLWNvbG9ycz0iY29sb3I6IHJnYigwLCAwLCAwKTsgYmFja2dyb3VuZC1jb2xvcjogcmdiKDI1NSwgMjU1LCAyNTUpOyAiIHN0eWxlPSJib3gtc2l6aW5nOiBib3JkZXItYm94OyBmb250LXNpemU6IDBweDsgdGV4dC1hbGlnbjogY2VudGVyOyI+PGRpdiBzdHlsZT0iZGlzcGxheTogaW5saW5lLWJsb2NrOyBmb250LXNpemU6IDExcHg7IGZvbnQtZmFtaWx5OiBIZWx2ZXRpY2E7IGNvbG9yOiByZ2IoMCwgMCwgMCk7IGxpbmUtaGVpZ2h0OiAxLjI7IHBvaW50ZXItZXZlbnRzOiBhbGw7IGJhY2tncm91bmQtY29sb3I6IHJnYigyNTUsIDI1NSwgMjU1KTsgd2hpdGUtc3BhY2U6IG5vd3JhcDsiPk5vPC9kaXY+PC9kaXY+PC9kaXY+PC9mb3JlaWduT2JqZWN0Pjx0ZXh0IHg9IjEzOCIgeT0iMjI5IiBmaWxsPSJyZ2IoMCwgMCwgMCkiIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EiIGZvbnQtc2l6ZT0iMTFweCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm88L3RleHQ+PC9zd2l0Y2g+PC9nPjwvZz48Zz48cGF0aCBkPSJNIDYwIDI4MCBMIDYwIDMwMy42MyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9InN0cm9rZSIvPjxwYXRoIGQ9Ik0gNjAgMzA4Ljg4IEwgNTYuNSAzMDEuODggTCA2MCAzMDMuNjMgTCA2My41IDMwMS44OCBaIiBmaWxsPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZT0icmdiKDAsIDAsIDApIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExcHgiPjxyZWN0IGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgc3Ryb2tlPSJub25lIiB4PSI1MSIgeT0iMjg1IiB3aWR0aD0iMjAiIGhlaWdodD0iMTQiIHN0cm9rZS13aWR0aD0iMCIvPjx0ZXh0IHg9IjU5Ljc1IiB5PSIyOTUuMjUiPlllczwvdGV4dD48L2c+PC9nPjxnPjxwYXRoIGQ9Ik0gNjAgMTcwIEwgMTIwIDIyNSBMIDYwIDI4MCBMIDAgMjI1IFoiIGZpbGw9IiNkYWU4ZmMiIHN0cm9rZT0iIzZjOGViZiIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PC9nPjxnPjxnIGZpbGw9InJnYigwLCAwLCAwKSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMnB4Ij48dGV4dCB4PSI1OS41IiB5PSIyMjIuNSI+RG8gdGhleSByZXBvcnQ8L3RleHQ+PHRleHQgeD0iNTkuNSIgeT0iMjM2LjUiPmNvcnJlY3RseT88L3RleHQ+PC9nPjwvZz48Zz48cGF0aCBkPSJNIDEyMCA0NTUgTCAxNTMuNjMgNDU1IiBmaWxsPSJub25lIiBzdHJva2U9InJnYigwLCAwLCAwKSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0ic3Ryb2tlIi8+PHBhdGggZD0iTSAxNTguODggNDU1IEwgMTUxLjg4IDQ1OC41IEwgMTUzLjYzIDQ1NSBMIDE1MS44OCA0NTEuNSBaIiBmaWxsPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZT0icmdiKDAsIDAsIDApIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExcHgiPjxyZWN0IGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgc3Ryb2tlPSJub25lIiB4PSIxMjYiIHk9IjQ0OCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE0IiBzdHJva2Utd2lkdGg9IjAiLz48dGV4dCB4PSIxMzMuMjUiIHk9IjQ1OC4yNSI+Tm88L3RleHQ+PC9nPjwvZz48Zz48cGF0aCBkPSJNIDYwIDUxMCBMIDYwIDU0My42MyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9InN0cm9rZSIvPjxwYXRoIGQ9Ik0gNjAgNTQ4Ljg4IEwgNTYuNSA1NDEuODggTCA2MCA1NDMuNjMgTCA2My41IDU0MS44OCBaIiBmaWxsPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZT0icmdiKDAsIDAsIDApIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExcHgiPjxyZWN0IGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgc3Ryb2tlPSJub25lIiB4PSI1MiIgeT0iNTIwIiB3aWR0aD0iMjAiIGhlaWdodD0iMTQiIHN0cm9rZS13aWR0aD0iMCIvPjx0ZXh0IHg9IjYwLjc1IiB5PSI1MzAuMjUiPlllczwvdGV4dD48L2c+PC9nPjxnPjxwYXRoIGQ9Ik0gNjAgNDAwIEwgMTIwIDQ1NSBMIDYwIDUxMCBMIDAgNDU1IFoiIGZpbGw9IiNkYWU4ZmMiIHN0cm9rZT0iIzZjOGViZiIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PC9nPjxnPjxnIGZpbGw9InJnYigwLCAwLCAwKSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMnB4Ij48dGV4dCB4PSI1OS41IiB5PSI0NTkuNSI+RGlkIGl0IHdvcms/PC90ZXh0PjwvZz48L2c+PGc+PHJlY3QgeD0iMTYwIiB5PSIxOTUiIHdpZHRoPSIxMjAiIGhlaWdodD0iNjAiIHJ4PSI5IiByeT0iOSIgZmlsbD0iI2ZmZjJjYyIgc3Ryb2tlPSIjZDZiNjU2IiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PC9nPjxnPjxnIGZpbGw9InJnYigwLCAwLCAwKSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMnB4Ij48dGV4dCB4PSIyMTkuNSIgeT0iMjI5LjUiPldoYXQgaGFwcGVuZWQ8L3RleHQ+PC9nPjwvZz48YSB4bGluazpocmVmPSJodHRwOi8vd2lraS5mbHVpZG5jLmNvbS9lbi9zdXBwb3J0L3NldHVwL2xpbWl0X3N3aXRjaGVzI2Etc3dpdGNoLXN0YXRlLXJlcG9ydHMtaW52ZXJ0ZWQiPjxnPjxyZWN0IHg9IjM3MCIgeT0iMTYwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjYwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiNkMGNlZTIiIHN0cm9rZT0iIzU2NTE3ZSIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjwvZz48Zz48ZyBmaWxsPSJyZ2IoMCwgMCwgMCkiIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTJweCI+PHRleHQgeD0iNDI5LjUiIHk9IjE4MC41Ij5Td2FwwqA8L3RleHQ+PHRleHQgeD0iNDI5LjUiIHk9IjE5NC41Ij46aGlnaC86bG93PC90ZXh0Pjx0ZXh0IHg9IjQyOS41IiB5PSIyMDguNSI+YXR0cmlidXRlPC90ZXh0PjwvZz48L2c+PC9hPjxnPjxwYXRoIGQ9Ik0gMjgwIDIyNSBMIDMyMCAxOTAgTCAzNjMuNjMgMTkwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYigwLCAwLCAwKSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0ic3Ryb2tlIi8+PHBhdGggZD0iTSAzNjguODggMTkwIEwgMzYxLjg4IDE5My41IEwgMzYzLjYzIDE5MCBMIDM2MS44OCAxODYuNSBaIiBmaWxsPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZT0icmdiKDAsIDAsIDApIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExcHgiPjxyZWN0IGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgc3Ryb2tlPSJub25lIiB4PSIyOTQiIHk9IjE4NiIgd2lkdGg9IjQyIiBoZWlnaHQ9IjI3IiBzdHJva2Utd2lkdGg9IjAiLz48dGV4dCB4PSIzMTMuOCIgeT0iMTk1LjYxIj5TdGF0ZSBpczwvdGV4dD48dGV4dCB4PSIzMTMuOCIgeT0iMjA4LjYxIj5JbnZlcnRlZDwvdGV4dD48L2c+PC9nPjxhIHhsaW5rOmhyZWY9Imh0dHA6Ly93aWtpLmZsdWlkbmMuY29tL2VuL3N1cHBvcnQvc2V0dXAvbGltaXRfc3dpdGNoZXMjYS1zd2l0Y2gtbmV2ZXItYWN0aXZhdGVzLW9yLWlzLWFsd2F5cy1hY3RpdmUiPjxnPjxyZWN0IHg9IjM3MCIgeT0iMjQwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjYwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiNkMGNlZTIiIHN0cm9rZT0iIzU2NTE3ZSIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjwvZz48Zz48ZyBmaWxsPSJyZ2IoMCwgMCwgMCkiIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTJweCI+PHRleHQgeD0iNDI5LjUiIHk9IjI3NC41Ij5DaGVjayBoYXJkd2FyZTwvdGV4dD48L2c+PC9nPjwvYT48Zz48cGF0aCBkPSJNIDI3OS41MiAyMjkuNSBMIDMyMCAyNzAgTCAzNjMuNjMgMjcwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYigwLCAwLCAwKSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0ic3Ryb2tlIi8+PHBhdGggZD0iTSAzNjguODggMjcwIEwgMzYxLjg4IDI3My41IEwgMzYzLjYzIDI3MCBMIDM2MS44OCAyNjYuNSBaIiBmaWxsPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZT0icmdiKDAsIDAsIDApIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExcHgiPjxyZWN0IGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgc3Ryb2tlPSJub25lIiB4PSIyODIiIHk9IjI1MyIgd2lkdGg9IjY1IiBoZWlnaHQ9IjI3IiBzdHJva2Utd2lkdGg9IjAiLz48dGV4dCB4PSIzMTMuMiIgeT0iMjYyLjYxIj5Td2l0Y2ggbmV2ZXI8L3RleHQ+PHRleHQgeD0iMzEzLjIiIHk9IjI3NS42MSI+YWN0aXZhdGVzPC90ZXh0PjwvZz48L2c+PGEgeGxpbms6aHJlZj0iaHR0cDovL3dpa2kuZmx1aWRuYy5jb20vZW4vc3VwcG9ydC9zZXR1cC9saW1pdF9zd2l0Y2hlcyNzZXR1cC1oYXJkLW9yLXNvZnQtbGltaXRzIj48Zz48cmVjdCB4PSIwIiB5PSI1NTAiIHdpZHRoPSIxMjAiIGhlaWdodD0iNjAiIHJ4PSI5IiByeT0iOSIgZmlsbD0iI2Q1ZThkNCIgc3Ryb2tlPSIjODJiMzY2IiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PC9nPjxnPjxnIGZpbGw9InJnYigwLCAwLCAwKSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMnB4Ij48dGV4dCB4PSI1OS41IiB5PSI1NzcuNSI+U2V0IHVwIGhhcmQgYW5kPC90ZXh0Pjx0ZXh0IHg9IjU5LjUiIHk9IjU5MS41Ij5zb2Z0IGxpbWl0czwvdGV4dD48L2c+PC9nPjwvYT48Zz48cGF0aCBkPSJNIDYwIDE1MCBMIDYwIDE2My42MyIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9InN0cm9rZSIvPjxwYXRoIGQ9Ik0gNjAgMTY4Ljg4IEwgNTYuNSAxNjEuODggTCA2MCAxNjMuNjMgTCA2My41IDE2MS44OCBaIiBmaWxsPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZT0icmdiKDAsIDAsIDApIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGEgeGxpbms6aHJlZj0iaHR0cDovL3dpa2kuZmx1aWRuYy5jb20vZW4vc3VwcG9ydC9zZXR1cC9saW1pdF9zd2l0Y2hlcyN0ZXN0LXN3aXRjaGVzIj48Zz48cmVjdCB4PSIwIiB5PSI5MCIgd2lkdGg9IjEyMCIgaGVpZ2h0PSI2MCIgcng9IjkiIHJ5PSI5IiBmaWxsPSIjZDVlOGQ0IiBzdHJva2U9IiM4MmIzNjYiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEycHgiPjx0ZXh0IHg9IjU5LjUiIHk9IjEyNC41Ij5UZXN0IFN3aXRjaGVzPC90ZXh0PjwvZz48L2c+PC9hPjxnPjxwYXRoIGQ9Ik0gNjAgMzcwIEwgNjAgMzkzLjYzIiBmaWxsPSJub25lIiBzdHJva2U9InJnYigwLCAwLCAwKSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0ic3Ryb2tlIi8+PHBhdGggZD0iTSA2MCAzOTguODggTCA1Ni41IDM5MS44OCBMIDYwIDM5My42MyBMIDYzLjUgMzkxLjg4IFoiIGZpbGw9InJnYigwLCAwLCAwKSIgc3Ryb2tlPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjwvZz48YSB4bGluazpocmVmPSJodHRwOi8vd2lraS5mbHVpZG5jLmNvbS9lbi9zdXBwb3J0L3NldHVwL2xpbWl0X3N3aXRjaGVzI3NlbmQtaHgtcmVwZWF0LWZvci1hbGwtYXhlcy1hZnRlci1nZXR0aW5nLWVhY2gtb25lLXRvLXdvcmsiPjxnPjxyZWN0IHg9IjAiIHk9IjMxMCIgd2lkdGg9IjEyMCIgaGVpZ2h0PSI2MCIgcng9IjkiIHJ5PSI5IiBmaWxsPSIjZDVlOGQ0IiBzdHJva2U9IiM4MmIzNjYiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEycHgiPjx0ZXh0IHg9IjU5LjUiIHk9IjM0NC41Ij5UZXN0IEhvbWluZzwvdGV4dD48L2c+PC9nPjwvYT48Zz48cmVjdCB4PSIxNjAiIHk9IjQyNSIgd2lkdGg9IjEyMCIgaGVpZ2h0PSI2MCIgcng9IjkiIHJ5PSI5IiBmaWxsPSIjZmZmMmNjIiBzdHJva2U9IiNkNmI2NTYiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEycHgiPjx0ZXh0IHg9IjIxOS41IiB5PSI0NTkuNSI+V2hhdCBoYXBwZW5lZDwvdGV4dD48L2c+PC9nPjxhIHhsaW5rOmhyZWY9Imh0dHA6Ly93aWtpLmZsdWlkbmMuY29tL2VuL3N1cHBvcnQvc2V0dXAvbGltaXRfc3dpdGNoZXMjaG9tZXMtaW4tdGhlLXdyb25nLWRpcmVjdGlvbiI+PGc+PHJlY3QgeD0iMzcwIiB5PSIzNDAiIHdpZHRoPSIxMjAiIGhlaWdodD0iNjAiIHJ4PSI5IiByeT0iOSIgZmlsbD0iI2QwY2VlMiIgc3Ryb2tlPSIjNTY1MTdlIiBwb2ludGVyLWV2ZW50cz0iYWxsIi8+PC9nPjxnPjxnIGZpbGw9InJnYigwLCAwLCAwKSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMnB4Ij48dGV4dCB4PSI0MjkuNSIgeT0iMzY3LjUiPkNoZWNrPC90ZXh0Pjx0ZXh0IHg9IjQyOS41IiB5PSIzODEuNSI+cG9zaXRpdmVfZGlyZWN0aW9uOjwvdGV4dD48L2c+PC9nPjwvYT48YSB4bGluazpocmVmPSJodHRwOi8vd2lraS5mbHVpZG5jLmNvbS9lbi9zdXBwb3J0L3NldHVwL2xpbWl0X3N3aXRjaGVzI3N0b3BzLWJlZm9yZS1nZXR0aW5nLXRoZS10aGUtc3dpdGNoIj48Zz48cmVjdCB4PSI0MDAiIHk9IjQyMCIgd2lkdGg9IjEyMCIgaGVpZ2h0PSI2MCIgcng9IjkiIHJ5PSI5IiBmaWxsPSIjZDBjZWUyIiBzdHJva2U9IiM1NjUxN2UiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEycHgiPjx0ZXh0IHg9IjQ1OS41IiB5PSI0NDcuNSI+Q2hlY2s8L3RleHQ+PHRleHQgeD0iNDU5LjUiIHk9IjQ2MS41Ij5tYXhfdHJhdmVsX21tOjwvdGV4dD48L2c+PC9nPjwvYT48YSB4bGluazpocmVmPSJodHRwOi8vd2lraS5mbHVpZG5jLmNvbS9lbi9zdXBwb3J0L3NldHVwL2xpbWl0X3N3aXRjaGVzI2R1YWwtbW90b3ItYXhpcy1ob21pbmctZmFpbHMtYWZ0ZXItZmlyc3QtdG91Y2giPjxnPjxyZWN0IHg9IjM3MCIgeT0iNTAwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjYwIiByeD0iOSIgcnk9IjkiIGZpbGw9IiNkMGNlZTIiIHN0cm9rZT0iIzU2NTE3ZSIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjwvZz48Zz48ZyBmaWxsPSJyZ2IoMCwgMCwgMCkiIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTJweCI+PHRleHQgeD0iNDI5LjUiIHk9IjUyNy41Ij5SZWFkIHRoZXNlPC90ZXh0Pjx0ZXh0IHg9IjQyOS41IiB5PSI1NDEuNSI+c3VnZ2VzdGlvbnM8L3RleHQ+PC9nPjwvZz48L2E+PGc+PHBhdGggZD0iTSAyODAgNDU1IEwgMzkxLjU5IDQ1NC45OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9InN0cm9rZSIvPjxwYXRoIGQ9Ik0gMzk2Ljg0IDQ1NC45OCBMIDM4OS44NCA0NTguNDggTCAzOTEuNTkgNDU0Ljk4IEwgMzg5Ljg0IDQ1MS40OCBaIiBmaWxsPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZT0icmdiKDAsIDAsIDApIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExcHgiPjxyZWN0IGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgc3Ryb2tlPSJub25lIiB4PSIzMTQiIHk9IjQ0NyIgd2lkdGg9IjcwIiBoZWlnaHQ9IjE0IiBzdHJva2Utd2lkdGg9IjAiLz48dGV4dCB4PSIzNDguMjUiIHk9IjQ1Ny4yNCI+U3RvcHBlZCBlYXJseTwvdGV4dD48L2c+PC9nPjxnPjxwYXRoIGQ9Ik0gMjgwIDQ1MCBMIDMyMCAzNzAgTCAzNjMuNjMgMzcwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYigwLCAwLCAwKSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0ic3Ryb2tlIi8+PHBhdGggZD0iTSAzNjguODggMzcwIEwgMzYxLjg4IDM3My41IEwgMzYzLjYzIDM3MCBMIDM2MS44OCAzNjYuNSBaIiBmaWxsPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZT0icmdiKDAsIDAsIDApIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIHBvaW50ZXItZXZlbnRzPSJhbGwiLz48L2c+PGc+PGcgZmlsbD0icmdiKDAsIDAsIDApIiBmb250LWZhbWlseT0iSGVsdmV0aWNhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExcHgiPjxyZWN0IGZpbGw9InJnYigyNTUsIDI1NSwgMjU1KSIgc3Ryb2tlPSJub25lIiB4PSIyNjQiIHk9IjM5NiIgd2lkdGg9IjgzIiBoZWlnaHQ9IjE0IiBzdHJva2Utd2lkdGg9IjAiLz48dGV4dCB4PSIzMDQuMTIiIHk9IjQwNS41Ij5XZW50IHdyb25nIHdheTwvdGV4dD48L2c+PC9nPjxnPjxwYXRoIGQ9Ik0gMjgwIDQ1OS45OCBMIDMyMCA1MzEgTCAzNjAuNjMgNTMxLjAyIiBmaWxsPSJub25lIiBzdHJva2U9InJnYigwLCAwLCAwKSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBwb2ludGVyLWV2ZW50cz0ic3Ryb2tlIi8+PHBhdGggZD0iTSAzNjUuODggNTMxLjAyIEwgMzU4Ljg4IDUzNC41MiBMIDM2MC42MyA1MzEuMDIgTCAzNTguODggNTI3LjUyIFoiIGZpbGw9InJnYigwLCAwLCAwKSIgc3Ryb2tlPSJyZ2IoMCwgMCwgMCkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgcG9pbnRlci1ldmVudHM9ImFsbCIvPjwvZz48Zz48ZyBmaWxsPSJyZ2IoMCwgMCwgMCkiIGZvbnQtZmFtaWx5PSJIZWx2ZXRpY2EiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTFweCI+PHJlY3QgZmlsbD0icmdiKDI1NSwgMjU1LCAyNTUpIiBzdHJva2U9Im5vbmUiIHg9IjI2MyIgeT0iNDkzIiB3aWR0aD0iNzgiIGhlaWdodD0iMTQiIHN0cm9rZS13aWR0aD0iMCIvPjx0ZXh0IHg9IjMwMC43MiIgeT0iNTAzLjQ5Ij5Tb21ldGhpbmcgZWxzZTwvdGV4dD48L2c+PC9nPjwvZz48c3dpdGNoPjxnIHJlcXVpcmVkRmVhdHVyZXM9Imh0dHA6Ly93d3cudzMub3JnL1RSL1NWRzExL2ZlYXR1cmUjRXh0ZW5zaWJpbGl0eSIvPjxhIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsLTUpIiB4bGluazpocmVmPSJodHRwczovL3d3dy5kcmF3aW8uY29tL2RvYy9mYXEvc3ZnLWV4cG9ydC10ZXh0LXByb2JsZW1zIiB0YXJnZXQ9Il9ibGFuayI+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMHB4IiB4PSI1MCUiIHk9IjEwMCUiPlRleHQgaXMgbm90IFNWRyAtIGNhbm5vdCBkaXNwbGF5PC90ZXh0PjwvYT48L3N3aXRjaD48L3N2Zz4=
+```
+
+
+
+
+
+
+
+
+## Config file setup
+
+Start with very conservative values in the config file - slow speeds and large pulloff distances. Once everything is working, you can fine tune the values.
+
+Set `homing_runs:` to 2 (the default). This will move to activate the switch at a seek speed, move back a little and then move to activate it again at a feed speed.
+
+```yaml
+axes:
+  homing_runs: 2
+```
+
+Under each axis, make sure `max_travel_mm` is accurate. If it is less than the actual length, the axis might not travel far enough to reach the switch.
+
+```yaml
+  x:
+    max_travel_mm: 1000.000000
+```
+
+Set the values for homing. Everything can be tuned later, but the important one to get right at this time is `positive_direction:`. If you are homing in the positive direction for the axis, set it to true.
+
+```yaml
+axes:
+  x:
+    homing:
+      cycle: 1
+      allow_single_axis: true
+      positive_direction: false
+      mpos_mm: 0.000000
+      feed_mm_per_min: 700.000000
+      seek_mm_per_min: 1000.000000
+      settle_ms: 250
+      seek_scaler: 1.100000
+      feed_scaler: 1.100000
+```
+
+Assign the pins for each motor.  There is more info [here](http://wiki.fluidnc.com/en/config/axes#motor-settings). If you are in doubt about the `high: or :low` attribute, don't worry. Later in the flowchart this will be verified. Set `pull_off_mm` to 5 to be sure it pulls off of the switch after activating it far enough to deactivate the switch.  Later, after things are working, you can dial it down if needed.
+
+```yaml
+axes:
+  x:
+    motor0:
+      limit_neg_pin: gpio.35:high
+      limit_pos_pin: NO_PIN
+      limit_all_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 5
+```
+
+## Adding limit switches to a motor.
+
+You can place limit switches at either the positive or negative ends of travel, or at both ends. The positive end of travel is the end you move towards when the axis location is increasing. If you move from X0 to X10, you are moving in the positive direction. 
+
+Typically the negative end of the X axis is on the left side and the positive end is on the right side. Positive Y is typically away from you. Positive Z is the top.
+
+You can assign switches to the ends with these key words. They are assigned at the motor level in the config file, because an axis with 2 motors will need switches separately defined for each motor.  Use NO_PIN for a switch that is not present.
+
+```
+limit_neg_pin:
+limit_pos_pin:
+limit_all_pin:
+```
+
+The `limit_all_pin:` is used when a switch will be placed at both ends, but wired to one input pin. These switches would be wired in series or parallel depending on the switch type. If a `limit_all_pin:` is triggered, FluidNC will not know which end was activated. This will work normally for all scenarios except if a switch is triggered before homing. It does not know which way to move to clear the switch. You must manually clear the switch before homing.
+
+Typically you can use...
+ - a neg switch
+ - a pos switch
+ - a neg and a pos switch
+ - an all switch
+
+You do not use an all switch with other switches.
+
+Each motor is independent and you can choose the best arrangement for that motor.
+
+## Normally Open (N.O.) vs. Normally Closed (N.C.)
+
+You can use N.O. or N.C. switches. Both will require a pulling resistor for the open state. The closed state has lower impedance because the open state uses a resistor to set the voltage and the closed state is a direct connection. This means N.C. is less likely to falsely trigger due to noise during normal operation.
+
+N.C. switch wiring is also more fail safe. A broken circuit will typically indicate the active state.
+
+## Axis Squaring
+
+Axis squaring uses a switch on each motor to square the axis during homing. It requires 2 motors and a separate switch input for each side. If it sees this in the config file, squaring will be used. 2 separate switches enables a stress free method. No side will move without the other if it does not have to. If your axis starts out square, it will never be pulled out of square (stressed) during the squaring.
+
+The above method assumes your switches are mounted squarely. That is definitely the ideal setup. If this is not the case, you can use [pulloff_mm:](http://wiki.fluidnc.com/en/config/axes#pulloff_mm) settings in the config file to compensate for this. This is the amount the motor reverses after touching the switch. By using different values for each motor, you can compensate for misaligned switches.
+
+> It is very important that you do not mix up the switches and motors. Motor0 must activate its switches and Motor1 must activate its switches or you will get crashes.
+{.is-warning}
+
+It is best to set **[stepping/idle_ms: 255](http://wiki.fluidnc.com/en/config/axes#stepping)**. This will prevent the motors from disabling in the idle state. Machines that need squaring tend to go out of square when the motors disable. 
+
+## Ganged Motors with One Switch Input
+
+This is supported, but the axis will not auto square during homing. The switch can be placed on either the motor0 or motor1 side.
+
+## Setting mpos_mm
+
+After an axis homes, its machine position is set to the `mpos_mm:` value. Typically if you home in `positive_direction: false` you would set `mpos_mm: 0`. If you home in `positive_direction: true`, you would set `mpos_mm:` to the length of travel. If your `max_travel_mm:` were 1000, in both these cases your range would be 0 to 1000.
+
+```
+axes:
+  x:
+    homing:
+      mpos_mm: 0.000
+```
+
+You are free to set the value to any number. This would allow you to set a range in positive or negative space. There is more detail on [this wiki page](http://wiki.fluidnc.com/en/support/machine_space_and_homing).
+
+# Test Switches
+
+We use the term **"active"** to mean the state of the switch **when the limit is reached** regardless if you use a normally open, normally closed, normally logic high or low, etc.
+
+Set the messaging level to debug with `$Message/Level=Debug`. This will show a lot of extra information. 1 means active and 0 means inactive.
+
+Manually activate each switch while watching the console output. Each switch should display in the console when active. If you have any axes with 2 motors make sure both motor switches display when active and are associated with the correct motor0 or motor1.
+
+```
+$Message/Level=Debug
+ok
+[MSG:DBG:  X Neg Limit 1]
+[MSG:DBG: Limit switch tripped for X motor 0]
+[MSG:DBG:  X Neg Limit 0]
+[MSG:DBG:  X Neg Limit 1]
+[MSG:DBG: Limit switch tripped for X motor 0]
+[MSG:DBG:  X Neg Limit 0]
+[MSG:DBG:  Y Pos Limit 1]
+[MSG:DBG: Limit switch tripped for Y motor 0]
+[MSG:DBG:  Y Pos Limit 0]
+[MSG:DBG:  Z Pos Limit 1]
+[MSG:DBG: Limit switch tripped for Z motor 0]
+[MSG:DBG:  Z Pos Limit 0]
+$Message/Level=Info
+ok
+```
+
+
+
+Remember to return the message level to info with `$Message/Level=Info` after you are done setting up the machine.  Too much debugging information can slow down the system and possibly result in motion problems.
+
+## A switch never activates or is always active.
+
+This could be a configuration, wiring or hardware problem. Try using a voltmeter on the signal pin to see if the state is actually changing. 
+
+## A switch state reports inverted. 
+
+If a switch reports active when not touched and inactive when touched, then you should [invert](http://wiki.fluidnc.com/en/support/faq#how-do-i-invert-a-pin-state) the `:low` or `:high ` (the default) attribute 
+
+# Verify Motion Direction
+
+[See this page](http://wiki.fluidnc.com/en/support/setup/motion) to make sure your motors are moving the axes in the correct direction before trying to home.
+
+
+
+# Homing
+
+When testing, have a planned way to stop the machine if something unexpected happens. Be ready to [stop](http://wiki.fluidnc.com/en/features/e_stop_button) the machine by cutting power or resetting FluidNC.
+
+Double check that no switches are active before starting homing.
+
+## Send $HX (repeat for all axes after getting each one to work)
+
+
+## Homes in the wrong direction
+
+Check the `positive_direction:` value.
+
+## Moves a short distance in the wrong direction
+
+If it moves the `pulloff_mm:` distance in the wrong direction and causes an Alarm 8 (Homing Fail Pulloff) the switch was probably active when you homed, but the move did not clear the switch. The switch appears to be stuck in the active state.
+
+## Stops before getting the switch
+
+- Check the `max_travel_mm` if the value is long enough.
+- Maybe there is some [electrical noise](http://wiki.fluidnc.com/en/support/controller_design_guidelines#electrical-debouncing-noise-and-spikes) causing a false trigger. You can see if this happens with debug messages. ($Message/Level=Debug)
+
+## Dual motor axis homing fails after first touch.
+
+A common problem is that the switches are on the incorrect motors. The Motor0 side moves into the switch for Motor1. It then disables the wrong motor for the auto squaring and the other motor continues, but can never move to its switch.  Double check the switches in [this step](http://wiki.fluidnc.com/en/support/setup/limit_switches#test-switches) or try swapping the pins in the config file.
+
+## Ambiguous limit switch touching
+
+FluidNC cannot pull off an active limit switch if it does not know which end is active. There are 2 cases for this.
+ - If you use a `limit_all_pin:` FluidNC does not know which end to pull off.
+ - If both the `limit_neg_pin:` and the `limit_pos_pin:` are active FluidNC does not know which end to pull off.
+
+You must clear the switch with a jog or manual move.
+
+## <a id="floating_pins"></a>Floating pins
+
+If you get strange behavior, you might need pull up or pull down resistors. External ones in the 3k-10k range work well. You can also apply ESP32 ones to many pins in firmware with the **:pu** or **:pd** [pin attribute](http://wiki.fluidnc.com/en/config/config_IO#input-pin-attributes). It is a good practice to put these in your config file even if you have external ones, so people reading your file will know.  External pullups are more reliable than internal ones because the internal pullups in an ESP32 are of too high a value for good noise immunity.
+
+# Detailed Debugging
+
+If you send $message/level=debug from a terminal or console window, FluidNC will display detailed information about the steps it is taking during the homing process.  If you are having a problem with homing and need help, we need to see that debug output.
+
+# Setup hard or soft limits
+
+## Hard Limits
+
+Hard limits use switches to limit motion. If a moving axis hits a switch and hard limits are on, the motion will immediately stop and issue an alarm. 
+
+## Soft Limits
+
+Soft limits use the machine range to limit motion. If you try to move outside the range it will reject the command and issue an alarm. The range of each axis is shown in the startup messages. 
+
+```
+[MSG:INFO: Axis Y (0.000,1000.000)]]
+```
+
+Soft limits only work correctly after the axis has been homed, because it needs to know the current position to determine if the move will go outside the range of motion. If you try to jog to a point outside the range of travel, it will just jog to the end. 
+
+If you can, prefer soft limits over hard limits.  Soft limits prevent problems before they occur.
+
+

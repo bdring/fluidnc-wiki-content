@@ -1,0 +1,402 @@
+
+name: Anolex 4030 Evo Ultra2 cnc, XYZA, modified original controller
+meta: 2025-10-13 tty-guy
+
+board: Anolex A-X5.7.3 controller board with 24V/10A power supply.
+
+
+# ----- Machine Brief:
+#   - 4030 cnc router with X Travel of 400 mm, and Y (moving table) Travel of 300 mm.
+#   - Z Travel has spec of 130 mm, not all of which is usable, as bottom of Z assembly allows only ~50mm clearance (with spoilboard).
+#       >>> Mounting Z assembly at highest position improves usable Z Travel and clearance to ~80mm.
+#   - XYZ Steppers are weeny Nema-23, 1.2N-m, 2.8A.
+#   - Stepper drivers integrated on controller board, with microstep of 16.
+#   - 4mm pitch ballscrews, rated 3000 mm/min max speed 
+#   - Machine Home is X=0 (left), Y=max (table to front), Z=0 (top)
+#   - Custom A axis is Lathe Spindle with 57hs76-3004a08-d30-04 stepper (Nema-23, 2N-m, 3A, 3.5mH), speed reduced 10T:60T.
+#   - Uart-0 connects to CH340 for usb port
+#
+#   - required hack:  add 10k pullup (esp side of opto) for BUTT input (gpio.2)    (lift before updating firmware)
+#   - required hack:  add 10k pullup (esp side of opto) for PROBE input (gpio.12)  (lift before updating firmware)
+#
+#   - optional:       probe is plugged into PROBE 2-pin jack (gpio.12).
+#   - optional hack:  toolsetter (hack adapter with transitors) is also plugged into PROBE 3-pin jack (gpio.12).
+#                         (there is no 'toolsetter' pin as it would need to be unique and it is ORed with probe in fluidnc anyway).
+#
+#   - optional hack:  pendant uart: txd is gpio.22 (was water), rxd is gpio.35 (was sd-card-det).
+#
+#   - with stock weeny-ass steppers, could not drive X or Y to specified 3000 mm/min max -- dropped to 2000 
+#       (gonna try anolex closed-loop motors to see if they can reach 3000)
+
+
+# ========== BUS PINS:
+
+# ----- spi for sdcard:
+spi:
+  miso_pin: gpio.19
+  mosi_pin: gpio.23
+  sck_pin: gpio.18
+sdcard:
+  cs_pin: gpio.5
+  ###sd card_detect -- this pin stolen for pendant uart-rx:
+  ###card_detect_pin: gpio.35
+  frequency_hz: 8000000
+  
+
+# ========== MOTION:
+
+kinematics:
+  Cartesian:
+
+stepping:
+  engine: RMT
+  # if idle_ms set to 255, motors will stay engaged:
+  idle_ms: 255
+  # 3us minimum step pulse, 5us delays:
+  pulse_us: 3
+  dir_delay_us: 5
+  disable_delay_us: 5
+
+axes:
+  ##### gpio.21 is motor disable, but seems fine not using it so maybe steal it for ?
+  shared_stepper_disable_pin: NO_PIN
+  shared_stepper_reset_pin: NO_PIN
+
+  homing_runs: 2
+
+  # ----- X-axis (400mm) -- home is left-side (x=0):
+  #         # --- driver:
+  #         microsteps = 16
+  #         # --- for 1.8-degree stepper:
+  #         motor_steps_per_rev = 200
+  #         # --- one revolution:
+  #         steps_per_rev = microsteps * motor_steps_per_rev = 16 * 200 = 3200 steps/rev
+  #         # --- 4mm pitch ballscrew:
+  #         linear_mm_per_rev = 4 mm/rev
+  #         # --- for 1mm travel:
+  #         steps_per_mm = steps_per_rev / linear_mm_per_rev = 3200 / 4 = 800 steps/mm    <<<
+  #         # --- machine max speed:
+  #         machine_max_mm_per_min = 3000 mm/min but Y loses steps -- set to 2000
+  #         # --- max rate:
+  #         machine_max_steps_per_min = machine_max_mm_per_min * steps_per_mm = 2000 * 800
+  #         max_steps_per_sec = machine_max_steps_per_min / 60 sec/min = (2000 * 800) / 60 = 26667 steps/sec (27kHz)
+  x:
+    max_travel_mm: 400.0
+    steps_per_mm: 800.0
+    max_rate_mm_per_min: 2000.0
+    acceleration_mm_per_sec2: 200.0
+    soft_limits: true
+
+    homing:
+      cycle: 2
+      positive_direction: false
+      mpos_mm: 0.0 
+      seek_mm_per_min: 1000.0
+      feed_mm_per_min: 50.0
+      settle_ms: 250
+      allow_single_axis: true
+
+    motor0:
+      limit_all_pin: gpio.36:low
+      pulloff_mm: 1.0
+      hard_limits: true
+      standard_stepper:
+        step_pin: gpio.13:low
+        direction_pin: gpio.15:low
+        disable_pin: NO_PIN
+ 
+  # ----- Y-axis (300mm) -- home is rear (plate moves out to max Y):
+  #         # --- driver:
+  #         microsteps = 16
+  #         # --- for 1.8-degree stepper:
+  #         motor_steps_per_rev = 200
+  #         # --- one revolution:
+  #         steps_per_rev = microsteps * motor_steps_per_rev = 16 * 200 = 3200 steps/rev
+  #         # --- 4mm pitch ballscrew:
+  #         linear_mm_per_rev = 4 mm/rev
+  #         # --- for 1mm travel:
+  #         steps_per_mm = steps_per_rev / linear_mm_per_rev = 3200 / 4 = 800 steps/mm    <<<
+  #         # --- machine max speed:
+  #         machine_max_mm_per_min = 3000 mm/min but Y loses steps -- set to 2000
+  #         # --- max rate:
+  #         machine_max_steps_per_min = machine_max_mm_per_min * steps_per_mm = 2000 * 800
+  #         max_steps_per_sec = machine_max_steps_per_min / 60 sec/min = (2000 * 800) / 60 = 26667 steps/sec (27kHz)
+  y:
+    max_travel_mm: 300.0
+    steps_per_mm: 800.0
+    max_rate_mm_per_min: 2000.0
+    acceleration_mm_per_sec2: 200.0
+    soft_limits: true
+
+    homing:
+      cycle: 2
+      positive_direction: true
+      mpos_mm: 300.0
+      seek_mm_per_min: 1000.0
+      feed_mm_per_min: 50.0
+      settle_ms: 250
+      allow_single_axis: true
+
+    motor0:
+      limit_all_pin: gpio.39:low
+      pulloff_mm: 1.0
+      hard_limits: true
+      standard_stepper:
+        step_pin: gpio.14:low
+        direction_pin: gpio.27
+        disable_pin: NO_PIN
+
+  # ----- Z-axis (130mm) -- home is top (z=0):
+  #         # --- driver:
+  #         microsteps = 16
+  #         # --- for 1.8-degree stepper:
+  #         motor_steps_per_rev = 200
+  #         # --- one revolution:
+  #         steps_per_rev = microsteps * motor_steps_per_rev = 16 * 200 = 3200 steps/rev
+  #         # --- 4mm pitch ballscrew:
+  #         linear_mm_per_rev = 4 mm/rev
+  #         # --- for 1mm travel:
+  #         steps_per_mm = steps_per_rev / linear_mm_per_rev = 3200 / 4 = 800 steps/mm    <<<
+  #         # --- machine max speed:
+  #         machine_max_mm_per_min = 3000 mm/min but set Z slower -- set to 2000
+  #         # --- max rate:
+  #         machine_max_steps_per_min = machine_max_mm_per_min * steps_per_mm = 2000 * 800
+  #         max_steps_per_sec = machine_max_steps_per_min / 60 sec/min = (2000 * 800) / 60 = 26667 steps/sec (27kHz)
+  z:
+    max_travel_mm: 130.0
+    steps_per_mm: 800.0
+    max_rate_mm_per_min: 2000.0
+    acceleration_mm_per_sec2: 200.0
+    soft_limits: true
+
+    homing:
+      cycle: 1
+      positive_direction: true
+      # set zero at top (home):
+      mpos_mm: 0.0
+      seek_mm_per_min: 800.0
+      feed_mm_per_min: 100.0
+      settle_ms: 250
+      allow_single_axis: true
+
+    motor0:
+      limit_all_pin: gpio.34:low
+      pulloff_mm: 1.0
+      hard_limits: true
+      standard_stepper:
+        step_pin: gpio.26:low
+        direction_pin: gpio.25:low
+        disable_pin: NO_PIN
+
+  # ----- A-axis (lathe spindle) -- home is ?:  (not yet implemented)
+  #         # --- driver:
+  #         microsteps = 16
+  #         # --- for 1.8-degree stepper:
+  #         motor_steps_per_rev = 200
+  #         # --- lathe spindle motor speed reduced 10T:60T:
+  #         spindle_gearing = 6
+  #         # --- one revolution:
+  #         steps_per_rev = microsteps * motor_steps_per_rev * spindle_gearing = 16 * 200 * 6 = 19200 steps/rev
+  #         # and, fyi:
+  #         # --- for 3-degree rotation:
+  #         steps = 19200 / 120 = 160 steps/3degree
+  #         # --- for 1.5-degree rotation:
+  #         steps = 19200 / 240 = 80 steps/1.5degree
+  #         # --- for 1-degree rotation:
+  #         steps = 19200 / 360 = 53.3 steps/degree
+  #         # --- for 0.75-degree rotation:
+  #         steps = 19200 / 480 = 40 steps/0.75degree
+  a:
+    # interpreted as degrees of rotation?:
+    max_travel_mm: 360.0
+    # steps_per_mm is actually steps per degree?
+    steps_per_mm: 53.333
+    max_rate_mm_per_min: 500.0
+    acceleration_mm_per_sec2: 100.0
+    soft_limits: true
+
+    homing:
+      # disable A homing for now: <<<
+      cycle: 0
+      positive_direction: true
+      mpos_mm: 0.0
+      seek_mm_per_min: 200.0
+      feed_mm_per_min: 20.0
+      settle_ms: 250
+      allow_single_axis: true
+
+    motor0:
+      limit_all_pin: gpio.4:low:pu
+      pulloff_mm: 2
+      hard_limits: false
+      standard_stepper:
+        step_pin: gpio.33:low
+        direction_pin: gpio.32:low
+        disable_pin: NO_PIN
+
+
+# ========== TOOL-0: PWM:
+#       One of: RELAY, 0-to-10V, GENERIC-PWM, or LASER
+#       Only un-comment one PWM definition below:
+
+# ----- RELAY (on/off only on pwm pin)
+relay:
+  tool_num: 0
+  output_pin: gpio.17
+  enable_pin: NO_PIN
+  direction_pin: NO_PIN
+  disable_with_s0: false
+  s0_with_disable: true
+  spinup_ms: 1000
+  spindown_ms: 1000
+  speed_map: 0=0% 0=100% 1=100%
+  off_on_alarm: false
+  m6_macro: $LocalFS/Run=macro-M6-tool-change.nc
+
+# ----- 0-to-10V out PWM (1kHz is cleaner than 5kHz):
+# 10V:
+#   tool_num: 0
+#   pwm_hz: 1000
+#   output_pin: gpio.17
+#   forward_pin: NO_PIN
+#   reverse_pin: NO_PIN
+#   enable_pin: NO_PIN
+#   direction_pin: NO_PIN
+#   disable_with_s0: false
+#   s0_with_disable: true
+#   spinup_ms: 1000
+#   spindown_ms: 1000
+#   speed_map: 0=0.0% 8000=0.0% 24000=100.0%
+#   # this turns off spindle whenever an alarm occurs (parking feature does not work in alarm mode):
+#   off_on_alarm: true
+#   m6_macro: $LocalFS/Run=macro-M6-tool-change.nc
+
+# ----- GENERIC-PWM (5kHz):
+# pwm:
+#   tool_num: 0
+#   pwm_hz: 5000
+#   output_pin: gpio.17
+#   enable_pin: NO_PIN
+#   direction_pin: NO_PIN
+#   disable_with_s0: false
+#   s0_with_disable: true
+#   spinup_ms: 1000
+#   spindown_ms: 1000
+#   speed_map: 0=0.0% 8000=0.0% 24000=100.0%
+#   # this turns off spindle whenever an alarm occurs (parking feature does not work in alarm mode):
+#   off_on_alarm: true
+#   m6_macro: $LocalFS/Run=macro-M6-tool-change.nc
+
+# ----- LASER PWM (5kHz):
+# Laser:
+#   tool_num: 0
+#   pwm_hz: 5000
+#   output_pin: gpio.17
+#   enable_pin: NO_PIN
+#   disable_with_s0: false
+#   s0_with_disable: true
+#   speed_map: 0=0.0% 255=100.0%
+#   # this turns off spindle whenever an alarm occurs (parking feature does not work in alarm mode):
+#   off_on_alarm: true
+  
+
+# ========== I/O PINS:
+
+# ---- uart2/channel2 for PENDANT:
+#       (stolen pins: gpio.22 was flood_pin (Water output), gpio.35 was sd card_detect_pin)
+uart2:
+  txd_pin: gpio.22
+  rxd_pin: gpio.35
+  baud: 115200
+  mode: 8N1
+uart_channel2:
+  uart_num: 2
+  report_interval_ms: 500
+  # for message_level, select one of: None, Error, Warn, Info, Debug, Verbose:
+  message_level: Verbose
+  
+# ----- PROBE:
+probe:
+  # probe is plugged into PROBE (2-pin jack):
+  pin: gpio.12:low:pu
+  # toolsetter is also plugged into PROBE (3-pin jack with adapter hack):
+  #  --- do not define toolsetter pin as duplicates not allowed (and fluidnc treats them the same internally anyway)
+  toolsetter_pin: NO_PIN
+  check_mode_start: true
+  #hard_stop: false
+  #probe_hard_limit: false
+
+# ----- FLOOD and MIST for Coolant, Blower, and/or Vacuum:
+coolant:
+  # labeled 'Water' (M07 M09) -- pin stolen for pendant uart-tx:
+  ###flood_pin: gpio.22  
+
+  # labeled 'Air'  (M08 M09):
+  mist_pin: gpio.16   
+  delay_ms: 0
+
+# ----- control pins:
+control:
+
+  fault_pin: NO_PIN
+  estop_pin: NO_PIN
+
+  # DOOR-SW switch or SafetyDoor command (0x84) initiates parking:
+  safety_door_pin: NO_PIN
+
+  # RESET_PB or command CTRL-X (0x18) resets and immediately stops motion and spindle.
+  #   Position is lost and machine needs re-home.  Motors stay locked if idle_ms value is 255.
+  reset_pin: NO_PIN
+
+  # PAUSE-PB button or command ("!") pauses job (quickly stops machine without loss of position).  
+  #   Job can be resumed with RESUME-PB or Resume command (~).
+  feed_hold_pin: NO_PIN
+
+  # RESUME-PB button or Resume command (~) restarts a paused job:
+  cycle_start_pin: NO_PIN
+
+  # only one button available so make it macro-0:
+  macro0_pin: gpio.2:low:pu
+  macro1_pin: NO_PIN
+  macro2_pin: NO_PIN
+  macro3_pin: NO_PIN
+
+# --- digital pins 0 through 3 can be defined and controlled via M62, M63, M64 and M65 commands.
+user_outputs:
+  digital0_pin: NO_PIN
+  digital1_pin: NO_PIN
+  digital2_pin: NO_PIN
+  digital3_pin: NO_PIN
+  
+# --- DOOR/PAUSE-PB switch or SafetyDoor command (0x84) initiates parking,
+#     which stops motion, retracts bit, stops spindle and retracts further from work.
+#     RESUME-PB button or Resume command (~) resumes job:
+# parking:
+#   enable: true
+#   axis: Z
+#   pullout_distance_mm: 5.0
+#   pullout_rate_mm_per_min: 250.0
+#   target_mpos_mm: -5.0
+#   rate_mm_per_min: 800.0
+  
+
+# ========== MACROS AND STARTUP:
+
+macros:
+  startup_line0: ''
+  startup_line1: ''
+  macro0: $LocalFS/Run=macro-butt.nc
+  macro1: $SD/Run=handy-operation.nc
+  macro2: ''
+  macro3: ''
+  after_homing: ''
+  after_reset: ''
+  after_unlock: ''
+
+start:
+  must_home: true
+  deactivate_parking: false
+  check_limits: false
+
+
+# ========== (eof)

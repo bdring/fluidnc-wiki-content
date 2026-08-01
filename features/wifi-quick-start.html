@@ -1,0 +1,42 @@
+<!--
+title: WiFi Quick Start
+description: How to connect FluidNC to your WiFi network
+published: true
+date: 2026-08-01T19:36:47.617Z
+tags: wifi
+editor: ckeditor
+dateCreated: 2024-05-14T19:11:00.607Z
+-->
+
+<p>This page tells you one easy way to setup WiFi on your FluidNC controller. &nbsp;To learn all the details about the WiFi configuration settings, refer to <a href="/features/wifi_bt">Wifi and Bluetooth</a> .</p>
+<p>FluidNC can connect to WiFi in either Access Point mode, in which the ESP32 chip acts as the WiFi access point without access to the Internet, and Station Mode, where the ESP32 connects to an external network via your WiFi router. &nbsp;For long-term operation, we strongly recommend that you use Station Mode, which has much better performance and stability. &nbsp;Access Point Mode can be useful for setup and recovery, but does not work well for day to day usage.</p>
+<p>There are many different ways to setup WiFi. &nbsp;These instructions tell you how to do it with <a href="https://installer.fluidnc.com/">FluidNC Web Installer</a> &nbsp;, which is perhaps the easiest way.</p>
+<ul>
+  <li>If there is a FluidTerm or any other terminal or sender program that is currently connected to FluidNC, disconnect it so that no program has the FluidNC USB serial port open. &nbsp;Ensure that the FluidNC controller is plugged into a USB port on your computer.</li>
+  <li>Go to &nbsp;<a href="https://installer.fluidnc.com/">FluidNC Web Installer</a> &nbsp;and hit the Connect button</li>
+</ul>
+<figure class="image image_resized" style="width:51.46%;"><img src="/wi1.png"></figure>
+<ul>
+  <li>Choose the serial port that is connected to FluidNC and hit Connect. &nbsp;If the connection dialog shows multiple possibilities, you will need to find the one that is connected to FluidNC. &nbsp;One way is to temporarily unplug the FluidNC USB serial port and see which choice disappears.</li>
+</ul>
+<figure class="image image_resized" style="width:56.17%;"><img src="/wi2.png"></figure>
+<ul>
+  <li>Choose the WiFi item in the side menu</li>
+</ul>
+<figure class="image image_resized" style="width:53.49%;"><img src="/wi3.png"></figure>
+<ul>
+  <li>Use the dropdown to select the SSID of your WiFi network, enter the password, and hit Save</li>
+</ul>
+<figure class="image image_resized" style="width:73.11%;"><img src="/wi4.png"></figure>
+<ul>
+  <li>FluidNC will restart to apply the new settings. &nbsp;If connection succeeds, you will see the connection information; &nbsp;Note the Hostname and IP values which you will need later.</li>
+</ul>
+<figure class="image image_resized" style="width:74.11%;"><img src="/wi5.png"></figure>
+<ul>
+  <li>If the connection to your WiFi network did not succeed, you might need to change the Min security field, depending on the security setting of your WiFi router.</li>
+  <li>After you get a good connection to your WiFi network, it should be possible to browse to the FluidNC Web User Interface. &nbsp;There are two possible addresses that you can enter in the browser's address bar. &nbsp;First try “fluidnc.local” (or replace “fluidnc” with whatever value is in the “Hostname” field above (you can configure that to be whatever you want via the Configure WiFi page). &nbsp;If that doesn't work (since some computers can have trouble with “.local” addresses), then try the IP address that is shown for &nbsp;your network (often “192.168.something.something”).</li>
+</ul>
+<figure class="image"><img src="/wi6.png"></figure>
+<ul>
+  <li>&nbsp;</li>
+</ul>

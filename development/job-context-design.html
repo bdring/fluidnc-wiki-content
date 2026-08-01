@@ -1,0 +1,58 @@
+<!--
+title: Job Context Design
+description: Design ideas for managing job context
+published: true
+date: 2026-08-01T19:34:54.063Z
+tags: 
+editor: ckeditor
+dateCreated: 2023-05-14T00:38:40.205Z
+-->
+
+<h1>Job Context Management</h1>
+<p>Design document, for discussion and comment</p>
+<h2>What is a Job?</h2>
+<p>We define a job as sequence of related GCode block or FluidNC commands that accomplish some task. &nbsp;A GCode file, which could be executed from an SD card or sent from a sender, would be a job. &nbsp;So would a macro. &nbsp;The key point is that the items in the sequence are meant to be executed from beginning to end, not as unrelated individual items.</p>
+<h2>The Problem</h2>
+<p>Classic GRBL has no notion of a job. &nbsp;When it receives a GCode block or a $ command, it executes it, with no implied relationship to commands that come before or after. &nbsp;The one “grouping” concept is that, if a GCode block arrives when motion is already in progress, GRBL tries to “splice” the new motion onto previously-planned motion so that the machine does not come to a complete stop between the execution of the old and new commands - except in the case of “synchronous” commands that imply a complete stop.</p>
+<p>This works reasonably well in the conventional situation where the commands are coming from a single “sender” over a single communication channel (typically a serial port). &nbsp;In that scenario, the sender can take care of higher-level relationships such as the notion that lines within a GCode file are a related sequence with a beginning and an end.</p>
+<p>FluidNC can accept commands from multiple communication channels, execute GCode files from a filesystem on, for example, an SD card, and execute macros that are stored locally in memory or on a filesystem. At present, its only notion of grouping is the knowledge that an SD card file is currently one of the input sources. &nbsp;That knowledge is hard-coded in an ad-hoc fashion, with no formalism of a “job” and only a weak form of reporting that a job is underway. &nbsp;(The status report contains an ‘SD:’ field that says that input is coming from an SD card file, but the synchronization is poor. &nbsp;When the last line from the file has been sent to the planner, the final SD: field is issued, possibly long before the motion implied by all of the lines from the file is finished.)</p>
+<h2>Goals</h2>
+<p>This design intends to add job context management to FluidNC, so that a sequence of related lines (a “job”) can be tracked and executed as a group, with controlled interaction between disparate jobs. &nbsp;Interacting jobs are treated like subroutines in a programming language - when a job finishes, the job that initiated it is resumed after the place that initiated the “interior” job.</p>
+<p>Some use cases/goals:</p>
+<ul>
+  <li>Run a macro that in turn runs a program from an SD card file. &nbsp;When the file finishes, the macro resumes execution. &nbsp;This could be used, for example, to run a sequence of files in order - or to run the same file over and over.</li>
+  <li>During a pause in the execution of a program - either via a programmed pause like M0 or a user-initiated feedhold - perform some other job like run a macro, and when that other job is done, resume execution of the first program. &nbsp;This could be used for toolchange macros.</li>
+  <li>When a program is interrupted by an exceptional condition like a hard limit or a user-initiated abort, cleanly stop all running jobs and give the user more control over the final state of the system, instead of just doing a big-hammer hard reset.</li>
+</ul>
+<h2>Challenges</h2>
+<ul>
+  <li>GRBL's list of states - Cycle, Idle, Jog, Homing, Alarm, etc - is insufficient for describing the full situation. &nbsp;Idle can mean either that nothing is happening at all or that a dwell is currently in progress (and motion will resume after the time expires). &nbsp;Hold can mean either an M0 programmed hold or a user-issued feedhold. &nbsp;The system can remain in Cycle state long after all lines from a file have been read, so it is hard for a UI to report that a file run has actually finished.</li>
+  <li>GRBL's current means of status reporting is tied to that list of states, and senders depend on that status report format being what it is.</li>
+  <li>The GRBL serial protocol has no way of “bracketing” a related group of lines - like lines from a file or macro that is being sent from a host. &nbsp;This is especially troublesome when there are multiple connections to FluidNC, such as can happen with multiple instances of WebUI or pendants talking over websockets. So, while it is relative easily to “bracket a job” that is source from a local source like an SD file or a FluidNC macro, it is harder to extend the notion of a job to a sequence of lines from a sender.</li>
+</ul>
+<h2>Approach</h2>
+<p>For starters, I intend to create a “Job Channel” abstraction that can apply to SD files and FluidNC macros. &nbsp;Instead of the current status quo where there can be a single SD card input file that is interleaved with input from all other channels, and macros that are similarly interleaved into the Channel multiplexor, there will be a stack of active JobChannels. &nbsp;When that stack in non-empty, line-oriented input will come only from the top of that stack - but other interactive channels can still issue realtime characters for things like overrides and feedhold. When the end of file is reached on that JobChannel, the stack will be popped (and execution synchronized), so input from the previous job will resume.</p>
+<p>Eventually, we may design a bracketing protocol that senders could use to apply the same sort of grouping to jobs being sent from outside.</p>
+<h2>Status</h2>
+<p>The Jobs branch has a first cut at job context management. From a gcode stream, file (SD or localfs) run, or a macro (or the startup line), you can invoke another job, and when it finishes, input from the previous context will resume.</p>
+<p>So, for example, you could have:</p>
+<pre><code class="language-plaintext">macros:
+  startup: G20&amp;$macros/run=0&amp;G21
+  macro0: $macros/run=1&amp;$sd/run=foo.nc&amp;$sd/run=foo.nc
+  macro1: (msg_Running macro1)&amp;G1 X100</code></pre>
+<p>The calling and resuming works, but there is a feature I would like to add - state reporting that is synchronized with the execution of the lines from a job. The current status quo is that the status report tells you which lines have been sent to the planner, not what has actually been executed. So when all the lines from a job source have been sent, you get a "job succeeded" message. It would be nice to know when all the motion is done. You can sort of infer that if you add a synchronizing command like G4 at the end, but there should be a better way.</p>
+<p>“startup_line0: and “…line1” have been replaced by just “startup”. &nbsp;Having 2 lines is unnecessary since we can now splice together as many lines as we want using &amp;.<br>&nbsp;</p>
+<h2>FAQ</h2>
+<ul>
+  <li><strong>Recursion</strong> Do not have any case where a file runs itself. This also means no lower level file can call an upper level file. FluidNC will quickly run low on memory and crash.&nbsp;</li>
+</ul>
+<h2><br>Mode questions</h2>
+<p><strong>What should these modes be.</strong></p>
+<ul>
+  <li>G4 (Dwell)</li>
+  <li>M3/M4 (with no active motion)</li>
+  <li>M3/M4/M5 (during spin up/down)</li>
+  <li>M7/M8 (with no active motion)</li>
+  <li>M7/M8 (during its delay_ms)</li>
+</ul>
+<p>&nbsp;</p>

@@ -1,0 +1,457 @@
+<!--
+title: Jackpot CNC Controller
+description: 6 Drivers, 7 Input, 4 Output, 1 Expansion module
+published: true
+date: 2025-05-26T20:27:45.633Z
+tags: cnc, router, v1 engineering, mpcnc, lowrider, zenxy, v1e, jackpot, 2209, tmc2209, module, expansion
+editor: ckeditor
+dateCreated: 2023-08-29T15:07:00.754Z
+-->
+
+<h1>Overview&nbsp;</h1>
+<p>&nbsp;</p>
+<figure class="image image_resized" style="width:49.96%;"><img src="/hardware/jackpot_cnc(1).png">
+  <figcaption>Jackpot CNC Controller</figcaption>
+</figure>
+<p>This is a CNC controller inspired by the <a href="https://github.com/bdring/6-Pack_CNC_Controller">6 Pack controller</a>, commonly used I/O included to try and reduce cost and footprint while keeping the flexibility of the module port.</p>
+<p>&nbsp;</p>
+<h2>Features</h2>
+<p>9-24VDC</p>
+<ul>
+  <li>Current required is a minimum of 19W (24Vx0.8A).</li>
+  <li>If you plan on using the high current outputs adjust accordingly.</li>
+</ul>
+<p>6x Stepper driver sockets</p>
+<ul>
+  <li>This controller is designed for use with TMC2209 drivers in UART control mode only</li>
+  <li>Typically, TMC2209 drivers are limited to 4 addresses. This controller uses a CS (chip select) pin for 3 of the drivers to allow 6 drivers to be individually controlled.</li>
+  <li>The sockets are labeled XYZABC, but you can use any socket for any axis or motor number. The letters are just for reference only.</li>
+  <li>No Stallguard</li>
+</ul>
+<p>7x Inputs</p>
+<ul>
+  <li>All switch inputs are active low, the LED goes on when ground is connected to the pin.</li>
+  <li>They have a 10k pullup external to the ESP32. The signal pin (S) should be connected to the ground pin (G) to activate the switch.</li>
+  <li>The 5V Rail is optional and is used for external switches that require 5V.</li>
+  <li>Define the pins in the config file to NO or NC like this…</li>
+  <li>Define an N.O. switch like this. gpio.xx.low</li>
+  <li>Define an N.C. switch like this. gpio.xx</li>
+</ul>
+<p>2x Line level outputs (same as input voltage)</p>
+<ul>
+  <li>PWM Capable</li>
+  <li>The MOSFETs switch to ground. You can use any voltage up to the VMot max as the positive, as long as it uses the same ground reference.</li>
+  <li>Can be used to drive 2.5A continuously before they overheat. You can use them intermittently up to 3.5A. If using above 2.5A you should test to see if they start to overheat.</li>
+  <li>They can be used with inductive loads (solenoids, relays, DC fans/motors)</li>
+</ul>
+<p>2x 5V outputs</p>
+<ul>
+  <li>PWM Capable</li>
+  <li>These will source and sink about 25mA each.</li>
+  <li>Most commonly used for tool SSR’s and Lasers.</li>
+  <li>See the “<a href="http://wiki.fluidnc.com/en/config/config_spindles">Spindle</a>” section for common uses.</li>
+</ul>
+<p>1x Expansion Module socket</p>
+<ul>
+  <li><a href="https://oshwlab.com/bdring?tab=project&amp;page=1">6 PACK expansion module source</a></li>
+  <li><a href="https://www.tindie.com/stores/33366583/">Buy Them</a></li>
+  <li>This should be able to use any CNC I/O module. Use an 11mm standoff or a 3D printed support in the mounting hole provided.</li>
+  <li>These Modules can be just about anything you need, more inputs, outputs, relays, spindle, VFD, Servo, OLED…</li>
+</ul>
+<p>1x MicroSD card slot</p>
+<ul>
+  <li>larger than 2gb needed</li>
+  <li>Fat32</li>
+  <li>30 character or less file names, 100 character or less file location</li>
+</ul>
+<p>Firmware</p>
+<ul>
+  <li><a href="https://github.com/bdring/FluidNC">FluidNC</a> of course.</li>
+  <li>Text based config file for simple firmware edits.</li>
+  <li>No compiling to flash a board or change the configuration.</li>
+  <li>~100% GRBL compatible</li>
+  <li>Custom ESP3D-UI which includes a tablet mode with Gcode viewer.</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Dimensions</h3>
+<ul>
+  <li>80mmx100mm Board footprint</li>
+</ul>
+<figure class="image image_resized" style="width:23.01%;"><img src="/hardware/jackpot_dims.png">
+  <figcaption>Basic Jackpot CNC Dimensions</figcaption>
+</figure>
+<figure class="image image_resized" style="width:22.94%;"><img src="/hardware/jackpot_iso.png">
+  <figcaption>Jackpot CNC with sockets filled</figcaption>
+</figure>
+<p>The source link below is capable or providing a step file of the Jackpot CNC Controller, there is also a Fusion 360 <a href="https://a360.co/3KchBBL">CAD model</a>.</p>
+<p>&nbsp;</p>
+<h3>Pinout</h3>
+<p>Most I/O are labeled on the top and bottom of the board itself for ease of use.</p>
+<figure class="image image_resized" style="width:24.26%;"><img src="/hardware/jackpot_pins.png">
+  <figcaption>Jackpot CNC Pins</figcaption>
+</figure>
+<h2>&nbsp;</h2>
+<p>Source Files</p>
+<p>The design is open source, released under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3 license</a>. The design files are in EasyEDA format, which is a free online editor. It also allows people to order blank or assembled PCBs in low quantities at low cost with virtually no PCB design experience required.</p>
+<p><a href="https://oshwlab.com/allted?tab=project&amp;page=1">Oshwlab source link</a></p>
+<p>&nbsp;</p>
+<h2>Configuration Files<a href="https://docs.v1e.com/electronics/jackpot/#configuration-files">¶</a></h2>
+<p><a href="https://github.com/V1EngineeringInc/FluidNC_Configs">Github link</a> for MPCNC, and LowRider CNC specific base configurations. You can sign up for notifications of any updates if you would like.</p>
+<p>&nbsp;</p>
+<h3>Example Config</h3>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">board: Jackpot TMC2209
+name: MPCNC
+meta: 08-10-2023 RyanZ
+
+planner_blocks: 32
+
+stepping:
+  engine: I2S_STATIC
+  idle_ms: 255
+  pulse_us: 4
+  dir_delay_us: 1
+  disable_delay_us: 0
+  
+uart1:
+  txd_pin: gpio.0
+  rxd_pin: gpio.4
+  rts_pin: NO_PIN
+  baud: 115200
+  mode: 8N1
+
+axes:
+  shared_stepper_disable_pin: NO_PIN
+  
+  x:
+    steps_per_mm: 50.000
+    max_rate_mm_per_min: 9000.000
+    acceleration_mm_per_sec2: 200.000
+    max_travel_mm: 1220
+    soft_limits: false
+    homing:
+      cycle: 2
+      positive_direction: false
+      mpos_mm: 0
+      feed_mm_per_min: 300.000
+      seek_mm_per_min: 1500.000
+      settle_ms: 500
+      seek_scaler: 1.100
+      feed_scaler: 1.100
+    #X
+    motor0:
+      limit_neg_pin: gpio.25:high
+      limit_pos_pin: NO_PIN
+      limit_all_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 5.000
+      tmc_2209:
+        uart_num: 1
+        addr: 0
+        cs_pin: NO_PIN
+        r_sense_ohms: 0.110
+        run_amps: 0.600
+        hold_amps: 0.400
+        microsteps: 8
+        stallguard: 0
+        stallguard_debug: false
+        toff_disable: 0
+        toff_stealthchop: 5
+        toff_coolstep: 3
+        run_mode: StealthChop
+        homing_mode: StealthChop
+        use_enable: false
+        direction_pin: I2SO.1
+        step_pin: I2SO.2
+        disable_pin: I2SO.0
+    
+    #A
+    motor1:
+      limit_neg_pin: gpio.35:high
+      limit_pos_pin: NO_PIN
+      limit_all_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 5.000
+      tmc_2209:
+        uart_num: 1
+        addr: 3
+        cs_pin: i2so.14
+        r_sense_ohms: 0.110
+        run_amps: 0.600
+        hold_amps: 0.400
+        microsteps: 8
+        stallguard: 0
+        stallguard_debug: false
+        toff_disable: 0
+        toff_stealthchop: 5
+        toff_coolstep: 3
+        run_mode: StealthChop
+        homing_mode: StealthChop
+        use_enable: false
+        step_pin: I2SO.13
+        direction_pin: I2SO.12
+        disable_pin: I2SO.15
+        
+        
+  y:
+    steps_per_mm: 50.000
+    max_rate_mm_per_min: 9000.000
+    acceleration_mm_per_sec2: 200.000
+    max_travel_mm: 2440
+    soft_limits: false
+    homing:
+      cycle: 2
+      positive_direction: false
+      mpos_mm: 0
+      feed_mm_per_min: 300.000
+      seek_mm_per_min: 1500.000
+      settle_ms: 500
+      seek_scaler: 1.100
+      feed_scaler: 1.100
+    #Y
+    motor0:
+      limit_neg_pin: gpio.33:high
+      limit_pos_pin: NO_PIN
+      limit_all_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 5.000
+      tmc_2209:
+        uart_num: 1
+        addr: 1
+        cs_pin: NO_PIN
+        r_sense_ohms: 0.110
+        run_amps: 0.600
+        hold_amps: 0.400
+        microsteps: 8
+        stallguard: 0
+        stallguard_debug: false
+        toff_disable: 0
+        toff_stealthchop: 5
+        toff_coolstep: 3
+        run_mode: StealthChop
+        homing_mode: StealthChop
+        use_enable: false
+        step_pin: I2SO.5
+        direction_pin: I2SO.4
+        disable_pin: I2SO.7
+   
+    #B
+    motor1:
+      limit_neg_pin: gpio.34:high
+      limit_pos_pin: NO_PIN
+      limit_all_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 5.000
+      tmc_2209:
+        uart_num: 1
+        addr: 3
+        cs_pin: i2so.19
+        r_sense_ohms: 0.110
+        run_amps: 0.600
+        hold_amps: 0.400
+        microsteps: 8
+        stallguard: 0
+        stallguard_debug: false
+        toff_disable: 0
+        toff_stealthchop: 5
+        toff_coolstep: 3
+        run_mode: StealthChop
+        homing_mode: StealthChop
+        use_enable: false
+        step_pin: I2SO.18
+        direction_pin: I2SO.17
+        disable_pin: I2SO.16
+  z:
+    steps_per_mm: 200.000
+    max_rate_mm_per_min: 1200.000
+    acceleration_mm_per_sec2: 80.000
+    max_travel_mm: 300.000
+    soft_limits: false
+    homing:
+      cycle: 1
+      positive_direction: true
+      mpos_mm: 200.000
+      feed_mm_per_min: 300.000
+      seek_mm_per_min: 800.000
+      settle_ms: 500
+      seek_scaler: 1.100
+      feed_scaler: 1.100
+
+    motor0:
+      limit_neg_pin: gpio.32:low
+      limit_pos_pin: NO_PIN
+      limit_all_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 4.000
+      tmc_2209:
+        uart_num: 1
+        addr: 2
+        cs_pin: NO_PIN
+        r_sense_ohms: 0.110
+        run_amps: 0.600
+        hold_amps: 0.400
+        microsteps: 8
+        stallguard: 0
+        stallguard_debug: false
+        toff_disable: 0
+        toff_stealthchop: 5
+        toff_coolstep: 3
+        run_mode: StealthChop
+        homing_mode: StealthChop
+        use_enable: false
+        step_pin: I2SO.10
+        direction_pin: I2SO.9
+        disable_pin: I2SO.8
+                 
+  c:
+    steps_per_mm: 80.000
+    max_rate_mm_per_min: 5000.000
+    acceleration_mm_per_sec2: 100.000
+    max_travel_mm: 300.000
+    soft_limits: false
+    homing:
+      cycle: 1
+      positive_direction: true
+      mpos_mm: 150.000
+      feed_mm_per_min: 100.000
+      seek_mm_per_min: 800.000
+      settle_ms: 500
+      seek_scaler: 1.100
+      feed_scaler: 1.100
+
+    motor0:
+      limit_neg_pin: gpio.39:low
+      limit_pos_pin: NO_PIN
+      limit_all_pin: NO_PIN
+      hard_limits: false
+      pulloff_mm: 3.000
+      tmc_2209:
+        uart_num: 1
+        addr: 3
+        cs_pin: i2so.22
+        r_sense_ohms: 0.110
+        run_amps: .1000
+        hold_amps: 0.050
+        microsteps: 16
+        stallguard: 0
+        stallguard_debug: false
+        toff_disable: 0
+        toff_stealthchop: 5
+        toff_coolstep: 3
+        run_mode: StealthChop
+        homing_mode: StealthChop
+        use_enable: false
+        step_pin: I2SO.21
+        direction_pin: I2SO.20
+        disable_pin: I2SO.23
+
+
+i2so:
+  bck_pin: gpio.22
+  data_pin: gpio.21
+  ws_pin: gpio.17
+
+spi:
+  miso_pin: gpio.19
+  mosi_pin: gpio.23
+  sck_pin: gpio.18
+
+sdcard:
+  cs_pin: gpio.5
+  card_detect_pin: NO_PIN
+  frequency_hz: 20000000
+
+probe:
+  pin: gpio.36:low
+  toolsetter_pin: NO_PIN
+  check_mode_start: true
+
+start:
+  must_home: false
+
+coolant:
+  flood_pin: gpio.2
+  mist_pin: gpio.16
+  delay_ms: 0
+
+control:
+  safety_door_pin: NO_PIN
+  reset_pin: NO_PIN
+  feed_hold_pin: NO_PIN
+  cycle_start_pin: NO_PIN
+  macro0_pin: NO_PIN
+  macro1_pin: NO_PIN
+  macro2_pin: NO_PIN
+  macro3_pin: NO_PIN  
+
+macros:
+  startup_line0:
+  startup_line1:
+  macro0:
+  macro1:
+  macro2:
+  macro3:
+  
+user_outputs:
+  analog0_pin: NO_PIN
+  analog1_pin: NO_PIN
+  analog2_pin: NO_PIN
+  analog3_pin: NO_PIN
+  analog0_hz: 5000
+  analog1_hz: 5000
+  analog2_hz: 5000
+  analog3_hz: 5000
+  digital0_pin: gpio.26
+  digital1_pin: gpio.27
+  digital2_pin: NO_PIN
+  digital3_pin: NO_PIN
+
+#Laser:
+#  pwm_hz: 5000
+#  output_pin: gpio.27
+#  enable_pin: NO_PIN
+#  disable_with_s0: false
+#  s0_with_disable: true
+#  tool_num: 0
+#  speed_map: 0=0.000% 255=100.000%
+#  off_on_alarm: true
+
+# pwm:
+#  pwm_hz: 5000
+#  direction_pin: gpio.26
+#  output_pin: gpio.27
+#  enable_pin: NO_PIN
+#  disable_with_s0: false
+#  s0_with_disable: true
+#  spinup_ms: 0
+#  spindown_ms: 0
+#  tool_num: 0
+#  speed_map: 0=0.000% 1000=100.000%
+#  off_on_alarm: false
+
+# 5V out gpio.26/27
+# VMot out gpoi.2/16
+# In's left to right gpoi.25/33/32/35/34/39/36</code></pre>
+<p>&nbsp;</p>
+<h3>Output note</h3>
+<p><strong>gpio.26</strong> can have a quick pulse when starting. If you are using a 5V pin for your laser pin 27 is the better option for your enable pin.</p>
+<p>&nbsp;</p>
+<h3>RJ12 Expansion Module&nbsp;</h3>
+<p>Add this to your config file</p>
+<pre><code class="language-plaintext">uart2:
+  txd_pin: gpio.14
+  rxd_pin: gpio.13
+  rts_pin: NO_PIN
+  cts_pin: NO_PIN
+  baud: 1000000
+  mode: 8N1
+
+uart_channel2:
+  uart_num: 2
+  report_interval_ms: 75</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h2>Detailed Jackpot CNC Controller Page</h2>
+<p>If you need further information, or this page ever falls out of date, please see the <a href="https://docs.v1e.com/electronics/jackpot/">V1 Engineering Documents</a>.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>

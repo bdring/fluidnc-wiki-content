@@ -1,0 +1,36 @@
+<!--
+title: Jobs
+description: Managing nested execution from files and macros
+published: true
+date: 2026-08-01T19:36:08.998Z
+tags: 
+editor: ckeditor
+dateCreated: 2024-06-15T00:27:54.025Z
+-->
+
+<h1>Job Control</h1>
+<p>Traditional Grbl is designed to be used with an external sender - a program running on a different computer that reads GCode lines from a file and sends them one at a time to the controller over a serial connection. &nbsp;The controller microcomputer has no concept of grouping; it just executes each line as it arrives, although it does try to create smooth motion between lines if they arrive quickly enough. &nbsp;The controller does not know when the end of a sequence of lines has been reached; if there is a pause after a line, another line might arrive soon, or later, or not at all.</p>
+<p>FluidNC can operate like that, but it can also read files and macros from local storage or SD cards. &nbsp;Subsequently, in this discussion, I will use the word “file” to mean either a file or a macro, since they behave essentially the same.</p>
+<p>A file has a beginning and an end, so FluidNC can know when it has no more lines. This opens up the possibility of nested execution, where one file or can run a program from another file, then the first file would resume when the second is done. &nbsp;As of version 3.8.0, FluidNC has a “Job Control” feature that allows such nested execution. There is no specific limitation on the number of nesting levels, so one file could run a second, which runs a third, etc.</p>
+<h2>Jobs</h2>
+<p>We use the word “job” to mean the execution of a file along with any other files that it might invoke. &nbsp;A job starts when the first file begins execution and, unless there are errors, ends when all nested files have completed, returned control to their “caller”, and the first file has executed all of its lines.</p>
+<h3>Job Leader</h3>
+<p>The primary interface to FluidNC is ultimately through a user interface program connected to an interactive channel such as a serial interface. &nbsp;WebUI also controls FluidNC through an interactive channel such as the HTTP API or a WebSocket. &nbsp;The user interface program starts a job by sending a command like $SD/Run=<i>filename</i> over such an interactive channel. &nbsp;The channel that was used to start the job is called the <strong>Job Leader </strong>. Any error messages that arise as a result of the job will be send to the Job Leader channel to be handled by the associated user interface program.</p>
+<h3>Aborts</h3>
+<p>If an error occurs during a job, the job “aborts” - the file that was running at the time stops and all caller files “above” it (at higher nesting levels) also stop. Aborts include not only GCode errors like invalid commands that are detected by the GCode parser, but also alarm conditions arising from things like probe failures, soft limit violations, limit switch activations, or user-initiated reset.</p>
+<h3>Usage</h3>
+<p>From the user interface point of view, nothing changes. &nbsp;You just run a file or macro from the UI program the same was as always. &nbsp;But now the file or macro can do things it could not do before, as described below.</p>
+<h2>Differences from Previous Behavior</h2>
+<p>Before the introduction of Job Control, FluidNC was capable of a very limited form of nesting. &nbsp;A macro could invoke a file run command like $SD/Run=<i>filename</i>, but when that file finished, it was not possible to resume execution of the macro and do other things. &nbsp;Similarly, if one macro invoked another macro, but returning to the first afterward the second one finished was not possible. &nbsp;Previously, running one SD file from inside another was impossible.</p>
+<p>Now it is possible to do pretty much anything in this regard. &nbsp;A macro can run a file which runs a second file then does something after the second finished, then after the first file finishes, the macro can do other things, perhaps running other files or macros. &nbsp;This allows you to create fine-grained macros and programs that perform targeted sequences of operations, and use them inside other macros to perform more complex operations without unnecessary duplication of code. &nbsp;This can be especially useful in conjunction with<a href="/features/gcode_parameters_expressions"> Parameters and Expressions.</a></p>
+<h2>Examples</h2>
+<pre><code class="language-plaintext">macros:
+    macro0: $macros/run=1 &amp; G0 X1 Y3 &amp; $macros/run=2
+    macro1: G1 X10 F100 &amp; $SD/Run=test.nc &amp; G1 Y5 F200
+    macro2: $SD/Run=probe.nc &amp; G10 L20 P1 Z0</code></pre>
+<p>Contents of /sd/test.nc:</p>
+<pre><code class="language-plaintext">G53 G0 X5 Y20
+$SD/Run=test2.nc
+G92 X0 Y0
+$SD/Run=test3.nc</code></pre>
+<p>The examples above are not necessarily useful; rather they illustrate the many ways that you can run files from within other files.</p>

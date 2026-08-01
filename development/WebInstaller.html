@@ -1,0 +1,182 @@
+<!--
+title: Web Installer
+description: Web-based installer for FluidNC - design spec
+published: true
+date: 2026-08-01T19:34:44.144Z
+tags: in development
+editor: ckeditor
+dateCreated: 2023-01-14T19:05:43.878Z
+-->
+
+<p>This is the specification for a new web installation tool for FluidNC.</p>
+<h3>Technology</h3>
+<p>Uses <a href="https://github.com/espressif/esptool-js">esptool-js</a> - which in turn uses <a href="https://developer.mozilla.org/en-US/docs/Web/API/Serial">WebSerial </a>- to download FluidNC images to an ESP32. &nbsp;WebSerial currently works on Chrome, Edge, and Opera browsers.&nbsp;</p>
+<p>The page will be hosted on GitHub Pages with the code in a repo under github.com/bdring .</p>
+<p>The URL will be installer.fluidnc.com</p>
+<h3>User Interface</h3>
+<p>The visual design of the user interface is TBD. &nbsp;Whoever takes up this project will have leeway to design the layout / look and feel (but we discourage the use of enormous frameworks, preferring relatively simple HTML/Javascript).</p>
+<p>Functionally, we need the following features:</p>
+<ul>
+  <li>Display a list of the last 5 or so FluidNC releases (with the option to go farther back) and let the user choose one. (REST API: https://api.github.com/repos/bdring/FluidNC/releases returns a JSON-encoded array of release information)</li>
+  <li>Alternatively, the user can choose a prerelease or test build (REST API: The “prelease:” tag in the JSON array is true for prereleases and false for initial releases)</li>
+  <li>After a release has been selected, the list of images that can be installed will be displayed. &nbsp;Those things can include<ul>
+      <li>Wifi firmware</li>
+      <li>Bluetooth firmware</li>
+      <li>Local filesystem</li>
+      <li>From-scratch installation of firmware plus local filesystem - which loses existing files like config.yaml</li>
+      <li>Options to use alternate partition schemes for ESP32s with larger FLASH sizes. Currently the extra space is not used. &nbsp;This is made more complicated by the fact that the firmware image base address must be consistent with the partition layout. &nbsp;So this feature might be deferred until later.</li>
+      <li>(Future) images for other ESP32 variants like ESP32-S3</li>
+      <li>(REST API: The JSON data has, for each release, an “assets” array. &nbsp;Each asset entry has a name like “wifi-firmware.elf” and a &nbsp;“browser_<i>download_</i>url" that tells you where to get the asset. &nbsp;We can come up with a naming scheme that identifies which ESP variants are supported)</li>
+    </ul>
+  </li>
+  <li>After the user has chosen exactly what to install, an Install button will be activated</li>
+</ul>
+<h3>Development Status</h3>
+<p>There is a simple proof of concept - &nbsp;<a href="https://github.com/MitchBradley/MitchBradley.github.io">source code</a> . <a href="https://mitchbradley.github.io/">live page</a> . &nbsp;It was created by copying the esptool-js code and making simple mods to the UI (index.html and index.js files). &nbsp;When you host on GitHub pages, the “normal” way is to use Jekyll to create a static site, but as an alternative, you can bypass Jekyll and just put your own index.html and whatnot in the repo, using a GitHub action to “deploy” the files in the repo to the hosting site. &nbsp;That alternative is what we use.</p>
+<p>Progress 2023-1-21: The POC now lets you choose a release and displays its assets.</p>
+<p>Progress 2023-3-7: Joacim Breiler has picked up development of this feature. &nbsp;His current work in progress can be found at https://breiler.github.io/fluid-installer/</p>
+<h3>Next Steps</h3>
+<p>We should change the FluidNC release scripts to expose individual files as assets instead of bundling them in .zip files. &nbsp;There should be a manifest.json that provides metadata about the files, including their ESP32 variant, load address, MD5 or other verifier, … &nbsp;The manifest would let the installer organize the asset display and automatically set the options for the download-to-ESP32 step. &nbsp;If you have already connected to the ESP32, the installer could know which ESP32 variant is present, displaying only appropriate images.</p>
+<h4>Manifest Spec (Strawman)</h4>
+<p>For each release, a manifest.json file describes the assets that are available for installing. &nbsp;For example</p>
+<pre><code class="language-plaintext">{
+  "name": "FluidNC",
+  "version": "3.6.10,
+  "source_url": "https://github.com/bdring/FluidNC/tree/v3.6.8",
+  "release_url": "https://github.com/bdring/FluidNC/releases/tag/v3.6.8",
+  "funding_url": "https://www.paypal.com/donate/?hosted_button_id=8DYLB6ZYYDG7Y",
+  "images": {
+    "esp32-wifi-firmware": {
+      "size": 1671837,
+      "signature: {
+      	 "hash": "sha256",
+      	 "value": "07a9e0fec3f185b1c73f3293fffb6aed84b95b3fc48fbf6ab7ea02f43621e04b"
+      },
+      "offset": "0x10000",
+      "path": "esp32/wifi/firmware.bin"
+    },
+    "esp32-bootapp": {
+      "size": 8192,
+      "signature: {
+      	 "hash": "sha256",
+      	 "value": "f94c5d786a7a8fab06ac5d10e33bf37711a6697636dc037559ea19cc410a17f0"
+      },
+      "offset": "0xe000",
+      "path": "esp32/bootapp.bin"
+    },
+    "esp32-bootloader": {
+      "size": 17120,
+      "signature: {
+      	 "hash": "sha256",
+      	 "value": "62487f69e343c6e913fad3217911f92a7341f376f43f00d6da018cf329e716e6"
+      },
+      "offset": "0x1000",
+      "path": "esp32/bootloader.bin"
+    },
+    "esp32-4m-partitions": {
+      "size": 3072,
+      "signature: {
+      	 "hash": "sha256",
+      	 "value": "1ae446228d79cf83a4b83de41c33d1e01dc21a3557149d7da90fbcbfc303311d"
+      },
+      "offset": 0,
+      "path": "esp32/4m/partitions.bin"
+    },
+    "esp32-wifi-4m-filesystem": {
+      "name": ,
+      "size": 196608.
+      "signature: {
+      	 "hash": "sha256",
+      	 "value": "28724a4655cbd92c1b33a1319e48d6382381c0db66bd8373efd59f2388767e8f"
+      },
+      "offset": "0x3d0000",
+      "path": "esp32/wifi/4m/filesystem.bin"
+    }
+  ],
+  "installable": {
+    "name": "installable",
+    "description": "Things that can be installed",
+    "choice-name": "Processor type",
+    "choices": [
+      {
+        "name": "esp32",
+        "description": "ESP32-WROOM",
+        "choice-name": "Firmware variant",
+        "choices": [
+          {
+            "name": "wifi",
+            "description": "Supports WiFI and WebUI",
+            "choice-name": "Installation type",
+            "choices": [
+              {
+                "name": "fresh-install",
+                "description": "Complete FluidNC installation, erasing all previous data.",
+                "erase": true,
+                "images": [
+                  "esp32-4m-partitions".
+                  "esp32-bootloader",
+                  "esp32-bootapp",
+                  "esp32-wifi-firmware",
+                  "esp32-wifi-4m-filesystem"
+                ]
+              },
+              {
+                "name": "firmware-update",
+                "description": "Update FluidNC to latest firmware version, preserving previous filesystem data.",
+                "erase": false,
+                "images": [
+                  "esp32-wifi-firmware",
+                ]
+              },
+              {
+                "name": "filesystem-update",
+                "description": "Update FluidNC filesystem only, erasing previous filesystem contents.",
+                "erase": false,
+                "images": [
+                  "esp32-wifi-4m-filesystem",
+                ]
+              }
+            ]
+          },
+          {
+            "name": "bluetooth",
+            "description": "Supports connecting via Bluetooth serial protocol",
+            "choice-name": "Installation type",
+            "choices": [
+              {
+                "name": "fresh-install",
+                "description": "Complete FluidNC installation, erasing all previous data.",
+                "erase": true,
+                "images": [
+                  "esp32-4m-partitions".
+                  "esp32-bootloader",
+                  "esp32-bootapp",
+                  "esp32-bt-firmware"
+                ]
+              },
+              {
+                "name": "firmware-update",
+                "description": "Update FluidNC to latest firmware version, preserving previous filesystem data.",
+                "erase": false,
+                "images": [
+                  "esp32-bt-firmware",
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "esp32-s3",
+        "description": "For ESP32-S3,
+        "choice-name": "Firmware variant",
+        "choices": [
+           # etc
+        ]
+      }
+    ]
+  }
+}</code></pre>
+<h3>Futures</h3>
+<p>It would be nice to have a feature for decoding a crash backtrace against the firmware.elf file for a given release.</p>
+<p>&nbsp;</p>

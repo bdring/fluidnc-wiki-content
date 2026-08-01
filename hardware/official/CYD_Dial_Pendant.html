@@ -1,0 +1,601 @@
+<!--
+title: CYD Dial Pendant
+description: A pendant using a Cheap Yellow Display and a CNC Handwheel Encoder
+published: true
+date: 2026-07-07T01:16:38.539Z
+tags: pendant, user interface
+editor: ckeditor
+dateCreated: 2024-05-10T05:47:14.588Z
+-->
+
+<h1>CYD Dial Pendant</h1>
+<figure class="image image_resized" style="width:17.17%;"><img src="/cydpendant.jpg" alt="cydpendant.jpg"></figure>
+<p>This is a pendant using a 2432S028 "Cheap Yellow Display" (with built-in ESP32) and a CNC Handwheel encoder. It has the same capabilities and the same user interface as the <a href="/en/hardware/official/M5Dial_Pendant">M5 Dial Pendant</a>.&nbsp; A second firmware designed specifically for CYD Equipped Pendants with Physical Buttons is also available - see the <strong>Installing Firmware</strong> section for more info.</p>
+<p>Compared to the M5 Dial Pendant, the CYD Dial Pendant</p>
+<ul>
+  <li>Costs about the same</li>
+  <li>Has a metal dial with better "action" and detents than the M5's plastic dial</li>
+  <li>Has on-screen touch buttons instead of the M5's physical switches.</li>
+  <li>Is physically larger; the M5 version can be made quite compact</li>
+  <li>Uses most of the same code</li>
+</ul>
+<p>Refer to the M5 Dial Pendant wiki page for user interface documentation.</p>
+<h1>Info &amp; Sourcing</h1>
+<h2>Material Sourcing</h2>
+<h3>Cheap Yellow Display</h3>
+<p>The supported part numbers for the display/ESP32 are 2432S028 (resistive touch) and JC2432W328C (capacitive touch). There are many listings for the resistive version on AliExpress, Amazon, EBay, Banggood, etc. The typical price is $10 from AliExpress and $20+ from Amazon or EBay.<br>&nbsp;</p>
+<figure class="image"><img src="/cydfront.png" alt="cydfront.png"></figure>
+<p><br>&nbsp;</p>
+<figure class="image"><img src="/cydback.png" alt="cydbadk.png"></figure>
+<p>The capacitive version is somewhat less common; search AliExpress for "JC2432W328C". Guition also makes a resistive model JC2432W328R; this code does not support that one. The Guition models can be identified by the presence of an RGB LED on the front side as shown below; the other ones have the RGB LED on the back. &nbsp; The capacitive version has an extra IO connector on the back that affects the wiring.</p>
+<figure class="image"><img src="/guitionjc2432w328c.png" alt="guitionjc2432w328c.png"></figure>
+<p>If you can source it, the capacitive version is preferable because the capacitive touch is more responsive to finger touch than the resistive touch. Resistive touch works with fingers but you need to press harder.</p>
+<p><a href="https://www.amazon.fr/dp/B0D5H84RDB">amazon.fr</a></p>
+<h3>CNC Handwheel Encoder</h3>
+<p>Search for "CNC Handwheel Encoder". You want a 60mm, 100PPR, 5V unit. Either the 4-terminal or 6-terminal version will work. They cost about $7 on AliExpress and about $18 on Amazon. You can also get them in black instead of silver.<br>&nbsp;</p>
+<figure class="image image_resized image-style-align-left" style="width:25.96%;"><img src="/handwheeltop.png" alt="handwheeltop.png"></figure>
+<figure class="image image_resized" style="width:25.73%;"><img src="/handwheelbottom.png" alt="handwheelbottom.png"></figure>
+<p>Example of a pendant with CNC Handwheel encoder and buttons:</p>
+<figure class="image image_resized" style="width:34.7%;"><img src="/hardware/fluiddial/cyd_cnc_handwheel_encoder_buttons.jpg"></figure>
+<p><a href="https://www.amazon.fr/dp/B08KW77TSM">amazon.fr</a></p>
+<h3>Alternative Encoder</h3>
+<p>You could also use a small rotary encoder like these<br>&nbsp;</p>
+<figure class="image"><img src="/rotaryencoder.png" alt="rotaryencoder.png"></figure>
+<p><br>The CNC handwheel has a better feel, but is more expensive and larger. The small rotaries typically have an extra switch that activates when you press the knob down. That switch could be used for other purposes.</p>
+<p>Example of a pendant with a small rotary knob and buttons:</p>
+<figure class="image image_resized" style="width:34.73%;"><img src="/hardware/fluiddial/cyd_small_rotary_encoder_buttons.jpg"></figure>
+<p>The previous case was made using the following rotary knob: <a href="https://www.amazon.fr/dp/B0B63YN466">amazon</a>.</p>
+<p>The 3D printed part that goes on the knob is available here: <a href="https://www.printables.com/model/1224921-fluidnc-cyd-pendant-case-jc2432w328c-capacitive-to/files">CYD_Dial_JC2432W328C_rotary_knob.stl</a> .</p>
+<p>&nbsp;</p>
+<h3>Physical Buttons</h3>
+<p>To utilise physical buttons, you will need momentary push buttons, nominally 12mm diameter. The coloured buttons, shown in the case above, can be found on Amazon by searching for “12mm Round Push Button Momentary Switch”. &nbsp;Other sizes could be used but you would have to modify the case.</p>
+<p>&nbsp;</p>
+<h3>Connectors for CYD ports</h3>
+<p>The CYD board has some 4-pin IO ports. The mating connectors are JST-PB 1.25mm 4-pin, also known as PicoBlade. &nbsp;You need 3 such connectors for the version with physical buttons, or only 2 without buttons.<br>&nbsp;</p>
+<figure class="image"><img src="/jst125_4pin.png" alt="jst125_4pin.png"></figure>
+<p><br>You can buy them with pigtails already attached, and you can also get them with Dupont connectors on the other end. When you buy the Cheap Yellow Display, it might come with one such connector with Duponts on the other end. Even so, you need a total of 3 or 4 such connectors, so you will have to buy more.<br><a href="https://www.aliexpress.us/item/3256806435550656.html">AliExpress</a></p>
+<h3>RJ11 / RJ12 Breakout</h3>
+<p>A nice way to connect back to the FluidNC controller is with a 6-pin RJ12 data cable. That is directly supported by some newer interface boards at the FluidNC side. The 3D printed case is designed to accept this connector.</p>
+<p>This breakout board is very convenient.<br>&nbsp;</p>
+<figure class="image"><img src="/rj11breakout.png" alt="rj11breakout.png"></figure>
+<p><br><a href="https://www.amazon.com/Treedix-Breakout-Modular-Telephone-Connector/dp/B09HTRKRSH">Amazon</a></p>
+<p>This breakout comes with the socket and the breakout board separate, so you will have to solder the socket to the board. It does not come with Dupont pins so you might want to purchase them separately. If you solder Dupont pins into the breakout you can make the connection to the CYD board with the Dupont females on the JST cables recommended above. Or you could solder pigtails from the JST connectors directly to the breakout.</p>
+<p>You can use this breakout on both ends, as the pinout is designed to plug directly into a 6-pack module socket.<br>&nbsp;</p>
+<figure class="image"><img src="/rj11_6pack.jpg" alt="rj11_6pack.jpg"></figure>
+<p><br>Note that pin 6 is not populated in this picture, since neither pin 2 nor pin 6 is used for this wiring scheme. You can populate them or omit them, at your option.</p>
+<p>&nbsp;</p>
+<h2>Pendant Interface</h2>
+<p>The <a href="https://www.elecrow.com/fluidnc-rj12-pendant-display-module.html?srsltid=AfmBOootsVqWQuJs5my_bjKCQ6sajIFIpcSnzwoL2U-5sK4zzYWJSJDK">Display / Pendant Interface Module</a> is a great option for those with the <strong>6x CNC Controller</strong> or <strong>6 Pack Universal Controller</strong> - it provides a nicely integrated socket at the controller end of the chain, and is mechanically supported via a standoff. It is fully pin compatible with the RJ12 breakout board shown above.</p>
+<figure class="image image_resized" style="width:62.89%;"><img src="/img_2840.jpeg">
+  <figcaption>Display / Pendant Interface Module installed on a 6x CNC Controller</figcaption>
+</figure>
+<p>NOTE: The &nbsp;“<strong>FluidDial RJ12 Wiring Kit</strong>” is <u>not</u> electrically compatible with the CYD Dial Pendant, and physically doesn't fit inside the published pendant bodies - this kit is designed specifically for the M5 Fluid Dial Pendant.</p>
+<p>&nbsp;</p>
+<h4>Alternatives</h4>
+<p>You could also use an <a href="https://www.aliexpress.us/item/3256806116039997.html">RJ45 socket</a> and use only the middle 6 pins, but you would have to modify the case. If you get an RJ45 breakout with screw terminals, you could avoid any soldering. Or you could hardwire the cable.</p>
+<p>&nbsp;</p>
+<h3>Cable to FluidNC (6 conductor RJ12 straight-wired data cable)</h3>
+<p>Be sure to get straight wired, not crossover. The colors should match up in the orientation shown. It is highly recommended to use an ADSL/VDSL rated cable - cheaper cables can have signal integrity and connectivity issues.<br>&nbsp;</p>
+<figure class="image image_resized" style="width:18.59%;"><img src="/6pincable.png" alt="6pincable.png"></figure>
+<p><br><a href="https://www.amazon.com/Pack-Feet-Cable-Modular-Black/dp/B0766PB9G9">Amazon.com</a></p>
+<p><a href="https://www.amazon.fr/dp/B005I1UE3E">Amazon.fr</a></p>
+<h3>3D files for case</h3>
+<h4>2432S028 (resistive touch)</h4>
+<p><a href="https://github.com/bdring/FluidDial/tree/CYD/part_files">STL files for the CYD case</a></p>
+<p><a href="https://a360.co/44dnZ4Q">Fusion 360 Design for the CYD case</a> Use this is you want to remix it.</p>
+<h4>JC2432W328C (capacitive touch)</h4>
+<p><a href="https://github.com/bdring/FluidDial/raw/refs/heads/main/part_files/CYD_Dial_JC2432W328C.FCStd">Freecad Source file</a></p>
+<p>The design of the case is modifiable according to your use case.</p>
+<p>Download the <a href="https://github.com/bdring/FluidDial/raw/refs/heads/main/part_files/CYD_Dial_JC2432W328C_top.3mf">top </a>and <a href="https://github.com/bdring/FluidDial/raw/refs/heads/main/part_files/CYD_Dial_JC2432W328C_bottom.3mf">bottom</a> 3mf files.&nbsp;</p>
+<p>If you prefer, I have exported the different possibilities (STL files) to <a href="https://www.printables.com/model/1224921-fluidnc-cyd-pendant-case-jc2432w328c-capacitive-to">Printables</a>.</p>
+<p>If you don't want to use an RJ12 port, you can print the part as is. If you want an RJ12 port on the flat side, delete the "Bottom RJ12 ... squared side" object. If you prefer to have the RJ12 port on the rounded side, delete "Bottom RJ12 ... rounded side".</p>
+<p>You can also have hooks for attachments by deleting "Bottom Hook Filler"</p>
+<figure class="image image_resized" style="width:41.31%;"><img src="/hardware/cyd_bottom_select_squared_side.jpg"></figure>
+<p>Magnets can be used to attach the pendant to the machine. If this is your case, you must add a pause to the print at a height of 12mm. The maximum size of the magnets is 8x8x8mm.</p>
+<p>Add supports for USB port, SD card, RJ12 port and nuts:</p>
+<figure class="image image_resized" style="width:31.17%;"><img src="/hardware/cyd_bottom_support.jpg"></figure>
+<p>It is possible to print the upper part with the logo in color. (There are two objects in the STEP file).</p>
+<h3>Screws</h3>
+<p>The case is held together with four M3x12mm self-tapping screws that go through the mounting holes on the CYD board. The bottom of the case has alignment ridges to hold the CYD board in place while attaching the top with the screws. There is some leeway as to the screw length - anything between 8 and 16 mm will work, but the longer the screw, the harder it will be to screw in.</p>
+<p>For the JC2432W328C version (capacitive touch): Instead of self-drilling screws, it is possible to use M3x20 screws or longer. A location for the nut is available on the underside of the case.</p>
+<h3>RJ11/RJ12 Connector Mounting</h3>
+<p>The specified connector slides into guides in the bottom of the case. Then you can glue it to the case to hold it in place. I used hot glue.<br>&nbsp;</p>
+<figure class="image image_resized" style="width:24.5%;"><img src="/img_7068.jpg" alt="img_7068.jpg"></figure>
+<h1>Wiring</h1>
+<h3>Note:</h3>
+<p>The TX and RX labels on the CYD board are swapped from what the FluidDial firmware uses. Check the diagrams below for the correct wiring.</p>
+<p>&nbsp;</p>
+<h3>Capacitive CYD Wiring</h3>
+<p>The capacitive version has three IO connectors along the top, with pin assignments:<br>&nbsp;</p>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Connector</th>
+        <th>Pin1</th>
+        <th>Pin2</th>
+        <th>Pin3</th>
+        <th>Pin4</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>P6</th>
+        <td>GND</td>
+        <td>IO16 (GREEN_BUTTON)</td>
+        <td>IO4 (RED_BUTTON)</td>
+        <td>IO17 (YELLOW_BUTTON)</td>
+        <td>These pins are also connected to the RGB LED</td>
+      </tr>
+      <tr>
+        <th>CN1</th>
+        <td>GND</td>
+        <td>IO22 &nbsp;(ENC_A)</td>
+        <td>IO21 (ENC_B)</td>
+        <td>3.3V</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th>P3</th>
+        <td>GND</td>
+        <td>IO35</td>
+        <td>IO22</td>
+        <td>IO21</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>&nbsp;</p>
+<h4>Capacitive CYD Wiring with Handwheel</h4>
+<p>This is the basic wiring for the capacitive CYD, with handwheel, without physical buttons. To upload new firmware with this wiring, you must unplug the FluidNC serial connection and plug in the USB port.</p>
+<figure class="image"><img src="/cyd_wiring_guition_handwheel.png">
+  <figcaption><span class="text-huge">Capacitive CYD Wiring with Handwheel</span></figcaption>
+</figure>
+<p>&nbsp;</p>
+<h4>Capacitive CYD Wiring with Handwheel and Buttons</h4>
+<p>As an extension to the base wiring, the RGB LED GPIOs that appear on the P6 connector can be used for button switches. &nbsp;The firmware will use them if they are present. &nbsp;To upload new firmware with this wiring, you must unplug the FluidNC serial connection and plug in the USB port.</p>
+<figure class="image"><img src="/hardware/cyd_wiring_handwheel_button_v3.png">
+  <figcaption><span class="text-huge">Capacitive CYD Wiring with Handwheel and Buttons</span></figcaption>
+</figure>
+<p>&nbsp;</p>
+<figure class="image image_resized" style="width:53.84%;"><img src="/hardware/pedndant_wiring_buttons.jpg"></figure>
+<h4>Using a Rotary Encoder Instead of a Handwheel</h4>
+<p>A small rotary encoder can be substituted for the handwheel. &nbsp;The wiring is almost the same as for the handwheel, but the encoder does not require a VCC supply so the 3.3V wire from CN1 is a no-connect. The image below shows the rotary encoder with button switches, but you could omit the switches. &nbsp; &nbsp;If your rotary encoder has a switch that is activated by pushing down on the knob, that switch could be used instead of or in addition to (via a parallel connection with) one of the button switches.</p>
+<figure class="image"><img src="/cyd_wiring_rotary.png">
+  <figcaption><span class="text-huge">Capacitive CYD Wiring with Rotary Encoder and Buttons</span></figcaption>
+</figure>
+<h3>Resistive CYD Wiring</h3>
+<p>The resistive CYD has two IO connectors along the top, with pin assignments as follows. &nbsp;<i>Unlike the capacitive CYD, the resistive version does not have a connector that brings out the pins that connect to the RGB LED, which can be used for physical buttons on the capacitive version. &nbsp;Some users have reported using physical buttons with the resistive version by soldering wires to the RGB LED pins. &nbsp;That is unsupported, but might work if you have the skill to do it.</i></p>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Connector</th>
+        <th>Pin1</th>
+        <th>Pin2</th>
+        <th>Pin3</th>
+        <th>Pin4</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>P3</th>
+        <td>GND</td>
+        <td>IO35</td>
+        <td>IO22</td>
+        <td>IO21</td>
+        <td>IO21 also controls the backlight</td>
+      </tr>
+      <tr>
+        <th>CN1</th>
+        <td>GND</td>
+        <td>IO22 (ENC_A)</td>
+        <td>IO27 (ENC_B)</td>
+        <td>3.3V</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<figure class="image"><img src="/cyd_wiring_resistive_new.png">
+  <figcaption><span class="text-huge">Resistive CYD Wiring</span></figcaption>
+</figure>
+<h3>UI Lockout Feature</h3>
+<p>The wiring can further be extended to include a “lockout” switch that, when closed, will disable all user interaction, including the touchscreen, rotary encoder/handwheel, and the buttons. &nbsp;The switch must be connected between 3.3V and the R21 photoresistor on the top side of the board above the display. &nbsp;Solder a wire to that photoresistor on the side nearest the middle of the board (the side near the ESP32 antenna) and connect it to a normally-open switch. &nbsp;Connect the other side of the switch to a 3.3V point such as CN1 pin 4 (the pin that connects to the handwheel VCC). &nbsp;Support for the lockout feature is present in the release builds; if you do not want to use it, do not connect a switch to the board.</p>
+<p>Development of this feature was funded by a donation from Discord user Martin_LB .</p>
+<h2>Legacy Wirings</h2>
+<p><span class="text-big"><i>These wiring plans are no longer recommended and are not supported by released firmware builds. &nbsp;To use them you must compile the firmware yourself. The information is provided for historical purposes.</i></span></p>
+<h4>Resistive CYD Legacy Wiring</h4>
+<p>This wiring requires three 4-pin connectors and allows you to use the USB port for debugging while connecting a separate UART channel to FluidNC. &nbsp;The platformio compile env is env:cyd_resistive. &nbsp;The pin assignments are:</p>
+<figure class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Connector</th>
+        <th>Pin1</th>
+        <th>Pin2</th>
+        <th>Pin3</th>
+        <th>Pin4</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>P3</th>
+        <td>GND</td>
+        <td>IO35 (PND_<i>RX</i>_FNC_TX)</td>
+        <td>IO22</td>
+        <td>IO21 (PND_<i>TX</i>_FNC_RX)</td>
+        <td>IO21 also controls the backlight</td>
+      </tr>
+      <tr>
+        <th>CN1</th>
+        <td>GND</td>
+        <td>IO22 (ENC_A)</td>
+        <td>IO27 (ENC_B)</td>
+        <td>3.3V</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<figure class="image image_resized" style="width:59.45%;"><img src="/cyd_wiring.png">
+  <figcaption><span class="text-huge">Resistive CYD Legacy Wiring</span></figcaption>
+</figure>
+<h4>Capacitive CYD Legacy Wiring for USB Debugging</h4>
+<p>This wiring requires three 4-pin connectors and allows you to use the USB port for debugging while connecting a separate UART channel to FluidNC. &nbsp;There is no preset platformio compile env for this wiring. &nbsp;</p>
+<figure class="image image_resized" style="width:61.35%;"><img src="/cyd_wiring_guition.png">
+  <figcaption><span class="text-huge">Capacitive CYD Wiring with Debug</span></figcaption>
+</figure>
+<h1>Installing Firmware</h1>
+<p><a href="https://installer.fluidnc.com/">FluidNC Web Installer</a> can install FluidDial to supported (non-legacy) CYD Dial configurations.</p>
+<ul>
+  <li>Unplug the connection between the CYD and the FluidNC controller</li>
+  <li>Connect the CYD USB port to your computer</li>
+  <li>Go to <a href="https://installer.fluidnc.com/">FluidNC Web Installer</a></li>
+  <li>Select the <strong>FluidDial</strong> option from the main menu</li>
+  <li>Use the <strong>Connect </strong>button to establish a USB connection between your computer and the CYD</li>
+  <li>Choose the <strong>FluidDial for CYD</strong> installation type</li>
+  <li>After the installation finishes, you can disconnect the USB cable and reconnect the FluidNC cable.</li>
+</ul>
+<p>The first time that the CYD starts, it will ask you to touch the screen to determine which touch screen option is present on your hardware. &nbsp;It cycles between screens that say “Resistive &nbsp;.. Tap the Screen” and “Capacitive .. Tap the Screen”. &nbsp;When the proper option appears, touch the screen. &nbsp;When the CYD recognizes a touch event, the correct driver will be chosen, remembered, and used for subsequent operations. &nbsp;It is only necessary to do this once after each reinstall of the firmware.</p>
+<p>You do not have to be careful to tap the screen at exactly the right time. &nbsp;When the wrong driver is installed, the device will not see touches, so you can just tap tap tap tap until it works.</p>
+<p>If you have problems with FluidNC Web Installer, there are some alternative methods you can try. &nbsp;The precompiled binary images can be downloaded from <a href="https://github.com/bdring/fluiddial-releases">this repository</a> . &nbsp;They can be installed with any “esptool” ESP32 firmware download program &nbsp; The <i>merged-flash.bin</i> image should be downloaded to FLASH at address 0x0000. &nbsp;One such download program is <a href="https://espressif.github.io/esptool-js/">this web installer</a>; there are many others.</p>
+<h2><strong>Alternate Firmware</strong></h2>
+<p>&nbsp;<a href="https://github.com/dJOS1475/FluidDial-CYD/tree/main">FluidDial-CYD</a> is a custom firmware for CYD-equipped FluidDial CNC pendants and supports Wired conectivity or WiFi + Li-On Battery. The UI has been rebuilt from the ground up for devices with 3 physical buttons and a jog dial. Includes onboard support for Z Surface Probes, XYZ Probes and 3D Touch probes. Supports Z Surface, XYZ Corner, Bore, and Boss Probing. The <strong>Web Installer</strong> for FluidDial-CYD is <a href="https://djos1475.github.io/FluidDial-CYD/">HERE</a>. &nbsp;</p>
+<figure class="image image_resized" style="width:65.37%;"><img src="/img_4804_2.jpeg"></figure>
+<p>&nbsp;</p>
+<h1>Compiling Firmware</h1>
+<p>If a released version does not meet your needs, either because you want additional features or because your hardware configuration is not supported, you can compile the firmware yourself.</p>
+<p>Please do not ask for help with unsupported setups unless you are a <a href="http://wiki.fluidnc.com/en/home#donations">project sponsor</a> . &nbsp;We barely have time to help people with supported hardware; assisting people with one-off customizations requires time that we would rather use in developing technology applicable to many people.</p>
+<ul>
+  <li>Install VSCode and its PlatformIO extension</li>
+  <li>Git-clone the &nbsp;<a href="https://github.com/bdring/FluidDial">FluidDial</a> Source code (main branch)</li>
+  <li>Use Visual Studio Code with PlatformIO to compile and upload the code.</li>
+  <li>Connect your display to the computer via a USB cable.</li>
+</ul>
+<p>Be sure to do all the tasks below.</p>
+<h3>Compile and upload the firmware</h3>
+<ul>
+  <li>Click on the Platformio icon on the left column</li>
+  <li>Click on <strong>Upload</strong> under PROJECT TASKS/cyd/Upload</li>
+</ul>
+<figure class="image"><img src="/hardware/fluiddial/cyd_upload.png" alt="cyd_upload.png"></figure>
+<h3>Build the filesystem image</h3>
+<p>This creates the file system with the icons and images.</p>
+<ul>
+  <li>Click on the Platformio icon on the left column</li>
+  <li>Click on <strong>Build Filesystem Image</strong> under PROJECT TASKS/cyd/Platform</li>
+</ul>
+<figure class="image"><img src="/hardware/fluiddial/cyd_build_fs.png" alt="cyd_build_fs.png"></figure>
+<h3>Upload the filesystem image</h3>
+<ul>
+  <li>Click on the Platformio icon on the left column</li>
+  <li>Click on <strong>Upload Filesystem Image</strong> under PROJECT TASKS/cyd/Platform</li>
+</ul>
+<figure class="image"><img src="/hardware/fluiddial/cyd_upload_fs.png" alt="cyd_upload_fs.png"></figure>
+<h1>FluidNC Config Example</h1>
+<p>See <a href="">the config example for FluidDial</a></p>
+<p>You can use any 2 pins on the ESP32 that are UART capable (most are)</p>
+<p>The default baud rate is 1000000. It can be changed in platformio.ini in this statement</p>
+<p>&nbsp;</p>
+<pre><code class="language-plaintext">DFNC_BAUD=1000000</code></pre>
+<p>The config file Tx and Rx are with respect to the FluidNC. Be sure to connect the FluidNC Tx to the pendant's Rx and the FluidNC Rx to the pendant's Tx. &nbsp;</p>
+<p>FluidNC configuration example for "6x CNC Controller" with "Simple Pendant Module":</p>
+<pre><code class="language-plaintext">uart1:
+ txd_pin: gpio.25
+ rxd_pin: gpio.27
+ rts_pin: NO_PIN
+ cts_pin: NO_PIN
+ baud: 1000000
+ mode: 8N1
+
+uart_channel1:
+ report_interval_ms: 75
+ uart_num: 1</code></pre>
+<h1>Usage</h1>
+<p>See <a href="/en/hardware/official/M5Dial_Pendant#menu-screen">the usage instructions for FluidDial</a></p>
+<p>Use the on-screen red, green, and yellow touch buttons in place of FluidDial's physical switches and its dial switch.</p>
+<h2>Orientation</h2>
+<p>To change the display orientation so you can use the CYC Dial Pendant with the handwheel in different positions relative to the screen, go to the About screen and rotate the handwheel. The orientation will change with each click of the wheel. The orientation will be saved so the pendant will start in the chosen orientation. The default orientation has the handwheel on top and the red/green/yellow buttons on the bottom.</p>
+<p>Warning: this feature no longer works (See <a href="https://github.com/bdring/FluidDial/issues/17">issue #17</a>). You need to modify the code to change the orientation.</p>
+<h1>CYD Pin List</h1>
+<p>The spreadsheet shows connections for the common resistive CYDs that follow the Sunton design, and both resisitive and capacitive touchscreen versions from Guition. &nbsp;TF signals are for the SD card. &nbsp;TFT<i> </i>signals are for the display<i>. &nbsp;</i>RTP signals are for the resistive touchpad which is connected via an SPI bus. &nbsp;CTP signals are for the capacitive touchpad which is connected via an I2C bus.</p>
+<figure class="table" style="width:358pt;">
+  <table style="border-bottom:solid;border-left:solid;border-right:solid;border-top:solid;">
+    <thead>
+      <tr>
+        <th style="border-left:none;width:56pt;">
+          <p style="text-align:center;">Pin</p>
+        </th>
+        <th style="border-left:none;width:84pt;">
+          <p style="text-align:center;">ESP32 usage</p>
+        </th>
+        <th>
+          <p style="text-align:center;">Sunton</p>
+          <p style="text-align:center;">Resistive</p>
+        </th>
+        <th style="border-left:none;width:119pt;">
+          <p style="text-align:center;">Guition</p>
+          <p style="text-align:center;">Resistive</p>
+        </th>
+        <th>
+          <p style="text-align:center;">Guition</p>
+          <p style="text-align:center;">Capacitive</p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO0</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">BOOT</span></td>
+        <td>&nbsp;</td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO1</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">U0TXD</span></td>
+        <td><span class="text-small">P1-3</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;P1-3</span></td>
+        <td><span class="text-small">P1-3</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO2</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td><span class="text-small">TFT_RS</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">TFT_RS</span></td>
+        <td><span class="text-small">TFT_RS</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO3</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">U0RXD</span></td>
+        <td><span class="text-small">P1-2</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;P1-2</span></td>
+        <td><span class="text-small">&nbsp;P1-2</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO4</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td><span class="text-small">LED_RED</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">LED1_2</span></td>
+        <td>
+          <p><span class="text-small">LED1_2</span></p>
+          <p><span class="text-small">P6-3</span></p>
+        </td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO5</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">VSPI CS0</span></td>
+        <td><span class="text-small">TF_CS</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">TF_CS</span></td>
+        <td><span class="text-small">TF_CS</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO6</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">SCK</span></td>
+        <td>&nbsp;</td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO7</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">SDO</span></td>
+        <td>&nbsp;</td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO8</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">SDI</span></td>
+        <td>&nbsp;</td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO9</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">SHD/SD2</span></td>
+        <td>&nbsp;</td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO10</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">SWP/SD3</span></td>
+        <td>&nbsp;</td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO11</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">CSC/CMD</span></td>
+        <td>&nbsp;</td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO12</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">HSPI MISO</span></td>
+        <td><span class="text-small">TFT_SDO</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">TFT_SDO RTP_OUT</span></td>
+        <td><span class="text-small">TFT_SDO</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO13</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">HSPI MOSI</span></td>
+        <td><span class="text-small">TFT_SDI</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">TFT_SDI &nbsp; RTP_DIN</span></td>
+        <td><span class="text-small">TFT_SDI</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO14</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">HSPI CLK</span></td>
+        <td><span class="text-small">TFT_SCK</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">TFT_SCK RTP_CLK</span></td>
+        <td><span class="text-small">TFT_SCK</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO15</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">HSPI CS0</span></td>
+        <td><span class="text-small">TFT_CS</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">TFT_CS</span></td>
+        <td><span class="text-small">TFT_CS</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO16</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">U2TXD</span></td>
+        <td><span class="text-small">LED_GREEN</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">LED1_3</span></td>
+        <td>
+          <p><span class="text-small">LED1_3</span></p>
+          <p><span class="text-small">P6-2</span></p>
+        </td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO17</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">U2RXD</span></td>
+        <td><span class="text-small">LED_BLUE</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">LED1_1</span></td>
+        <td>
+          <p><span class="text-small">LED1_1</span></p>
+          <p><span class="text-small">P6--4</span></p>
+        </td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO18</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">VSPI CLK</span></td>
+        <td><span class="text-small">TF_CLK</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">TF_CLK</span></td>
+        <td><span class="text-small">TF_CLK</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO19</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">VSPI MISO</span></td>
+        <td><span class="text-small">TF_SDO</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">TF_SDO</span></td>
+        <td><span class="text-small">TF_SDO</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO21</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">I2C SDA</span></td>
+        <td>
+          <p><span class="text-small">BL_CTRL</span></p>
+          <p><span class="text-small">P3-4</span></p>
+        </td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;CN1-3</span></td>
+        <td><span class="text-small">CN1-3</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO22</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">I2C SCL</span></td>
+        <td>
+          <p><span class="text-small">CN1-2</span></p>
+          <p><span class="text-small">P3-3</span></p>
+        </td>
+        <td style="border-left:none;border-top:none;">
+          <p><span class="text-small">&nbsp;CN1-2</span></p>
+          <p><span class="text-small">P3-3</span></p>
+        </td>
+        <td>
+          <p><span class="text-small">CN1-2</span></p>
+          <p><span class="text-small">P3-3</span></p>
+        </td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO23</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">VSPI MOSI</span></td>
+        <td><span class="text-small">TF_SDI</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">TF_SDI</span></td>
+        <td><span class="text-small">TF_SDI</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO25</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td><span class="text-small">RTP_DCLK</span></td>
+        <td style="border-left:none;border-top:none;">&nbsp;</td>
+        <td><span class="text-small">CTP_RST</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO26</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td><span class="text-small">SPK</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">SPK</span></td>
+        <td><span class="text-small">SPK</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO27</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td><span class="text-small">CN1-3</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">BL_CTRL</span></td>
+        <td><span class="text-small">BL_CTRL</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO32</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td><span class="text-small">RTP_DIN</span></td>
+        <td style="border-left:none;border-top:none;">&nbsp;</td>
+        <td><span class="text-small">CTP_SCL</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO33</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td><span class="text-small">RTP_CS</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">RTP_CS</span></td>
+        <td><span class="text-small">CTP_SDA</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO34</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">INPUT ONLY</span></td>
+        <td><span class="text-small">R21(photoresistor)</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">R21(photoresistor)</span></td>
+        <td><span class="text-small">R21(photoresistor)</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO35</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">INPUT ONLY</span></td>
+        <td><span class="text-small">P3-2</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;P3-2</span></td>
+        <td><span class="text-small">P3-2</span></td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO36</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">INPUT ONLY</span></td>
+        <td><span class="text-small">RTP_IRQ</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">RTP_IRQ</span></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th style="border-left:none;border-top:none;"><span class="text-small">IO39</span></th>
+        <td style="border-left:none;border-top:none;"><span class="text-small">INPUT ONLY</span></td>
+        <td><span class="text-small">RTP_DOUT</span></td>
+        <td style="border-left:none;border-top:none;"><span class="text-small">&nbsp;</span></td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<h1>Donations</h1>
+<p>Developing, testing, documenting, and supporting the various FluidDial pendants required hundreds of hours of work and the purchase of many hardware items. &nbsp;If you build one, please consider <a href="http://wiki.fluidnc.com/#donations">sponsoring the FluidNC project.</a>&nbsp;</p>

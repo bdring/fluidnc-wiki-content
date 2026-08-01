@@ -1,0 +1,148 @@
+<!--
+title: Half Duplex Pendant Protocol
+description: Working design document for controlling pendants via RS485
+published: true
+date: 2026-08-01T19:35:19.127Z
+tags: 
+editor: ckeditor
+dateCreated: 2023-12-21T08:45:35.565Z
+-->
+
+<h2>Goal</h2>
+<p>Use a half-duplex RS485 link as another way to hook up pendants. &nbsp;Ordinary UART is fine for low-noise environments with short line lengths, but could have problems in high-EMI situations. &nbsp;RS485, with its differential signaling, can have good noise rejection. &nbsp;Typically it is half duplex so we would need some way to deal with that. &nbsp;This outlines a possible way to send Grbl messages in a half-duplex fashion over RS485.</p>
+<h2>Basic Strategy</h2>
+<p>Encapsulate Grbl messages inside the half-duplex MODBUS protocol. &nbsp;The “master” end - the “client” or master in MODBUS terminology - sends periodic requests, while the “slave”/“server” responds to those requests with data. &nbsp;The master is the FluidNC end, while the pendant is the slave. &nbsp;The master could be a FluidNC controller, or a smart I/O expander that connects directly to FluidNC via an ordinary UART and relays messages over RS485/MODBUS.</p>
+<p>Instead of using the traditional MODBUS read/write registers model, we instead use a user-defined function code to wrap the GRBL line protocol in MODBUS frames. &nbsp;We will use use function code 101 which is the last one in the user defined range, calling it GEP1 for Grbl Encapsulation Protocol version 1. &nbsp;The function number 101 is ASCII ‘e’, which is not a standard GCode word, although it is used to mean “extruder” in 3D printing. &nbsp;There are no other choices in the user-defined function space that do not collide with standard GCode words. &nbsp;It would be possible to abuse a public function number like perhaps 64 ('@'), under the assumption that very few if any MODBUS devices in the field use that number, and it is highly unlikely that FluidNC would need to coexist with one.</p>
+<p>It might be possible to use one multidrop RS485 bus for multiple devices, like a VFD and a pendant. &nbsp;See the Coexistence section below.</p>
+<p>Reasons for using MODBUS-RTU include</p>
+<ul>
+  <li>It is a well-understood half-duplex standard protocol that runs on RS485</li>
+  <li>The protocol overhead is not much</li>
+  <li>It has an address that can be used for multidrop communication</li>
+  <li>It has a CRC for message integrity</li>
+  <li>We already use it for VFDs, and there may be value in sharing one RS485 bus</li>
+</ul>
+<h5>Request Format</h5>
+<p>A serial MODBUS-RTU request using GEP looks like this:</p>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>Byte</td>
+        <td>0</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3..n+3</td>
+        <td>n+4</td>
+        <td>n+5</td>
+      </tr>
+      <tr>
+        <td>Usage</td>
+        <td>address</td>
+        <td>function</td>
+        <td>data length</td>
+        <td>data</td>
+        <td>CRC high</td>
+        <td>CRC low</td>
+      </tr>
+      <tr>
+        <td>Value</td>
+        <td>
+          <p>variable</p>
+          <p>e.g. 2</p>
+        </td>
+        <td>
+          <p>GEP1</p>
+          <p>101</p>
+        </td>
+        <td>
+          <p>n</p>
+          <p>0..250</p>
+        </td>
+        <td>variable</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>The data that is included in a request message is any line of data that FluidNC could transmit over a UART channel.</p>
+<h5>Response Format</h5>
+<figure class="table">
+  <table>
+    <tbody>
+      <tr>
+        <td>Byte</td>
+        <td>0</td>
+        <td>1</td>
+        <td>2</td>
+        <td>3..n+3</td>
+        <td>n+4</td>
+        <td>n+5</td>
+      </tr>
+      <tr>
+        <td>Usage</td>
+        <td>address</td>
+        <td>function</td>
+        <td>data length</td>
+        <td>data</td>
+        <td>CRC high</td>
+        <td>CRC low</td>
+      </tr>
+      <tr>
+        <td>Value</td>
+        <td>
+          <p>variable</p>
+          <p>e.g. 2</p>
+        </td>
+        <td>
+          <p>GEP1</p>
+          <p>101</p>
+        </td>
+        <td>
+          <p>n</p>
+          <p>0..250</p>
+        </td>
+        <td>
+          <p>m</p>
+          <p>0..250</p>
+        </td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+<p>The data is anything that a sender could send to FluidNC over a UART channel. &nbsp;If it includes realtime characters, they must be at the beginning. &nbsp;If it includes line-oriented data, it must be complete lines. &nbsp;More than one complete line can be included, subject to the overall length limitation.</p>
+<h3>Polling</h3>
+<p>The master must send requests periodically, even if it has no data to send (in which case the request data length will be 0). A request with no outgoing data (request data length = 0) is called a “nonce request”. &nbsp;Periodic requests give the slave a chance to send data to the master. &nbsp;The polling interval - the time between requests with no outgoing data - is configurable via an item in the channel section.</p>
+<p>One approach might be to use periodic status reports as “polls”, but performance might be better if there are also nonce requests that are more frequent than status reports.</p>
+<p>The slave must return a response packet for every valid request that it receives, even if it has no data to send. &nbsp;The response must be received within (TBD) milliseconds after the request is received. &nbsp;If the master does not receive a response, it can infer that the request was not received correctly or that the slave is not responding. &nbsp;If the corresponding request contained data, the master may resend the same data once.</p>
+<p>??? Do we want to have an ID like a counter to identify a re-sent request? &nbsp;Probably.</p>
+<h3>Interior Protocol</h3>
+<p>The messages that are sent inside the data fields are just like the normal Grbl protocol - GCode lines, $ commands, realtime characters, ok acks, error lines, [MSG lines, etc. &nbsp;It is as if the MODBUS wrapping protocol is just a transparent container for ordinary Grbl communication.</p>
+<h3>Performance</h3>
+<p>Assume an RS485 baud rate of 115200, thus giving a byte rate of 10 bytes per millisecond. &nbsp;A maximum-length message would thus take about 26 ms to send. &nbsp;A request/response pair of maximum length would thus take 52 ms. &nbsp;Maximum length messages in both directions would be quite rare though. &nbsp;In nearly all cases, data is predominantly flowing in one direction at a time.</p>
+<p>The protocol overhead for a request response pair is 5 bytes in each direction, occupying 1 ms of line time.</p>
+<p>In the usual case for a jog pendant that is not a GCode sender, there would probably not be a data rate issue. &nbsp;The majority of the traffic to the pendant would be status reports at, say 100 ms intervals. &nbsp;The MODBUS encapsulation and the polling periodicity would barely affect that at all. &nbsp;Furthermore, if FluidNC has data to send, it need not wait for a polling period if it has already received the response to the previous request. &nbsp;The only “dead time” is just after a request has been sent, while waiting for the response or timeout.</p>
+<p>A polling period (the time between nonce requests when nothing else needs to be sent) of 50 ms should be okay for interactivity when a pendant has commands like jogs. &nbsp;When FluidNC has an ok ack to send back to the pendant, it could send it immediately since the line can be turned around right after the response packet that contained the command was done. &nbsp;If the pendant had another command to send already queued up, it could send it as soon as it got the ack. &nbsp;Thus, when there is rapid back and forth interaction, it would not be necessary to wait for a polling period. &nbsp;The polling latency would only happen when back and forth message traffic subsides.</p>
+<p>If the slave is sending rapid-fire GCode data, the master would primarily be sending 3-byte “ok\n” acks while the slave would be sending GCode. &nbsp;Assuming an average GCode line length of 10 bytes, with 25 lines packed into a response message, the response message would take 26 ms while the request message would have 25 acks of 3 bytes for 75 bytes plus 5 overhead, so 8 ms. &nbsp;Thus the pair would use 34 ms of line time. &nbsp;</p>
+<h3>Improvements</h3>
+<p>It might be worthwhile to have a one-byte field in the request message with an “ok ack” count. &nbsp;That would reduce the protocol overhead in the case where the slave is sending rapid-fire GCode.</p>
+<p>Higher baud rates could also be used.</p>
+<h3>Coexistence with VFD Spindles</h3>
+<p>In principle, a pendant and a VFD could be on the same RS485 line. &nbsp;They would have different addresses. &nbsp;FluidNC would need a multiplexing routine to direct responses back to the code module that owns the addressed device.</p>
+<p>Noise might be a problem. &nbsp;Having a well-isolated RS485 implementation might help. o</p>
+<h3>Identification</h3>
+<p>TBD - We might want to use MODBUS function 17 “Report Slave ID” for some form of pendant discovery.</p>
+<h3>Connection Management</h3>
+<p>TBD - MODBUS defines some functions that might help with connection setup and management, notably function 11 “Get Comm Event Counter” and function 0 option 1 “Restart Communications”. &nbsp;“Restart Communications” might be a way to force a pendant reset. See section 6.8.1 of https://modbus.org/docs/Modbus_Application_Protocol_V1_1b.pdf</p>
+<h3>Reliable Transport</h3>
+<p>It would be nice to have reliable transport of GCode. &nbsp;Here are some ideas for that.</p>
+<ul>
+  <li>Reliability in the master-to-slave direction can be handled with timeouts and NAKs. &nbsp;Since every outgoing request is supposed to elicit a response, the lack of a response is a clue that the request was not received or was garbled. &nbsp;But it could also mean that the response was garbled, leading to replay errors. &nbsp;That could be avoided with an incrementing sequence number, perhaps only one bit long. &nbsp;If the slave receives a message with the same sequence number as the previous, it should be treated as a retry that resulted from a lost response.</li>
+  <li>Reliability in the slave-to-master direction could be handled in conjunction with “ok” optimization. &nbsp;Suppose that the request message has two fields that report the number of ok's and the number of pending lines. &nbsp;When the slave sends a batch of GCode lines to the master via a response, it counts the number of lines and also records the length of each line. &nbsp;In the next request from the master, the numoks field tells the number of previously-sent lines have been okayed and the numpending field tells the number of received lines that have yet to be okayed. &nbsp;The slave can use that to detect a lost response, because the GCode lines that were sent in that response will not be reflected in the counters.</li>
+</ul>
+<p>This reliability mechanism could be applied to non-RS485 serial by omitting the address field and keeping the function code and CRC fields.</p>
+<h3>GCode Compression</h3>
+<p>We might be able to gain bandwidth by using GCode compression like &nbsp;<a href="https://github.com/scottmudge/OctoPrint-MeatPack">Meatpack</a> &nbsp;We might need need an encoding type field, or maybe the compressed format could be denoted by a prefix character.</p>

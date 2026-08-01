@@ -1,0 +1,58 @@
+<!--
+title: Axis Drift
+description: Things that can cause axes to lose position
+published: true
+date: 2025-04-20T21:36:32.472Z
+tags: debug
+editor: ckeditor
+dateCreated: 2025-04-20T21:36:25.760Z
+-->
+
+<h1>Axis Drift</h1>
+<p>If your machine loses position during a run - one or more axes does not end up at the expected position - there are several possible causes.</p>
+<h3>Mechanical Problems</h3>
+<ul>
+  <li>Mechanical slippage. &nbsp;If a shaft coupler, pulley, or belt is loose, the motor rotation might not cause a corresponding mechanical motion. &nbsp;It might be necessary to tighten set screws or tension belts. In some cases you might need to use sturdier shaft couplers.</li>
+  <li>Broken coupling. &nbsp;I once had a spiral-type shaft coupler that broke in the spiral section. &nbsp;It acted like a ratchet. The motion was fine in the rotational direction where the broken ends was pushing against each other, but in the other direction it would slip periodically when the machine was under load.</li>
+  <li>Friction. Bearings or nuts might have high friction due to lubrication problems,. badly-adjusted gibs, bearing damage, etc.</li>
+  <li>Bad mechanical design. &nbsp;Screw-driven machines need bearings that can handle both radial and axial loads. &nbsp;If the bearings do not have enough axial load capability, the motion can be unpredictable.</li>
+  <li>Loose bits. &nbsp;A bit that is not tight enough in its collet can pull out or push in during cutting, causing apparent motion problems even though the rest of the machine is moving correctly.</li>
+</ul>
+<h3>Driver Problems</h3>
+<ul>
+  <li>Losing steps. &nbsp;If a stepper motor sometimes loses steps, the moves will not be the right length. &nbsp;This can depend on several factors<ul>
+      <li>Cutter side loads can exceed the torque that the motor and mechanical system can deliver</li>
+      <li>Excessive acceleration or speed can exceed the motor capabilities in conjunction with the friction and inertia of the mechanical system</li>
+      <li>High stepping rates can exceed the driver's max pulse rate</li>
+      <li>The driver's current setting might be too low to deliver the necessary torque</li>
+    </ul>
+  </li>
+  <li>Sometimes lost steps happen predominantly in one direction due to asymmetry in the machine or the programmed motion. &nbsp;For example, a Z axis typically moves down more easily than up due to the weight of the spindle.</li>
+</ul>
+<h3>Motor Enable/Idle Time</h3>
+<ul>
+  <li>If the motors are disabled during periods of no motion, the machine might move due to internal stresses or outside forces when the motors are off. &nbsp;The resulting unprogrammed motion might be slight, in the case of internal stresses being relieved, or quite dramatic, in the case of a ball-screw Z axis that falls under gravity. &nbsp;Many machines work best with idle_ms set to 255 so the motors are always enabled. &nbsp;Many drivers have an automatic reduced-power mode that, during idle periods, will reduce the motor current enough to eliminate overheating, but still apply enough current to hold the position accurately.</li>
+</ul>
+<h3>Electrical Problems</h3>
+<ul>
+  <li>Power supply glitches. &nbsp;Sometimes a power supply can cut out temporarily, or limit the delivered power causing inaccurate motion. &nbsp;Often a power supply glitch will result in a driver shutdown so motion ceases, but it can also be temporary.</li>
+  <li>Electrical interference. &nbsp;Electrical noise, usually from spindles, can interfere with serial communications. &nbsp;Usually this corrupts the data so badly that the program stops due to syntax errors, but it could, in rare instances, result in inaccurate motion.</li>
+  <li>Pulse voltage/current. External drivers typically have optoisolated inputs that require enough current to operate the optoisolators. &nbsp;That current depends on the voltage that is applied on the inputs, the internal current limiting resistors, and any additional external current limiting resistors. &nbsp;They can typically work across a moderate range of voltages, sometimes down to 3.3V, although they are often specified for 5V. &nbsp;Some external drivers have a switch to select the required input voltage, say 5V or 24V. &nbsp;That switch typically just adds extra current limiting resistance on the 24V setting. &nbsp;If you set it for 24V but try to drive it with 5V, it will probably not be reliable.</li>
+  <li>Switch false triggering. &nbsp;Electrical noise (or even ambient light in the case of optical endstops) can cause false triggering of limit switches. &nbsp;Usually this causes the program to stop completely.</li>
+</ul>
+<h3>Configuration Problems</h3>
+<ul>
+  <li>If the pulse polarity is inverted, that can sometimes cause the driver to recognize a step pulse when none was issued, especially in conjunction with a change in the direction of motion.</li>
+  <li>If the pulse length is too short for the driver, the driver might miss some of the pulses.</li>
+  <li>Direction delay. &nbsp;Some drivers need time between a change in the direction signal and the next pulse. &nbsp;If the direction delay is too short, the driver might move in the wrong direction for the next pulse.</li>
+  <li>Acceleration and max_rate. &nbsp;As mentioned in a previous section, the acceleration and max rate must be within the machine's capabilities, under all operating conditions including cutter side loads and lubrication.</li>
+</ul>
+<h3>Controller Hardware Bugs</h3>
+<ul>
+  <li>It is possible that a defective controller might issue spurious step pulses in some situation. &nbsp;Debugging this would require external tools like a logic analyzer or pulse counter.</li>
+</ul>
+<h3>Firmware Bugs</h3>
+<ul>
+  <li>Bugs in the FluidNC firmware might cause inaccurate stepping. &nbsp;At the present time, we do not know of any such bugs, but there might be ones that we have not discovered.</li>
+</ul>
+<p>&nbsp;</p>
