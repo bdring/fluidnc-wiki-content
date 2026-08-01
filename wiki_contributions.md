@@ -19,8 +19,13 @@ Click on the account icon and create a new account.
 > The email system is not working on the wiki, so you will not get an activation email. Reach out to us on Discord and ask to be activated and given permission to edit or create pages. **Be sure to give your user name, so I don't have to guess.**
 {.is-warning}
 
+## Alternative: Contribute via GitHub Pull Request
 
+This wiki's content is backed by a git repository: [github.com/bdring/fluidnc-wiki-content](https://github.com/bdring/fluidnc-wiki-content). If you'd rather not create a wiki account, you can fork that repo, make your edits to the relevant `.md` file(s), and open a pull request instead. This is also a good option if you want to review a larger change (like restructuring a page) before it goes live, since a PR can be discussed and revised before merging.
 
+The wiki syncs from the repo automatically, so once your PR is merged your changes will appear on the live wiki without anyone needing to copy them in by hand. It won't be instant -- allow a few minutes for the sync.
+
+The same [Style Guide](#style-guide) below still applies to PR contributions -- write plain Markdown, follow the heading/anchor/image conventions, and please still [discuss](#discuss) any non-trivial change on Discord first, the same as you would for a direct wiki edit.
 
 ## Discuss
 
