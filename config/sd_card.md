@@ -38,6 +38,34 @@ In general, old, small cards work well, except as noted above.
 
 Here is the config file section for **spi**:
 
+<!-- config-item path="spi.miso_pin" -->
+### miso_pin
+- **Type:** Pin
+- **Default:** `NO_PIN`
+
+Must be a native pin to the microcontroller and have input capability.
+<!-- /config-item -->
+
+<!-- config-item path="spi.mosi_pin" -->
+### mosi_pin
+- **Type:** Pin
+- **Default:** `NO_PIN`
+
+Must be a native pin to the microcontroller and have output capability.
+<!-- /config-item -->
+
+<!-- config-item path="spi.sck_pin" -->
+### sck_pin
+- **Type:** Pin
+- **Default:** `NO_PIN`
+
+Must be a native pin to the microcontroller and have output capability.
+<!-- /config-item -->
+
+It is recommended that you use the [default pin numbers](http://wiki.fluidnc.com/en/hardware/esp32_pin_reference#default-pin), because these have been thoroughly tested, but other pins should work.
+
+### Config Example
+
 ```yaml
 spi:
   miso_pin: gpio.19
@@ -45,17 +73,37 @@ spi:
   sck_pin: gpio.18
 ```
 
-- **miso_pin** must be a native pin to the microcontroller and have input capability.
-- **mosi_pin** must be a native pin to the microcontroller and have output capability.
-- **sck_pin** must be a native pin to the microcontroller and have output capability.
-
-It is recommended that you use the [default pin numbers](http://wiki.fluidnc.com/en/hardware/esp32_pin_reference#default-pin), because these have been thoroughly tested, but other pins should work.
-
 ## sdcard Section
 
 You need a **sdcard** section with at least the **cs_pin** defined. The **card_detect_pin** is supported, but there are no features associated with it other than showing it in the startup messages.
 
-Here is the config file section for **sdcard**:
+<!-- config-item path="sdcard.cs_pin" -->
+### cs_pin
+- **Type:** Pin
+- **Range:** native, output capability
+- **Default:** `NO_PIN`
+
+Chip select pin for the SD card. Required for the SD card to function -- an spi: section must also be configured.
+<!-- /config-item -->
+
+<!-- config-item path="sdcard.card_detect_pin" -->
+### card_detect_pin
+- **Type:** Pin (input)
+- **Default:** `NO_PIN`
+
+Optional card-detect switch input. Purely informational -- shown in the startup log, with no other feature attached to it.
+<!-- /config-item -->
+
+<!-- config-item path="sdcard.frequency_hz" -->
+### frequency_hz
+- **Type:** Integer
+- **Range:** 400000 to 20000000
+- **Default:** `8000000`
+
+This sets the clock speed for the SPI bus used for this. If you have consistent problems with the SD card, try lower values for this.
+<!-- /config-item -->
+
+### Config Example
 
 ```yaml
 sdcard:
@@ -63,14 +111,6 @@ sdcard:
   card_detect_pin: NO_PIN
   frequency_hz: 8000000
 ```
-
-- **cs_pin** Chip select pin. Capabilities native, output
-- **card_detect_pin** Capabilities input
-- <a id="frequency_hz"></a>**frequency_hz** 
-  - Type: Integer
-  - Range: 400000 to 20000000
-  - Default: 8000000
-  - Details: This sets the clock speed for the SPI bus used for this. If you have consistent problems with the SD card, try lower values for this.
 
 # Fallback Configuration
 

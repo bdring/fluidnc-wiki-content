@@ -16,36 +16,44 @@ User outputs allow you to output digital (on/off) and analog (PWM) signals via g
 
 ## Analog
 
-Pins 0 through 3 can be defined
+`analog0_pin` through `analog3_pin`, and the matching `analog0_hz` through `analog3_hz`, can be defined.
 
- - <a name="analog0_pin"></a>**analog0_pin:**
-   - Type: [Pin](http://wiki.fluidnc.com/config/overview#Pin)
-   - Range: gpio
-   - Default: NO_PIN
-   - Details: A PWM signal is output on this pin. It is controlled by the [M67 command](http://wiki.fluidnc.com/en/features/supported_gcodes#m67-analog-output). **M67 E0 Q23.87** would turn on analog0 with a 23.87% percent duty cycle. **M67 E0 Q0** would turn off analog0.
+<!-- config-item path="user_outputs.analog0_pin" -->
+### analog0_pin
+- **Type:** [Pin](/config/overview#pin)
+- **Range:** gpio
+- **Default:** `NO_PIN`
 
-- <a name="analog0_hz"></a>**analog0_hz:** 
-  - Type: [Integer](http://wiki.fluidnc.com/config/overview#integer)
-  - Range: 1 to 20000000
-  - Default:
-  - Details: The frequency of the PWM signal.
-  
+A PWM signal is output on this pin. It is controlled by the [M67 command](http://wiki.fluidnc.com/en/features/supported_gcodes#m67-analog-output). **M67 E0 Q23.87** would turn on analog0 with a 23.87% percent duty cycle. **M67 E0 Q0** would turn off analog0.
+<!-- /config-item -->
+
+<!-- config-item path="user_outputs.analog0_hz" -->
+### analog0_hz
+- **Type:** [Integer](/config/overview#integer)
+- **Range:** 1 to 20000000
+- **Default:** `5000`
+
+The frequency of the PWM signal.
+<!-- /config-item -->
+
 >   The analog signal can be used to control RC Servos. Consider a 50Hz (typical) servo with pulse range of 1ms to 2ms. 50Hz has a period of 20ms, so 5% is 1ms and 10% is 2ms. 
 {.is-info}
 
 
 ## Digital
   
-  `digital0_pin` through `digital7_pin` can be defined.
-  
- - <a name="digital0_pin"></a>**digital0_pin:**
-   - Type: [Pin](http://wiki.fluidnc.com/config/overview#pin)
-   - Range: gpio or i2so
-   - Default: NO_PIN
-   - Details: The output is on this pin. It is controlled via [M62, M63, M64 and M65 commands](http://wiki.fluidnc.com/en/features/supported_gcodes#m62-m63-m64-m65-digital-output). **M62 P0** Would turn digital0 pin on. **M63 P0** Would turn digital0 pin off. Like all output pins, you can set the [active state](http://wiki.fluidnc.com/en/config/config_IO#output-pin-attributes) with the `:high` or `:low` attribute.
+`digital0_pin` through `digital7_pin` can be defined.
 
-Config Examples:
+<!-- config-item path="user_outputs.digital0_pin" -->
+### digital0_pin
+- **Type:** [Pin](/config/overview#pin)
+- **Range:** gpio or i2so
+- **Default:** `NO_PIN`
 
+The output is on this pin. It is controlled via [M62, M63, M64 and M65 commands](http://wiki.fluidnc.com/en/features/supported_gcodes#m62-m63-m64-m65-digital-output). **M62 P0** Would turn digital0 pin on. **M63 P0** Would turn digital0 pin off. Like all output pins, you can set the [active state](http://wiki.fluidnc.com/en/config/config_IO#output-pin-attributes) with the `:high` or `:low` attribute.
+<!-- /config-item -->
+
+## Config Example
 
 ```yaml
 user_outputs:
@@ -66,4 +74,3 @@ user_outputs:
   digital6_pin: NO_PIN
   digital7_pin: NO_PIN
 ```
-

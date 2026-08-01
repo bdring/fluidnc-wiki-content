@@ -24,34 +24,53 @@ Multipoint surface leveling is **not supported** by the firmware. A simple Gcode
 
 ## Probe pins
 
-We currently support two probe input pins. `probe_pin:` and `toolsetter_pin:`. All gcode logic treats them as the same thing. There is no way to target one or the other with G38. The primary reason we created two pins is to allow N.C. and N.O (or PNP and NPN) probes to be used together without an external OR'ing circuit. If you have both and send a G38 command activating either probe will do the same thing. They show up as separate switches in the status command to help you debug wiring and config issues.     
+We currently support two probe input pins. `pin:` and `toolsetter_pin:`. All gcode logic treats them as the same thing. There is no way to target one or the other with G38. The primary reason we created two pins is to allow N.C. and N.O (or PNP and NPN) probes to be used together without an external OR'ing circuit. If you have both and send a G38 command activating either probe will do the same thing. They show up as separate switches in the status command to help you debug wiring and config issues.     
 ## Config File
 
-- **pin:**
-  - Type: Pin (input)
-  - Range: gpio
-  - Default: NO_PIN
-  - Details: This is the signal from the probe.
-- **toolsetter_pin:**
-  - Type: Pin (input)
-  - Range: gpio
-  - Default: NO_PIN
-  - Details: This is an optional second probe.
-- **check_mode_start:** 
-  - Type: Boolean
-  - Default: true
-  - Details: This will force a probe check before a probe is started.
-- **<a id="hard_stop"></a>hard_stop:**
-  - Type: Boolean
-  - Default: false
-  - Details: If true the axis will do a hard stop rather than decelerate. This can be used with fragile bits that might break with the overtravel needed for deceleration. It is likely to be less accurate at higher speeds where the motor might skip a few steps without deceleration.
-- **probe_hard_limit:** (new in v3.9.9)
-  - Type: Boolean
-  - Default: false
-  - Details: If true the probes will act like hard limits, trigger an alarm and immediately stop motion when triggered during non probing motion. This is to prevent accidental damage to probes. 
+<!-- config-item path="probe.pin" -->
+### pin
+- **Type:** Pin (input)
+- **Range:** gpio
+- **Default:** `NO_PIN`
 
+This is the signal from the probe.
+<!-- /config-item -->
 
-Config Example:
+<!-- config-item path="probe.toolsetter_pin" -->
+### toolsetter_pin
+- **Type:** Pin (input)
+- **Range:** gpio
+- **Default:** `NO_PIN`
+
+This is an optional second probe.
+<!-- /config-item -->
+
+<!-- config-item path="probe.check_mode_start" -->
+### check_mode_start
+- **Type:** Boolean
+- **Default:** `true`
+
+This will force a probe check before a probe is started.
+<!-- /config-item -->
+
+<!-- config-item path="probe.hard_stop" -->
+### hard_stop
+- **Type:** Boolean
+- **Default:** `false`
+
+If true the axis will do a hard stop rather than decelerate. This can be used with fragile bits that might break with the overtravel needed for deceleration. It is likely to be less accurate at higher speeds where the motor might skip a few steps without deceleration.
+<!-- /config-item -->
+
+<!-- config-item path="probe.probe_hard_limit" -->
+### probe_hard_limit
+- **Type:** Boolean
+- **Default:** `false`
+
+(New in v3.9.9) If true the probes will act like hard limits, trigger an alarm and immediately stop motion when triggered during non probing motion. This is to prevent accidental damage to probes.
+<!-- /config-item -->
+
+## Config Example
+
 ```yaml
 probe:
   pin: gpio.34

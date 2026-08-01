@@ -23,7 +23,52 @@ There are currently two types of pins that can be used, **gpio** and **i2so**. Y
 
 If you use i2so output pins you must have an **i2so** section in your config file. These are the control pins for the i2so chips.
 
-Example:
+<!-- config-item path="i2so.bck_pin" -->
+### bck_pin
+- **Type:** Pin
+- **Default:** `NO_PIN`
+
+I2S bit-clock line, wired to the external I2S output shift-register chain. Required (along with data_pin/ws_pin) if any i2so.N pin is used anywhere in the config.
+<!-- /config-item -->
+
+<!-- config-item path="i2so.data_pin" -->
+### data_pin
+- **Type:** Pin
+- **Default:** `NO_PIN`
+
+I2S serial data line, wired to the external I2S output shift-register chain.
+<!-- /config-item -->
+
+<!-- config-item path="i2so.ws_pin" -->
+### ws_pin
+- **Type:** Pin
+- **Default:** `NO_PIN`
+
+I2S word-select (latch) line, wired to the external I2S output shift-register chain.
+<!-- /config-item -->
+
+<!-- config-item path="i2so.min_pulse_us" -->
+### min_pulse_us
+- **Type:** Integer
+- **Range:** You can only use 1, 2 or 4
+- **Default:** `2`
+
+This sets the minimum pulse length. Most people should use 2. You might need to use 4 for slower I2S chips like the ones on the Roots or MKS controllers. Use 1 for extremely fast step rates.
+<!-- /config-item -->
+
+<!-- config-item path="i2so.oe_pin" -->
+### oe_pin
+- **Type:** Pin
+- **Default:** `NO_PIN`
+
+Optional output-enable pin for the I2S shift-register chain.
+<!-- /config-item -->
+
+> Warning: The I2SO pins come on in an indeterminate state at power on. The firmware will quickly set them to the desired state if a valid `i2so:` section is loaded from the config file. This means the pin may be in the wrong state for a fraction of a second at power on. They will maintain the current state if the firmware is reset. If you have them controlling a spindle, laser or other dangerous items, you should apply power to them after the firmware is running.
+{.is-warning}
+
+### Config Example
+
 ```yaml
 i2so:
   bck_pin: gpio.22
@@ -31,15 +76,6 @@ i2so:
   ws_pin: gpio.17
   min_pulse_us: 2
 ```
-
--  **min_pulse_us:**
-    - **Type:** Integer
-    - **Range:** You can only use 1, 2 or 4
-    - **Default:** 2
-    - **Details:**  This sets the minimum pulse length. Most people should use 2. You might need to use 4 for slower I2S chipS like the ones on the Roots or MKS controllers. Use 1 for extremely fast step rates. 
-
-> Warning: The I2SO pins come on in an indeterminate state at power on. The firmware will quickly set them to the desired state if a valid `i2so:` section is loaded from the config file. This means the pin may be in the wrong state for a fraction of a second at power on. They will maintain the current state if the firmware is reset. If you have them controlling a spindle, laser or other dangerous items, you should apply power to them after the firmware is running.
-{.is-warning}
 
 
 ## Input Pin Attributes

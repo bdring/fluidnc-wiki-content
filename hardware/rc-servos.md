@@ -53,7 +53,7 @@ Any feature that allows you to set the frequency and duty of a PWM signal can be
 
 If the servo is used to move an axis, like the pen on a plotter, this is probably the best option. Things like jogging controls and soft limits can be used.
 
-[See this page](http://wiki.fluidnc.com/en/config/axes#rc-servo)
+[See this page](/config/rc_servo)
 
 ## As a spindle
 

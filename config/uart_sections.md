@@ -12,6 +12,85 @@ dateCreated: 2023-03-01T20:22:50.623Z
 
 You can define UART sections at the top level of the config file and refer to them where they are used. You can assign just about any pin to any UART. The start message will tell you if you selected one of the rare pins that do not support the UART.
 
+## Config items details
+
+<!-- config-item path="uartN.txd_pin" -->
+### txd_pin
+- **Type:** GPIO Pin
+- **Default:** `NO_PIN`
+
+The pin used to transmit data from the MCU. At least one of txd_pin/rxd_pin must be set; a txd_pin-only UART (e.g. a read-only display) is valid.
+<!-- /config-item -->
+
+<!-- config-item path="uartN.rxd_pin" -->
+### rxd_pin
+- **Type:** GPIO Pin
+- **Default:** `NO_PIN`
+
+The pin used to receive data from the connected device. At least one of txd_pin/rxd_pin must be set. An rxd_pin-only UART (e.g. a button panel) is valid, but be aware the Grbl "ok" response flow-control won't be sent on an rx-only UART -- real-time commands are safe, but other commands may be problematic.
+<!-- /config-item -->
+
+<!-- config-item path="uartN.rts_pin" -->
+### rts_pin
+- **Type:** GPIO Pin
+- **Default:** `NO_PIN`
+
+The pin used for a Request To Send signal controlled by the MCU. This is often used for hardware flow control. Some UART to RS485 devices require this signal.
+<!-- /config-item -->
+
+<!-- config-item path="uartN.cts_pin" -->
+### cts_pin
+- **Type:** GPIO Pin
+- **Default:** `NO_PIN`
+
+The pin used for a Clear To Send signal controlled by the MCU. This is often used for hardware flow control. This is rarely used.
+<!-- /config-item -->
+
+<!-- config-item path="uartN.baud" -->
+### baud
+- **Type:** Integer
+- **Range:** 2400 to 10000000
+- **Default:** `115200`
+
+The data baud rate.
+<!-- /config-item -->
+
+<!-- config-item path="uartN.mode" -->
+### mode
+- **Type:** A three character code
+- **Default:** `8N1`
+
+Data bits (5-8), parity (N (None), E (Even), or O (Odd)), stop bits (1/1.5/2). Always quote this value in YAML -- 8E1 is ambiguous with scientific-notation floats to generic YAML parsers.
+<!-- /config-item -->
+
+<!-- config-item path="uartN.passthrough_baud" -->
+### passthrough_baud
+- **Type:** Integer
+- **Range:** 0 to 10000000
+- **Default:** `0` (not configured)
+
+Baud rate used while this UART is in passthrough mode (e.g. forwarding firmware uploads from FluidTerm). 0 means passthrough is not configured for this UART.
+<!-- /config-item -->
+
+<!-- config-item path="uartN.passthrough_mode" -->
+### passthrough_mode
+- **Type:** A three character code
+- **Default:** `8E1`
+
+Data format (same 3-character code as mode) used while this UART is in passthrough mode.
+<!-- /config-item -->
+
+**Notes:**
+
+The Grbl command protocol uses an OK response for flow control, so hardware flow control is not needed.
+
+All items are optional and have a default. The only requirement is that you need at least a rx_pin or a tx pin.
+
+- A tx_pin only UART example would be a read only display
+- An rx_pin only UART example would be a button panel. You need to be careful because the OK response will not be sent with rx only UARTs. You can safely use [realtime commands](http://wiki.fluidnc.com/en/features/commands_and_settings#realtime-commands). Other commands will be problematic.  
+
+### Config Example
+
 ```yaml
 uart1:
   txd_pin: gpio.0
@@ -26,42 +105,6 @@ uart2:
   baud: 115200
   mode: 8N1
 ```
-
-## Config items details
-
-- <a name=tx_pin></a> **txd_pin:**
-  - Date Type: GPIO Pin
-  - Default: NO_PIN
-  - Details: The pin used to transmit data from the MCU
-- <a name=rx_pin></a> **rxd_pin:**
-  - Date Type: GPIO Pin
-  - Default:  NO_PIN
-  - Details:  The pin used to Receive data from the connected device
-- <a name=rts_pin></a> **rts_pin:**
-  - Date Type: GPIO Pin
-  - Default: NO_PIN
-  - Details:  The pin used for a Request To Send signal controlled by the MCU. This is often used for hardware flow control. Some UART to RS485 devices require this signal 
-- <a name=cts_pin></a> **cts_pin:**
-  - Date Type: GPIO Pin
-  - Default: NO_PIN
-  - Details: The pin used for a Clear To Send signal controlled by the MCU. This is often used for hardware flow control. This is rarely used.
-- <a name=baud></a> **baud:**
-  - Date Type: Integer (2400 to 10000000)
-  - Default: 115200
-  - Details: The data baud rate
-- <a name=mode></a> **txd_pin:**
-  - Date Type: A three character code
-  - Default: N81
-  - Details: Parity (N (None),E (Even), or O (Odd)
-  
-**Notes:**
-
-The Grbl command protocol uses an OK response for flow control, so hardware flow control is not needed.
-
-All items are optional and have a default. The only requirement is that you need at least a rx_pin or a tx pin.
-
-- A tx_pin only UART example would be a read only display
-- An rx_pin only UART example would be a button panel. You need to be careful because the OK response will not be sent with rx only UARTs. You can safely use [realtime commands](http://wiki.fluidnc.com/en/features/commands_and_settings#realtime-commands). Other commands will be problematic.  
 
 ## uart0
 
@@ -112,6 +155,33 @@ UART channels create a new Grbl interface on a UART. This is designed for displa
 
 We have some [starter code](https://github.com/bdring/PendantsForFluidNC) if you want to make your own display or interface.
 
+<!-- config-item path="uart_channelN.uart_num" -->
+### uart_num
+- **Type:** [Integer](/config/overview#integer)
+- **Default:** `0`
+
+Which previously-defined top-level uartN: section this channel runs over.
+<!-- /config-item -->
+
+<!-- config-item path="uart_channelN.report_interval_ms" -->
+### report_interval_ms
+- **Type:** [Integer](/config/overview#integer)
+- **Default:** `0` (off)
+
+This sets the reporting interval, in milliseconds, during motion. It is generally used to update DROs. If you set it to zero it will be off. No range is enforced by this item itself, but keeping it at 0 or roughly 50-5000 is recommended to avoid overloading the processor.
+<!-- /config-item -->
+
+<!-- config-item path="uart_channelN.message_level" -->
+### message_level
+- **Type:** [Enumeration](/config/overview#enum)
+- **Range:** None|Error|Warn|Info|Debug|Verbose
+- **Default:** `Verbose`
+
+This allows you to limit the messages that will be sent to this channel. It is useful for displays and pendants that do not need the messages and would rather not have to process them.  Only messages at levels less than or equal to the chosen value will be sent to the channel.  The global configuration value **\$Message/Level** also applies, limiting messages to all channels.  The channel-specific **message_level** item is an additional restriction, so only messages at levels at or below the lesser of **\$Message/Level** or **message_level** will go to this channel.
+<!-- /config-item -->
+
+### Config Example
+
 ```yaml
 uart_channel1:
    uart_num: 2
@@ -119,24 +189,6 @@ uart_channel1:
    message_level: info
 ```
 
-- <a id="uart_num"></a>**uart_num:** 
-  - Type: [Integer](/config/overview#integer)
-  - Range: See details
-  - Default: 0
-  - Details: This connects it to a previously defined uart section.
-  
-- <a id="report_interval_ms"></a>**report_interval_ms:** 
-  - Type: [Integer](/config/overview#integer)
-  - Range: 50 - 5000 (milliseconds)
-  - Default: 0
-  - Details: This sets the reporting interval during motion. It is generally used to update DROs. If you set it to zero it will be off. Ideally it should be 0 or 50-5000 to prevent overloading the processor.
-  
-- <a id="message_level"></a>**message_level:** 
-  - Type: [Enumeration](/config/overview#enum) 
-  - Range: None|Error|Warn|Info|Debug|Verbose
-  - Default: Verbose
-  - Details: This allows you to limit the messages that will be sent to this channel. It is useful for displays and pendants that do not need the messages and would rather not have to process them.  Only messages at levels less than or equal to the chosen value will be sent to the channel.  The global configuration value **\$Message/Level** also applies, limiting messages to all channels.  The channel-specific **message_level** item is an additional restriction, so only messages at levels at or below the lesser of **\$Message/Level** or **message_level** will go to this channel.
-  
 The new channel will accept input just like the USB serial channel, the Telnet channels, the WebSocket channels, etc.
 
 You can also do uart_channel1 or uart_channel2.  uart_channel0 is the implied USB serial channel and is always on by default

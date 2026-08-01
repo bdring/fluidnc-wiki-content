@@ -86,6 +86,170 @@ This is the base class for all other spindles. You should only need to use this 
 
 This shows all of the config file items when used with Huanyang as an example. If you are actually using the Huanyang, [use this format](http://wiki.fluidnc.com/en/config/modbus_vfd#huanyang).  
 
+<!-- config-item path="ModbusVFD.uart_num" -->
+### uart_num
+- **Type:** Integer
+- **Default:** `-1` (not configured)
+
+This links it to the [uart you configured](http://wiki.fluidnc.com/en/config/modbus_vfd#uart-setup).
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.modbus_id" -->
+### modbus_id
+- **Type:** Integer
+- **Range:** 0 to 247
+- **Default:** `1`
+
+This has to match your VFD's value. When in doubt, use 1.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.debug" -->
+### debug
+- **Type:** Integer
+- **Range:** 0 to 5
+- **Default:** `2`
+
+Debug message verbosity:
+- 0-1 No debug info
+- 2 Shows when there is no response, and speed info
+- 3+ Also shows the raw Rx and Tx Modbus messages
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.poll_ms" -->
+### poll_ms
+- **Type:** Integer
+- **Range:** 250 to 20000 (milliseconds)
+- **Default:** `250`
+
+How often to poll the VFD over Modbus for status/speed.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.retries" -->
+### retries
+- **Type:** Integer
+- **Default:** `5`
+
+Number of failed Modbus exchanges tolerated before raising an alarm.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.spinup_ms" -->
+### spinup_ms
+- **Type:** Integer
+- **Range:** 0 to 60000 (milliseconds)
+- **Default:** `0`
+
+How long it waits for the spinup. This should be equal to or greater than your VFD's value or you will get an alarm. Only actually applied at runtime when [get_rpm_cmd](#get_rpm_cmd) is left unset -- see get_rpm_cmd's own description for why.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.spindown_ms" -->
+### spindown_ms
+- **Type:** Integer
+- **Range:** 0 to 60000 (milliseconds)
+- **Default:** `0`
+
+Same as [spinup_ms](#spinup_ms), but applied when the commanded RPM decreases.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.speed_map" -->
+### speed_map
+- **Type:** Speed Map
+- **Default:** `""` (empty)
+
+You do not need to set this value. If left blank it will create a speed_map from the min and max values retrieved from the VFD. [See this wiki section](http://wiki.fluidnc.com/en/config/modbus_vfd#defining-the-speed-range).
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.model" -->
+### model
+- **Type:** String
+- **Default:** `""` (empty)
+
+VFD model name. This is used for support purposes only -- it's not itself used to select protocol behavior; the cw_cmd/ccw_cmd/etc. fields are what actually define the protocol.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.min_RPM" -->
+### min_RPM
+- **Type:** Integer
+- **Default:** `0xffffffff` (uninitialized sentinel)
+
+Minimum spindle RPM. Normally left unset and retrieved from the VFD itself via get_min_rpm_cmd at startup. [See this wiki section](http://wiki.fluidnc.com/en/config/modbus_vfd#defining-the-speed-range).
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.max_RPM" -->
+### max_RPM
+- **Type:** Integer
+- **Default:** `0xffffffff` (uninitialized sentinel)
+
+Maximum spindle RPM. Normally left unset and retrieved from the VFD itself via get_max_rpm_cmd at startup. [See this wiki section](http://wiki.fluidnc.com/en/config/modbus_vfd#defining-the-speed-range).
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.off_on_alarm" -->
+### off_on_alarm
+- **Type:** [Boolean](/config/overview#boolean)
+- **Default:** `false`
+
+Turns the spindle off whenever an alarm occurs. [See this wiki entry](http://wiki.fluidnc.com/en/config/config_spindles#off_on_alarm).
+<!-- /config-item -->
+
+Shares [tool_num](http://wiki.fluidnc.com/en/config/config_spindles#tool_num), [atc](http://wiki.fluidnc.com/en/config/config_spindles#atc), [m6_macro](http://wiki.fluidnc.com/en/config/config_spindles#m6_macro), [s0_with_disable](http://wiki.fluidnc.com/en/config/config_spindles#s0_with_disable), and [disable_with_s0](http://wiki.fluidnc.com/en/config/config_spindles#disable_with_s0) with the other spindle types -- see the [Spindles page](/config/config_spindles) for those.
+
+<!-- config-item path="ModbusVFD.cw_cmd" -->
+### cw_cmd
+- **Type:** String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
+- **Default:** `""` (empty)
+
+A Modbus command template telling the VFD to run in the clockwise (forward) direction.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.ccw_cmd" -->
+### ccw_cmd
+- **Type:** String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
+- **Default:** `""` (empty)
+
+A Modbus command template telling the VFD to run in the counter clockwise (reverse) direction.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.off_cmd" -->
+### off_cmd
+- **Type:** String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
+- **Default:** `""` (empty)
+
+A Modbus command template telling the VFD to stop the spindle.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.set_rpm_cmd" -->
+### set_rpm_cmd
+- **Type:** String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
+- **Default:** `""` (empty)
+
+A Modbus command template telling the VFD to run at a given speed.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.get_min_rpm_cmd" -->
+### get_min_rpm_cmd
+- **Type:** String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
+- **Default:** `""` (empty)
+
+A Modbus command template for retrieving the minimum speed from the VFD. If left unset, speed_map must be configured manually instead of being auto-derived.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.get_max_rpm_cmd" -->
+### get_max_rpm_cmd
+- **Type:** String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
+- **Default:** `""` (empty)
+
+A Modbus command template for retrieving the maximum speed from the VFD. If left unset, speed_map must be configured manually instead of being auto-derived.
+<!-- /config-item -->
+
+<!-- config-item path="ModbusVFD.get_rpm_cmd" -->
+### get_rpm_cmd
+- **Type:** String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
+- **Default:** `""` (empty)
+
+A Modbus command template for retrieving the VFD's current running speed. [spinup_ms](#spinup_ms)/[spindown_ms](#spindown_ms) are always present in config.yaml for a VFD spindle regardless of this field -- what this field changes is whether they're actually used at runtime. When set, FluidNC actively polls this command until it confirms the real target speed, ignoring spinup_ms/spindown_ms entirely; when left empty, there's no way to confirm real speed, so it falls back to blindly waiting out spinup_ms/spindown_ms instead.
+<!-- /config-item -->
+
+### Config Example
+
 ```yaml
 ModbusVFD: 
   uart_num: 1
@@ -113,83 +277,6 @@ ModbusVFD:
   get_max_rpm_cmd: 01 03 05 00 00 > 01 03 05 maxRPM*60/100
   get_rpm_cmd: 04 03 01 00 00 > 04 03 01 rpm*60/100
 ```
-
-- **uart_num:**
-  - Type: Integer (0-2) Default: 1
-  - Details: This links it to the [uart you configured](http://wiki.fluidnc.com/en/config/modbus_vfd#uart-setup).
-- **modbus_id:**
-  - Type: Integer (0-247) Default: 1
-  - Details: This has to match your VFD's value. When is doubt, use 1.
-- **debug:**
-  - Type: Integer (0-5) Default: 2
-  - Details: Used to activate various level of debug messages. 
-    - 0 No debug info
-    - 1 No debug info
-    - 2 Will show when there is no response, and speed info
-    - 3 Will show the Rx and Tx messages
-- **poll_ms:**
-  - Type: Integer (250-20000 milliseconds) Default: 250
-  - Details: time between messages
-- **retries:**
-  - Type: Integer Default: 5
-  - Details: Retries before it alarms
-- **spinup_ms:**
-  - Type: Integer (0-60000 milliseconds) Default: 0
-  - Details: How long it waits for the spinup. This should be equal to or greater than your VFD's value or you will get an alarm. 
-- **spindown_ms:**
-  - Type: Integer (0-60000 milliseconds) Default: 0
-  - Details: How long it waits for the spinup. This should be equal to or greater than your VFD's value or you will get an alarm.
-- **speed_map:**
-    - Type: Speed map
-    - Details: You do not need to set this value. If left blank it will create a speed_map from the min and max values retrieved from the VFD. 
-- **model:**
-    - Type: String (default empty)
-    - Details: This is used for support purposed only. It will help us when you are having problems.
-- **speed_map**
-    - Type: speed_map string
-    - Details: [See this wiki section](http://wiki.fluidnc.com/en/config/modbus_vfd#defining-the-speed-range)
-- **min_RPM:**
-    - Type: Integer
-    - Details: [See this wiki section](http://wiki.fluidnc.com/en/config/modbus_vfd#defining-the-speed-range)
-- **off_on_alarm:**
-- **atc:**
-  - Details: [See this wiki entry](http://wiki.fluidnc.com/en/config/config_spindles#atc)
-- **m6_macro:** [See this wiki entry](http://wiki.fluidnc.com/en/config/config_spindles#m6_macro)
-- **s0_with_disable:
-  - Details: [See this wiki entry](http://wiki.fluidnc.com/en/config/config_spindles#s0_with_disable)
-- **disable_with_s0:**
-  - Details: [See this wiki entry](http://wiki.fluidnc.com/en/config/config_spindles#disable_with_s0)
-- **max_RPM:**
-    - Type: Integer
-    - Details: [See this wiki section](http://wiki.fluidnc.com/en/config/modbus_vfd#defining-the-speed-range)
-- **cw_cmd:**
-    - Type: String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
-    - Default: Empty
-    - Details: A Modbus command template telling the VFD to run in the clockwise (forward) direction.
-- **ccw_cmd:**
-    - Type: String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
-    - Default: Empty
-    - Details: A Modbus command template telling the VFD to run in the counter clockwise (reverse) direction.
-- **off_cmd:**
-    - Type: String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
-    - Default: Empty
-    - Details: A Modbus command template telling the VFD to stop the spindle.
-- **set_rpm_cmd:**
-    - Type: String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
-    - Default: Empty
-    - Details: A Modbus command template telling the VFD to run at a given speed.
-- **get_min_rpm_cmd:**
-    - Type: String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
-    - Default: Empty
-    - Details: A Modbus command template for retrieving the minimum speed from the VFD.
-- **get_max_rpm_cmd:**
-    - Type: String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
-    - Default: Empty
-    - Details: A Modbus command template for retrieving the maximum speed from the VFD.
-- **get_rpm_cmd:++
-    - Type: String ([Modbus Command](http://wiki.fluidnc.com/en/config/modbus_vfd#modbus-command-templates))
-    - Default: Empty
-    - Details: A Modbus command template for retrieving the VFDs current running speed.
 
 ## Modbus Command Templates
 

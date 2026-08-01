@@ -64,11 +64,11 @@ See the [general installation page](/installation) for more information and alte
 
 # Motors
 
-The motor drivers are [TMC2209](http://wiki.fluidnc.com/en/config/axes#tmc2209). They are configured through the config file. The maximum current setting is about 2.0Amps. If the drivers get hot you must add a heatsink. If they get too hot they will shutdown.
+The motor drivers are [TMC2209](/config/trinamic_drivers#tmc2209). They are configured through the config file. The maximum current setting is about 2.0Amps. If the drivers get hot you must add a heatsink. If they get too hot they will shutdown.
 
 # RC Servo
 
-There is a standard [RC servo](http://wiki.fluidnc.com/en/config/axes#rc-servo) connector that can be used for pen lift mechanism or other uses. See the example config below and the [wiki](http://wiki.fluidnc.com/en/config/axes#rc-servo).
+There is a standard [RC servo](/config/rc_servo) connector that can be used for pen lift mechanism or other uses. See the example config below and the [wiki](/config/rc_servo).
 
 > If you don't use an RC Servo, you can use the signal pin as a 5V output signal.
 {.is-info}

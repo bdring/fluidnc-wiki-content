@@ -36,19 +36,17 @@ For safe turn on, most BESCs require you to set the pulse length to the minimum 
 
 ## Config File
 
-the PWM spindle is used. A speed_map is used to contrain the pulse lengths to the range needed by your BESC.
+The [BESC spindle type](/config/config_spindles#besc) is used, not a plain PWM spindle. BESC has its own `min_pulse_us`/`max_pulse_us` fields, in microseconds -- the driver maps a plain 0-100% `speed_map` onto that pulse range internally, so you don't need to compute what percentage of the PWM period a given pulse length corresponds to.
 
-To make the speed_map independant of the frequency, you will specify the pulse duty (portion of the frequency period) rather than the length in time.
-
-The perion is the inverse of the frequency. A 50Hz frequency whould have a 1/50 = 0.02sec period length or 20ms. 1ms is 5% of that and 2ms is 10% of that.
-
-Here is a minimal config file section. This sets an RPM range of 0-1000 to the standard pulse width range at 50Hz.
+Here is a minimal config file section. This sets an RPM range of 0-1000 to the standard 1ms-2ms pulse width range at 50Hz.
 
 ```yaml
-pwm:
+BESC:
   pwm_hz: 50
   output_pin: gpio.12
-  speed_map: 0=5.00% 1000=10.00%
+  min_pulse_us: 1000
+  max_pulse_us: 2000
+  speed_map: 0=0% 1000=100%
 ```
 
 
@@ -75,26 +73,28 @@ This was used with a Turnigy D3520/14 motor on a 12V 24A power supply.
 
 ![turnigy-d3530-14.jpg](/motors/turnigy-d3530-14.jpg =x200) 
 
-I used a frequency of 50Hz (`pwm_hz:`) and a pulse range of 1ms to 2ms. 50Hz is a period of 20ms (1/50Hz = 0.02 sec). The minimum duty is 1ms which is 5% of the period and the maximum is 2ms which is 10% of the period.
+I used a frequency of 50Hz (`pwm_hz:`) and a pulse range of 1ms to 2ms (`min_pulse_us: 1000`, `max_pulse_us: 2000`).
 
 I chose an arbitrary RPM range of 0-1000 for the test speed_map because I don't know the real RPM range. The motor is 1100KV (RPM per volt) so it is closer to 0-13200 RPM.
 
-I tested the motor and found that it did not really work well until about S200, so I added an extra term in the speed map to insure all S values over 0 were 1.2ms
+I tested the motor and found that it did not really work well until about S200, so I added an extra term in the speed map to insure all S values over 0 were at least 1.2ms -- 20% of the way from min_pulse_us (1ms) to max_pulse_us (2ms).
 
 My config
 
 ```yaml
-pwm:
+BESC:
   pwm_hz: 50
   direction_pin: NO_PIN
   output_pin: gpio.12
   enable_pin: NO_PIN
+  min_pulse_us: 1000
+  max_pulse_us: 2000
   disable_with_s0: false
   s0_with_disable: true
   spinup_ms: 0
   spindown_ms: 0
   tool_num: 100
-  speed_map: 0=5.00% 0=6.00% 1000=10.00%
+  speed_map: 0=0% 0=20% 1000=100%
   off_on_alarm: false
   atc:
   m6_macro:

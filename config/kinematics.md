@@ -65,6 +65,15 @@ y:
 
 In CoreXY systems, the motor listed underneath the x: section is the first one in the pair of cooperating motors, and the motor listed underneath the y: section is the second one.  In CoreXY, you cannot have two lockstep motors on one axis, like you can with a Cartesian system.  For CoreXY, there are exactly two motors that work together for XY motion.
 
+<!-- config-item path="kinematics.CoreXY.x_scaler" -->
+### x_scaler
+- **Type:** Float
+- **Range:** 0.1 to 10.0
+- **Default:** `1.0`
+
+Compensation factor for midTbot-style machines where the motors themselves move in X, so a cartesian X move corresponds to a larger motor-space move. Leave at 1 on CoreXY machines where the motors don't move in X.
+<!-- /config-item -->
+
 ### Getting the directions right.
 
 Getting the directions right can be tricky. If motors are swapped or the motor directions are not right, you will get incorrect motion. This is one method to sort it out.
@@ -92,6 +101,10 @@ If that jog works, then try jogging in other directions. If that is not right, t
 kinematics:
   midtbot:
 ```
+
+## Parallel Delta
+
+A delta-robot design with three rotating actuator arms. Documented on its own page, since it needs several diagrams: [Parallel Delta Kinematics](/features/kinematics/parallel_delta).
 
 ## Wallplotter
 

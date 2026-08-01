@@ -67,14 +67,79 @@ Gcode can also be used as a simple programming language via [parameters and expr
 
 ## Config Items
 
-- **startup_line0:** and **startup_line1:** These are legacy features from Grbl, which called them $N0 and $N1. They run when the firmware enters idle for the first time.
+<!-- config-item path="macros.startup_line0" -->
+### startup_line0
+- **Type:** Macro
+- **Default:** `""` (empty)
 
-- **macro0 through macro3** This is the text of the macro that will run when the associated [control switch](https://github.com/bdring/FluidNC/wiki/Control) is activated. These switches must not be in the active state at startup. You need to deactivate the switch before you clear the alarm.
-- **after_homing** (as of v3.7.6) This macro runs after homing is complete, i.e. after every axis that has homing enabled has been homed.
-- **after_reset** (as of v3.7.6) This macro runs after the system has been reset, either from an initial power on/startup, or after a CTRL-X realtime reset, but only if the system is in Idle state immediately after the reset.
-- **after_unlock** (as of v3.7.6) This macro runs after a $X unlock command.
+Legacy Grbl feature (formerly $N0). Runs once, the first time the firmware enters Idle after boot.
+<!-- /config-item -->
 
-## Config Example
+<!-- config-item path="macros.startup_line1" -->
+### startup_line1
+- **Type:** Macro
+- **Default:** `""` (empty)
+
+Legacy Grbl feature (formerly $N1). Runs once, the first time the firmware enters Idle after boot, immediately after startup_line0.
+<!-- /config-item -->
+
+<!-- config-item path="macros.macro0" -->
+### macro0
+- **Type:** Macro
+- **Default:** `""` (empty)
+
+Runs when the associated [control switch](/config/control#macro0_pin) is activated. These switches must not be in the active state at startup. You need to deactivate the switch before you clear the alarm.
+<!-- /config-item -->
+
+<!-- config-item path="macros.macro1" -->
+### macro1
+- **Type:** Macro
+- **Default:** `""` (empty)
+
+Runs when the associated [control switch](/config/control#macro1_pin) is activated.
+<!-- /config-item -->
+
+<!-- config-item path="macros.macro2" -->
+### macro2
+- **Type:** Macro
+- **Default:** `""` (empty)
+
+Runs when the associated [control switch](/config/control#macro2_pin) is activated.
+<!-- /config-item -->
+
+<!-- config-item path="macros.macro3" -->
+### macro3
+- **Type:** Macro
+- **Default:** `""` (empty)
+
+Runs when the associated [control switch](/config/control#macro3_pin) is activated.
+<!-- /config-item -->
+
+<!-- config-item path="macros.after_homing" -->
+### after_homing
+- **Type:** Macro
+- **Default:** `""` (empty)
+
+Runs after a homing cycle completes -- i.e. once every axis with homing enabled has been homed. (as of v3.7.6)
+<!-- /config-item -->
+
+<!-- config-item path="macros.after_reset" -->
+### after_reset
+- **Type:** Macro
+- **Default:** `""` (empty)
+
+Runs after the system resets (power-on/startup, or a Ctrl-X real-time reset), but only if the system ends up in Idle state immediately after the reset. (as of v3.7.6)
+<!-- /config-item -->
+
+<!-- config-item path="macros.after_unlock" -->
+### after_unlock
+- **Type:** Macro
+- **Default:** `""` (empty)
+
+Runs after a $X unlock command. (as of v3.7.6)
+<!-- /config-item -->
+
+### Config Example
 
 ```yaml
 macros:

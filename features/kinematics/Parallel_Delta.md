@@ -30,6 +30,70 @@ This is currently designed for use with stepper motors. The documentation will b
 
 ## Kinematics Section
 
+<!-- config-item path="kinematics.ParallelDelta.crank_mm" -->
+### crank_mm
+- **Type:** Float
+- **Range:** 20 to 500 millimeters
+- **Default:** `70.0`
+
+Length of the crank arm attached to each motor. See image.
+<!-- /config-item -->
+
+<!-- config-item path="kinematics.ParallelDelta.base_triangle_mm" -->
+### base_triangle_mm
+- **Type:** Float
+- **Range:** 20 to 500 millimeters
+- **Default:** `179.437`
+
+Side length of the fixed base triangle (where the motors/cranks mount). See image.
+<!-- /config-item -->
+
+<!-- config-item path="kinematics.ParallelDelta.linkage_mm" -->
+### linkage_mm
+- **Type:** Float
+- **Range:** 20 to 500 millimeters
+- **Default:** `133.50`
+
+Length of the linkage arm connecting each crank to the end effector. See image.
+<!-- /config-item -->
+
+<!-- config-item path="kinematics.ParallelDelta.end_effector_triangle_mm" -->
+### end_effector_triangle_mm
+- **Type:** Float
+- **Range:** 20 to 500 millimeters
+- **Default:** `86.603`
+
+Side length of the moving end-effector triangle (where the tool mounts). See image.
+<!-- /config-item -->
+
+<!-- config-item path="kinematics.ParallelDelta.kinematic_segment_len_mm" -->
+### kinematic_segment_len_mm
+- **Type:** Float
+- **Range:** 0.05 to 20 millimeters
+- **Default:** `1.0`
+
+To smooth out non linear machines the move is divided up into pieces. This indicates the maximum piece size. A big value will show the non linearity. A small value will be smoother, but increases processing time.
+<!-- /config-item -->
+
+<!-- config-item path="kinematics.ParallelDelta.use_servos" -->
+### use_servos
+- **Type:** Boolean
+- **Default:** `false`
+
+Set true when the arms are driven by servos rather than steppers -- servos use a different (self-contained) homing approach.
+<!-- /config-item -->
+
+<!-- config-item path="kinematics.ParallelDelta.up_degrees" -->
+### up_degrees
+- **Type:** Float
+- **Range:** -90 (straight up) to 0 (horizontal)
+- **Default:** `-30` degrees
+
+This is the angle after homing. The kinematics expect homing to go in the negative (up) direction.
+<!-- /config-item -->
+
+### Config Example
+
 ```yaml
 kinematics:
   parallel_delta:
@@ -42,33 +106,6 @@ kinematics:
     up_degrees: -29.000000
 ```
 
-  - **crank_mm:** See image
-    - Type: Float
-    - Range: 20 to 500 millimeters
-    - Default: 70.0
-  - **base_triangle_mm:** See image
-    - Type: Float
-    - Range: 20 to 500 millimeters
-    - Default: 179.437
-  - **linkage_mm:** See image
-    - Type: Float
-    - Range: 20 to 500 millimeters
-    - Default: 133.50
-  - **end_effector_triangle_mm:** See image
-    - Type: Float
-    - Range: 20 to 500 millimeters
-    - Default: 86.603
-  - **kinematic_segment_len_mm:** 
-    - Details: To smooth out non linear machines the move is divided up into pieces. This indicates the maximum piece size. A big value will show the non linearity. A small vaue will be smoother, but increases processing time.
-    - Type: Float
-    - Range: 0.05 to 20 millimeters
-    - Default: 1.0
-  - **up_degrees:** This is the angle after homing. The kinematics expect homing to go in the negative (up) direction.
-    - Type: Float
-    - Range: -90 (straight up) to 0 (horizontal)
-    - Default: -30 degrees
-    
-    
 ## Axes Section
 
 

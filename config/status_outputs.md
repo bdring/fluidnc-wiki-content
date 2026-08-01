@@ -15,32 +15,60 @@ This feature allows you to tie an output to a status state. This allows you to h
 
 ## Config Items
 
-- **report_interval_ms** 
-  - Type: Integer
-  - Range: (100 to 5000) milliseconds
-  - Default: 500
-  - Details: This is the update rate of the status. You also get an automatic update after status changes, so this does not need to be fast.
- - **run_pin:**
-   - Type: Pin (input)
-   - Range: gpio or i2so
-   - Default: NO_PIN
-   - Details: Active when status is run. 
-- **hold_pin:**
-   - Type: Pin (input)
-   - Range: gpio or i2so
-   - Default: NO_PIN
-   - Details: Active when status is hold. 
-- **alarm_pin:**
-   - Type: Pin (input)
-   - Range: gpio or i2so
-   - Default: NO_PIN
-   - Details: Active when status is alarm.
-- **door_pin:**
-   - Type: Pin (input)
-   - Range: gpio or i2so
-   - Default: NO_PIN
-   - Details: Active when [safety door input](http://wiki.fluidnc.com/en/config/control#safety_door_pin) is active. 
-  
+<!-- config-item path="status_outputs.report_interval_ms" -->
+### report_interval_ms
+- **Type:** [Integer](/config/overview#integer)
+- **Range:** 100 to 5000 milliseconds
+- **Default:** `500`
+
+This is the update rate of the status. You also get an automatic update after status changes, so this does not need to be fast.
+<!-- /config-item -->
+
+<!-- config-item path="status_outputs.idle_pin" -->
+### idle_pin
+- **Type:** [Pin](/config/overview#pin) (output)
+- **Range:** gpio or i2so
+- **Default:** `NO_PIN`
+
+Active when status is idle.
+<!-- /config-item -->
+
+<!-- config-item path="status_outputs.run_pin" -->
+### run_pin
+- **Type:** [Pin](/config/overview#pin) (output)
+- **Range:** gpio or i2so
+- **Default:** `NO_PIN`
+
+Active when status is run.
+<!-- /config-item -->
+
+<!-- config-item path="status_outputs.hold_pin" -->
+### hold_pin
+- **Type:** [Pin](/config/overview#pin) (output)
+- **Range:** gpio or i2so
+- **Default:** `NO_PIN`
+
+Active when status is hold.
+<!-- /config-item -->
+
+<!-- config-item path="status_outputs.alarm_pin" -->
+### alarm_pin
+- **Type:** [Pin](/config/overview#pin) (output)
+- **Range:** gpio or i2so
+- **Default:** `NO_PIN`
+
+Active when status is alarm.
+<!-- /config-item -->
+
+<!-- config-item path="status_outputs.door_pin" -->
+### door_pin
+- **Type:** [Pin](/config/overview#pin) (output)
+- **Range:** gpio or i2so
+- **Default:** `NO_PIN`
+
+Active when [safety door input](http://wiki.fluidnc.com/en/config/control#safety_door_pin) is active.
+<!-- /config-item -->
+
 ## Config Example
 
 ```yaml

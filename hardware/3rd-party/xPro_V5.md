@@ -16,7 +16,7 @@ This page is to share information helpful when using FluidNC on the [Spark Conce
 
 ## Stepper Driver Pinout
 
-The controller uses [Trinamic](http://wiki.fluidnc.com/en/config/axes#trinamic-drivers) [TMC5160](http://wiki.fluidnc.com/en/config/axes#tmc5160) stepper motor drivers. The drivers are set up and controlled by the firmware using a daisy chained SPI bus shared with the SD card. It uses the default SPI pinout for FluidNC.
+The controller uses [Trinamic](/config/trinamic_drivers) [TMC5160](/config/trinamic_drivers#tmc5160) stepper motor drivers. The drivers are set up and controlled by the firmware using a daisy chained SPI bus shared with the SD card. It uses the default SPI pinout for FluidNC.
 
 ```yaml
 spi:

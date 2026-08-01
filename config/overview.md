@@ -176,19 +176,32 @@ Most keys have default values. For pins this is usually NO_PIN. If you are not u
 <a id="documentation_sections"></a>
 ## Documentation of each section
 
-- Top level items (no indent)
+> Looking for one specific item by name? The [Config Items Index](/config/config_items_index) lists every item across every section with a direct link, rather than needing to know which page it's on.
+{.is-info}
+
+- [Top level items](/config/top_level_config_items) (no indent)
+- [start:](/config/start_group)
 - [stepping:](/config/axes#stepping)
 - [axes:](/config/axes)
-  - [Motor](/config/axes#motors)
-- [spi:](/config/sd_card)
-- [sdcard:](/config/sd_card)
+  - [Standard Stepper / Stepstick](/config/axes#motor-types)
+  - [Trinamic Drivers](/config/trinamic_drivers) (TMC2130, TMC2208, TMC5160, TMC2209, TMC5160Pro/TMC2160Pro)
+  - [RC Servo](/config/rc_servo)
+  - [Solenoid](/config/solenoid)
+  - [Dynamixel Servo (Protocol 2)](/config/dynamixel2)
+- [spi:](/config/sd_card) / [sdcard:](/config/sd_card)
 - [control:](/config/control)
 - [coolant:](/config/coolant)
 - [probe:](/config/probe)
 - [macros:](/config/macros)
+- [user_inputs:](/config/user_inputs)
 - [user_outputs:](/config/user_outputs)
-- [spindles](/config/config_spindles)
-- [start:](/config/start_group)
+- [uartN: / uart_channelN:](/config/uart_sections)
+- [status_outputs:](/config/status_outputs)
+- Spindle types (0-10V, PWM, DAC, BESC, HBridge, Laser, Relay, Plasma, NoSpindle): [spindles](/config/config_spindles)
+  - [RS485 (Modbus) VFD Spindles](/config/modbus_vfd)
+  - [Spindle Speed Maps](/config/spindle_speed_maps)
+- [kinematics:](/config/kinematics) (Cartesian, CoreXY, midTbot, Parallel Delta, WallPlotter)
+- [Pin syntax and attributes](/config/config_IO)
 </br>
 ## Example Config Files
 
