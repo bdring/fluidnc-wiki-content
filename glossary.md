@@ -38,7 +38,7 @@ This a gcode term. It refers to the [modal states](http://wiki.fluidnc.com/en/fe
 
 ## POG
 
-If you see POG in a Discord post it refers to Plain Ole Grbl. This is the Gble and the gnea/grbl Github repo
+If you see POG in a Discord post it refers to Plain Ole Grbl. This is the Grbl and the gnea/grbl Github repo
 
 ## State
 
