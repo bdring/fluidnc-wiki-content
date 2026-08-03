@@ -2,7 +2,7 @@
 title: Existing Hardware
 description: Hardware that runs FluidNC
 published: true
-date: 2026-08-01T19:37:56.516Z
+date: 2026-08-03T20:53:40.367Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T12:57:33.399Z
@@ -473,6 +473,15 @@ These are controller that are still available for purchase as far as we know.
   - Compact form factor
 
 <img src="https://github.com/figamore/FigCNC/raw/main/FigCNC-Pro/images/FigCNC-Pro.jpg" width="550">	
+
+## Sculpfun DLC32-S9
+
+- **Open Source:** No
+- **FluidNC Supporter:** No
+- **Discord Name**
+- **For Sale:** with Lasers and Maybe AliExpress
+- **Description:** Shipped with some lasers. See this [Discord post](https://discord.com/channels/780079161460916227/1533826663845073118) for more info. Note: There are some other similar versions.
+![sculpfun_dlc_s9.png](/hardware/sculpfun/sculpfun_dlc_s9.png)
 
 # Not in production
 
