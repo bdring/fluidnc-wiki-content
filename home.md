@@ -19,7 +19,7 @@ See [Installation](/en/installation) for a quick start guide to installing Fluid
 
 ## Wiki Search
 
-> **Wifi Search:** Not all wiki content is linked via the navigation panel. Please use the search feature if you are not finding what you are looking for. You can also change the navigation panel to a file browser type interface to see all pages. 
+> **Wiki Search:** Not all wiki content is linked via the navigation panel. Please use the search feature if you are not finding what you are looking for. You can also change the navigation panel to a file browser type interface to see all pages. 
 {.is-info}
 
 
@@ -31,7 +31,7 @@ See [Installation](/en/installation) for a quick start guide to installing Fluid
 
 ## Machine Definition Method
 
-There is no need to compile the firmware. You use an installation script to upload the latest release of the firmware and then create a [config file](/config/overview) text file that describes your machine.  That file is uploaded to the FLASH on the ESP32 using the USB/Serial port or Wifi.  There are many example config files for different setups that you can use as starting points.  [FluidNC Web Installer](http://wiki.fluidnc.com/en/installation#fluidnc-web-installer) has a graphical setup feature that guides you through the process, and [FluidNC Config Wizard](https://mitchbradley.github.io/FluidNC-config-wizard) lets you create config files for many popular controller boards by clicking on board connectors and assigning the corresponding FluidNC function. 
+There is no need to compile the firmware. You use an installation script to upload the latest release of the firmware and then create a [config file](/config/overview) text file that describes your machine.  That file is uploaded to the FLASH on the ESP32 using the USB/Serial port or WiFi.  There are many example config files for different setups that you can use as starting points.  [FluidNC Web Installer](http://wiki.fluidnc.com/en/installation#fluidnc-web-installer) has a graphical setup feature that guides you through the process, and [FluidNC Config Wizard](https://mitchbradley.github.io/FluidNC-config-wizard) lets you create config files for many popular controller boards by clicking on board connectors and assigning the corresponding FluidNC function. 
 
 There are some tools to help you or an AI assistant generate and validate config files;  see [AI Config File Helpers](http://wiki.fluidnc.com/en/config/overview#ai-config-file-helpers).
 
@@ -47,9 +47,9 @@ FluidNC does implement a very small number of **\$number** commands that mimic G
 
 ## WebUI
 
-FluidNC includes a built-in browser-based Web UI ([ESP3D-WebUI](https://github.com/luc-github/ESP3D-WEBUI)) so you control the machine from a PC, phone, or tablet on the same Wifi network.  WebUI is a separate project, but the FluidNC team maintains a separate fork with some enhancements - notably an alternative tablet mode that is optimized for use on a tablet computer, including a GCode visualizer - and with support for some FluidNC-specific features.  The source code for our fork is at https://github.com/MitchBradley/ESP3D-WEBUI/tree/revamp
+FluidNC includes a built-in browser-based Web UI ([ESP3D-WebUI](https://github.com/luc-github/ESP3D-WEBUI)) so you control the machine from a PC, phone, or tablet on the same WiFi network.  WebUI is a separate project, but the FluidNC team maintains a separate fork with some enhancements - notably an alternative tablet mode that is optimized for use on a tablet computer, including a GCode visualizer - and with support for some FluidNC-specific features.  The source code for our fork is at https://github.com/MitchBradley/ESP3D-WEBUI/tree/revamp
 
-To use the WebUI, install the wifi version of FluidNC, set FluidNC to connect to your local WiFi network, and browse to `fluidnc.local`
+To use the WebUI, install the WiFi version of FluidNC, set FluidNC to connect to your local WiFi network, and browse to `fluidnc.local`
 
 WebUI now has two main versions, 2 and 3.  The standard FluidNC installation gets you version 2, but you can replace it with version 3 by going to https://github.com/michmela44/ESP3D-WEBUI/tree/3.0-FluidNCDev .
 
@@ -57,7 +57,7 @@ WebUI now has two main versions, 2 and 3.  The standard FluidNC installation get
 
 The original [Grbl](https://github.com/gnea/grbl) is an awesome project by Sungeon (Sonny) Jeon. I have known him for many years and he is always very helpful. I have used Grbl on many projects.
 
-The Wifi and WebUI is based on [this project.](https://github.com/luc-github/ESP3D-WEBUI)
+The WiFi and WebUI is based on [this project.](https://github.com/luc-github/ESP3D-WEBUI)
 
 The FluidNC team thanks the following people for game-changing contributions to the code base:
 
