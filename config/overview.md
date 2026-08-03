@@ -19,7 +19,9 @@ You can load multiple config files if you like and switch between them. You tell
 
 There are many [example config files](https://github.com/bdring/fluidnc-config-files) .  It is unlikely that anyone will exactly match your machine because machines are so different.  Instead of loading an example and hoping it works, you should study the examples and understand how the various items relate to your situation, using the documentation below as a guide.
 
-[FluidNC Web Installer](http://wiki.fluidnc.com/en/installation#fluidnc-web-installer) has a graphical setup utility to help you create and upload a config file.
+The [FluidNC Config Wizard](https://mitchbradley.github.io/FluidNC-config-wizard) is a browser-based tool that generates a config file for you by walking through your board's real pinout and asking what's connected to each pin (motors, spindle, probe, limit switches, etc.), rather than requiring you to hand-write yaml.  It works with many popular boards, but does not have board definition files for every existing board.  New board definition files can be added with a modest amount of effort.
+
+[FluidNC Web Installer](http://wiki.fluidnc.com/en/installation#fluidnc-web-installer) has a graphical setup utility to help you create and upload a config file, integrating with the Wizard described above.
 
 > The config file must contain "plain text", not "rich text" that includes formatting hints like boldface and heading styling.  If you use FluidNC Web Installer to manage config files, it will do the right thing. If you use a text editor, you must choose one that can save in "plain text" mode.  On Windows, Notepad is suitable.  On Mac, the common TextEdit app can do plain text, but you have to tell it to do so, otherwise it will use rich text mode and will add junk to your config file.  [This article](https://support.apple.com/guide/textedit/open-documents-txte51413d09/mac) tells how to make TextEdit use plain text mode. Most editors that are intended for programmers use plain text.
 {.is-warning}

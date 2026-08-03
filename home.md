@@ -19,7 +19,7 @@ See [Installation](/en/installation) for a quick start guide to installing Fluid
 
 ## Wiki Search
 
-> **Wifi Search:** Not all wiki content is linked via the navigation panel. Please use the search feature if you are not finding what you are looking for. You can also change the navigation panel to a file browser type interface to see all pages. 
+> **Wiki Search:** Not all wiki content is linked via the navigation panel. Please use the search feature if you are not finding what you are looking for. You can also change the navigation panel to a file browser type interface to see all pages. 
 {.is-info}
 
 
@@ -31,7 +31,7 @@ See [Installation](/en/installation) for a quick start guide to installing Fluid
 
 ## Machine Definition Method
 
-There is no need to compile the firmware. You use an installation script to upload the latest release of the firmware and then create a [config file](/config/overview) text file that describes your machine.  That file is uploaded to the FLASH on the ESP32 using the USB/Serial port or Wifi.  There are many example config files for different setups that you can use as starting points.  [FluidNC Web Installer](http://wiki.fluidnc.com/en/installation#fluidnc-web-installer) has a graphical setup feature that guides you through the process.
+There is no need to compile the firmware. You use an installation script to upload the latest release of the firmware and then create a [config file](/config/overview) text file that describes your machine.  That file is uploaded to the FLASH on the ESP32 using the USB/Serial port or WiFi.  There are many example config files for different setups that you can use as starting points.  [FluidNC Web Installer](http://wiki.fluidnc.com/en/installation#fluidnc-web-installer) has a graphical setup feature that guides you through the process, and [FluidNC Config Wizard](https://mitchbradley.github.io/FluidNC-config-wizard) lets you create config files for many popular controller boards by clicking on board connectors and assigning the corresponding FluidNC function. 
 
 There are some tools to help you or an AI assistant generate and validate config files;  see [AI Config File Helpers](http://wiki.fluidnc.com/en/config/overview#ai-config-file-helpers).
 
@@ -41,16 +41,15 @@ FluidNC is compatible with Grbl for day-to-day operations like running GCode pro
 
 FluidNC configuration, however, is very different from Grbl.  Grbl is configured in two ways - with **\$number** commands and by editing C source/header files and then recompiling.  Grbl's **\$number** commands (for example **\$100**) let you set motion parameters like maximum speeds and a few aspects of limits and homing.  For deeper settings like controller pin assignments and spindle types, you must recompile Grbl after changing C language header files.  FluidNC is instead configured with a text file as described in the previous section.
 
-
 Some Grbl senders have "setup wizards" providing a user-friendly interface to Grbl's **$number** commands.  Those wizards will not work with FluidNC because FluidNC does not implement all of the **\$number** commands - and even if it did, those old wizards would not know about the many, many new FluidNC configuration possibilities that go far beyond conventional Grbl capabilities.  But the older senders will still be able to control FluidNC and run GCode programs after the setup and configuration has been done by other means.
 
 FluidNC does implement a very small number of **\$number** commands that mimic Grbl's.  You can see a list of them by sending **$$**.  They are not used for configuring FluidNC, but instead to report a very limited amount of information to old senders that do not have FluidNC support.  There are a few senders that issue such commands at startup in order to discover whether, for example, homing is enabled.  FluidNC implements them as read-only, so the old senders can start up properly, but does not let you use them to make changes (the config file is for changes).
 
 ## WebUI
 
-FluidNC includes a built-in browser-based Web UI ([ESP3D-WebUI](https://github.com/luc-github/ESP3D-WEBUI)) so you control the machine from a PC, phone, or tablet on the same Wifi network.  WebUI is a separate project, but the FluidNC team maintains a separate fork with some enhancements - notably an alternative tablet mode that is optimized for use on a tablet computer, including a GCode visualizer - and with support for some FluidNC-specific features.  The source code for our fork is at https://github.com/MitchBradley/ESP3D-WEBUI/tree/revamp
+FluidNC includes a built-in browser-based Web UI ([ESP3D-WebUI](https://github.com/luc-github/ESP3D-WEBUI)) so you control the machine from a PC, phone, or tablet on the same WiFi network.  WebUI is a separate project, but the FluidNC team maintains a separate fork with some enhancements - notably an alternative tablet mode that is optimized for use on a tablet computer, including a GCode visualizer - and with support for some FluidNC-specific features.  The source code for our fork is at https://github.com/MitchBradley/ESP3D-WEBUI/tree/revamp
 
-To use the WebUI, install the wifi version of FluidNC, set FluidNC to connect to your local WiFi network, and browse to `fluidnc.local`
+To use the WebUI, install the WiFi version of FluidNC, set FluidNC to connect to your local WiFi network, and browse to `fluidnc.local`
 
 WebUI now has two main versions, 2 and 3.  The standard FluidNC installation gets you version 2, but you can replace it with version 3 by going to https://github.com/michmela44/ESP3D-WEBUI/tree/3.0-FluidNCDev .
 
@@ -58,7 +57,7 @@ WebUI now has two main versions, 2 and 3.  The standard FluidNC installation get
 
 The original [Grbl](https://github.com/gnea/grbl) is an awesome project by Sungeon (Sonny) Jeon. I have known him for many years and he is always very helpful. I have used Grbl on many projects.
 
-The Wifi and WebUI is based on [this project.](https://github.com/luc-github/ESP3D-WEBUI)
+The WiFi and WebUI is based on [this project.](https://github.com/luc-github/ESP3D-WEBUI)
 
 The FluidNC team thanks the following people for game-changing contributions to the code base:
 
