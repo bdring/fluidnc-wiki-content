@@ -31,7 +31,7 @@ See [Installation](/en/installation) for a quick start guide to installing Fluid
 
 ## Machine Definition Method
 
-There is no need to compile the firmware. You use an installation script to upload the latest release of the firmware and then create a [config file](/config/overview) text file that describes your machine.  That file is uploaded to the FLASH on the ESP32 using the USB/Serial port or Wifi.  There are many example config files for different setups that you can use as starting points.  [FluidNC Web Installer](http://wiki.fluidnc.com/en/installation#fluidnc-web-installer) has a graphical setup feature that guides you through the process.
+There is no need to compile the firmware. You use an installation script to upload the latest release of the firmware and then create a [config file](/config/overview) text file that describes your machine.  That file is uploaded to the FLASH on the ESP32 using the USB/Serial port or Wifi.  There are many example config files for different setups that you can use as starting points.  [FluidNC Web Installer](http://wiki.fluidnc.com/en/installation#fluidnc-web-installer) has a graphical setup feature that guides you through the process, and [FluidNC Config Wizard](https://mitchbradley.github.io/FluidNC-config-wizard) lets you create config files for many popular controller boards by clicking on board connectors and assigning the corresponding FluidNC function. 
 
 There are some tools to help you or an AI assistant generate and validate config files;  see [AI Config File Helpers](http://wiki.fluidnc.com/en/config/overview#ai-config-file-helpers).
 
@@ -40,7 +40,6 @@ There are some tools to help you or an AI assistant generate and validate config
 FluidNC is compatible with Grbl for day-to-day operations like running GCode programs from a sender.  FluidNC's GCode flavor is upward-compatible with Grbl's, so CAM post programs for Grbl generate code that FluidNC will run correctly.
 
 FluidNC configuration, however, is very different from Grbl.  Grbl is configured in two ways - with **\$number** commands and by editing C source/header files and then recompiling.  Grbl's **\$number** commands (for example **\$100**) let you set motion parameters like maximum speeds and a few aspects of limits and homing.  For deeper settings like controller pin assignments and spindle types, you must recompile Grbl after changing C language header files.  FluidNC is instead configured with a text file as described in the previous section.
-
 
 Some Grbl senders have "setup wizards" providing a user-friendly interface to Grbl's **$number** commands.  Those wizards will not work with FluidNC because FluidNC does not implement all of the **\$number** commands - and even if it did, those old wizards would not know about the many, many new FluidNC configuration possibilities that go far beyond conventional Grbl capabilities.  But the older senders will still be able to control FluidNC and run GCode programs after the setup and configuration has been done by other means.
 
