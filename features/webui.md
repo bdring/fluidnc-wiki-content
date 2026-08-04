@@ -10,9 +10,33 @@ dateCreated: 2023-09-10T15:13:46.506Z
 
 # WebUI
 
+The WebUI is a web browser based controller for FluidNC. It is a separate project from FluidNC. It can only be used via WiFi or Ethernet.
+
+The webUI is served to a web browser from FluidNC. It is a file that in the localfs (local file system) called index.html.gz. You can upgrade or change it by uploading a new version of the file.
+
+## Versions
+
+There are currently 3 WebUI options to choose.
+
+The locations of the files are [stored here](https://github.com/bdring/FluidNC/blob/9c690fb235eefa391affc614f2d40fe5fc5cec48/build-release.py#L89).
+
+### WebUI2
+
+This is the original version
+
 ![webui.png](/webui/webui.png)
 
-The WebUI is a web browser based controller for FluidNC. It is a separate project from FluidNC. It can only be used via WiFi.
+### WebUI3
+
+This is an upgraded version of the original WebUI
+
+![webui.png](/webui/webui3.png)
+
+### FigUI
+
+This is an independent specifically targeting FluidNC
+
+![webui.png](/webui/figui.png)
 
 ## Development
 

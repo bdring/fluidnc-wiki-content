@@ -105,6 +105,30 @@ In this mode your router will assign an address. You will be able to see it in t
 
 
 ```
+
+
+## Wired Ethernet
+
+Wired Ethernet is currently supported using the W5500 SPI Interface Ethernet Module.
+
+- Use the Wifi version of the firmware
+-  Set `$network/type
+- Add a section like this to your config file.
+
+```yaml
+ethernet:
+  cs_pin: gpio.5
+  int_pin: gpio.3
+  rst_pin: gpio.4
+  phy_type: w5500
+  phy_addr: 1
+  frequency_hz: 1000000
+```
+
+It should use the same SPI setup as your SD card.
+
+[Example circuit]( https://oshwlab.com/bdring/project_rcrgdqvt)
+
 ## WebUI
 
 The [WebUI](http://wiki.fluidnc.com/en/features/webui) is the web browser based user interface.
