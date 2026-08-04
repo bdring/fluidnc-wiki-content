@@ -38,7 +38,7 @@ Anything within parentheses will be considered a comment and ignored by the gcod
 
 ```gcode
 M3 (Spindle CCW) S1000 (Speed 1000)
-``` 
+```
 
 If the comment has 'MSG ' in it, it will echo the comment back to the console in the `[MSG:INFO: GCode Comment...My Message]` format. It will strip the `MSG` and the following character (typically a space) from your comment.
 
@@ -138,17 +138,17 @@ M3 S2000 ;turn on spindle CW with speed 2000
 ## F Feed Rate
 
   - Used to set the feed rate per the current units.
-  
+
 ```gcode
 F1000 ; set feed rate to 1000
 G1 X20 ;move to x20 at 1000
 G1 X0 F3000 ;move to 0x0 at 3000
 ```
-  
+
 >  At startup feed rate is 0. You will get an error if you try to use a motion command like G1, G2, G3, etc. if you do not have a feed rate above 0.
 {.is-warning}
 
-  
+
 ## T Tool Number
 
 Prepare to change to tool number. When the M6 command comes the actual tool will be changed. It can be used on its own line or with M6. Standard FluidNC uses tool numbers for multiple spindles. It is the way to change to another spindle.
@@ -285,6 +285,9 @@ $#
 [G57:0.000,0.000,0.000]
 [G58:0.000,0.000,0.000]
 [G59:0.000,0.000,0.000]
+[G59.1:3.000,0.000,0.000]
+[G59.2:0.000,0.000,0.000]
+[G59.3:0.000,0.000,0.000]
 [G28:0.000,-10.000,-30.000]
 [G30:5.000,-5.000,-1.000]
 [G92:0.000,0.000,0.000]
@@ -396,12 +399,9 @@ G0 G53 Z-1 (move to Z-1 in MPos)
 G53 X20 (G0 move to Mpos X20)
 ```
 
-## G54 through G59 Select Coordinate System
+## G54 through G59 &  G59.1, G59.2 and G59.3 Select Coordinate System
 
 This is used to set the current coordinate system. Coordinate systems store work coordinate system offsets. This allows you to set 6 different work offsets. The system always starts in G54. You set the value of the offsets with the G10 command. The offsets are stored in non volatile memory and are automatically restored at startup. You can read the offset values with the `$#` command. 
-
-> G59.1 through G59.3 are not supported. This is primarily because Grbl never supported them.
-{.is-info}
 
 
 ***Examples:***
@@ -417,6 +417,9 @@ $#
 [G57:0.000,0.000,0.000]
 [G58:0.000,0.000,0.000]
 [G59:0.000,0.000,0.000]
+[G59.1:3.000,0.000,0.000]
+[G59.2:0.000,0.000,0.000]
+[G59.3:0.000,0.000,0.000]
 [G28:0.000,0.000,0.000]
 [G30:0.000,0.000,0.000]
 [G92:0.000,0.000,0.000]
@@ -563,7 +566,7 @@ This turns both M7 and M8 off. See M7.1 and M8.1 for a way to turn them off indi
   - `M63 Pn` Turn off [digital output](http://wiki.fluidnc.com/en/config/user_outputs#digital) synchronized with motion. The P word specifies the digital output number.
   - `M64 Pn` Turn on digital output immediately. The P word specifies the digital output number.
   - `M65 Pn` Turn off digital output immediately. The P word specifies the digital output number.
-  
+
 ```gcode
 M62 P0 ;turn on digital0_pin in your config file
 M63 P0 ;turn it off.
@@ -598,7 +601,7 @@ This is used to set the PWM level of an [analog output](http://wiki.fluidnc.com/
 
   - `E` The the number of the output
   - `Q` The percentage of the duty cycle 0% - 100%
-  
+
   ```GCode
   M67 E0 Q23.76
   ```
@@ -621,7 +624,7 @@ You can put multiple commands on a single line of gcode as long as no two, or mo
     - Stopping mode (Group 4) M0, M2, M30
     - Spindle (Group 7) M3, M4, M5
     - Coolant (Group 8) M7, M8, M9 (M7 and M8 can be active at the same time)
-   
+     
     
     
 
