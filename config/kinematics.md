@@ -2,7 +2,7 @@
 title: Kinematics
 description: 
 published: true
-date: 2026-08-01T19:33:15.815Z
+date: 2026-08-06T15:33:55.562Z
 tags: en
 editor: markdown
 dateCreated: 2022-07-21T19:14:33.083Z
@@ -181,14 +181,20 @@ An alternative to putting kinematics in FluidNC is to use a pre-processor. This 
 
 This is an easy way to test the kinematic equations and the performance of your machine.
 
-## Create your own type
+# Creating your own kinematic type
 
 You can create a new type by adding a new class that is derived from the KinematicSystem class. If your machine is still based on the Cartesian system, like CoreXY, you can derive from Cartesian.
 
 Look at all the virtual functions in Kinematic.h. You will probably want to override most of them in your class. You can search the main code to see how these are called. You can also look at other examples like CoreXY to see what is done.
 
-There is a functional [parallel delta kinematics on Grbl_ESP32](https://github.com/bdring/Grbl_Esp32/tree/main/Grbl_Esp32/Custom), that might give you a head start if you want that type of kinematics.
+## Kinematics Homing
 
-## Will we make a custom one for you?
+FluidNC is design to home axis motors using switches associated with those motors. Using information from the config file, like max travel, it plots a relative move for each cycle that should get to the switch. This is done in cartesian (XYZ, etc) space.  
+
+With some kinematics, like a delta or SCARA, multiple motors need to coordinate to move in cartesian space and that can only be done if the current position is known. Otherwise, you could have arms crash into each other in some cases.
+
+FluidNC allows you to override the homing logic in the kinematics code. This would allow you to move a single motor towards its switch, temporarily ignoring the kinematics and then setting the actual cartesian starting position. 
+
+## Will we make a custom kinematics for you?
 
 The answer is probably not. It is a lot of work and requires a machine to test on. We are happy to include your code if you write a new one.
