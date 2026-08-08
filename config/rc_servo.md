@@ -2,10 +2,10 @@
 title: RC Servo
 description: Configuring an RC servo as an axis motor
 published: true
-date: 2026-08-01T22:15:00.000Z
+date: 2026-08-08T16:10:47.700Z
 tags: en
 editor: markdown
-dateCreated: 2026-08-01T22:15:00.000Z
+dateCreated: 2026-08-01T22:57:41.809Z
 ---
 
 # RC Servo
@@ -148,4 +148,16 @@ z:
         min_pulse_us: 1000
         max_pulse_us: 2000
 ```
+# FAQ
 
+## Why does my servo get hot 
+
+Servos get hot when they draw too much current for a long time. This often happens when the servo cannot reach its target. This could be because it does not have enough strength to move the actuator or the servo is trying to go past its phyical limit. Make sure to do not have pulses outside the range of the servo.
+
+## Why does move a little when other axes move.
+
+If you have the motors set to disable after moves (idle_ms:), the servo may not be at the previous target when it is enabled for the next move. This means it will quickly try to move to that location even if the servo axis is not part of that next move.
+
+It could be away from the target because the load rotated it a little when it was disabled. If the speed and accelration for the axis is too fast for the servo, it may never have reached the original target.
+
+ 
