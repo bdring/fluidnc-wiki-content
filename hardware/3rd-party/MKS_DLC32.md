@@ -23,22 +23,16 @@ dateCreated: 2022-07-23T19:15:14.069Z
 - [Configuration Wizard](https://mitchbradley.github.io/FluidNC-config-wizard/?board=mks_dlc32_v2_1)
 
 ### Note
-> There are some problems with this page caused by third-party edits that are incorrect.  I (Mitch) will fix them when I have time.  The problems I have noticed so far include: 1. The next note about I2S_STREAM is not actually specific to this hardware.  I2S_STREAM does not work well for lasers on **any** hardware, because of a latency delay between the power control code and the stream buffering of I2S stepping.  2. The stuff about pins i2so.8 - i2so.15 is nonsense; MKS DLC32 has only 8 I2SO pins i2s0.0 - i2so.7.  Perhaps the person who wrote that was confusing i2so with the labels IOnn in the picture below.
-{.is-warning}
 
-> This hardware **does NOT like** using I2S_STREAM, it creates a secondary ghost image whenever engraving, however, cutting is absolutely fine and perfect. Recomended use of only I2S_STATIC.
-{.is-warning}
-
-> I2S_STATIC Works Flawlessly all functions!
-{.is-success}
-
-
-> This hardware does not have UART capability to communicate with "smart" drivers, all driver amperage must be set by normal potentiometer method. **HOWEVER** one person has had success in using sensorless homing by jumping the DIAG pin on a TMC2209 directly from the driver to the GPIO of the corresponding endstop to detecting the stall occurrence. While not a method of UART communiccation for smart features, it can be used to do sensorless homing.  The config must be re-written for that feature, and further tested.
+> The stepstick sockets on this board have DIP switches for the mode select stepstick pins, which lets you set the microstepping level on "dumb" stepper driver chips like A4988 and DRV8825.  Many people want to use the board with "smart" driver chips like TMC2209.  TMC2209 stepsticks come in two flavors - "standalone mode" and "UART mode".  If your TMC2209 is the standalone mode version (where the current is set by a potentiometer), it will work with this board.  If your TMC2209 is the UART-mode version, it will only work if you modify the board hardware to add extra wiring to connect the UARTs.  There is information about such mods on the Internet, but the FluidNC developers cannot help you with that.  The config shown below is for "dumb" driver stepsticks and smart drivers in standalone mode.
 {.is-danger}
+
+> This board is very low cost and thus quite popular.  The vendor does not support FluidNC in any way, but the FluidNC developers have spent countless uncompensated hours supporting it and helping users.  If you use this board, please consider donating to FluidNC so we can continue to provide support.
+{.is-warning}
 
 ## MKS Displays
 
-FluidNC does not and will not support the displays that typically ship with this controller. The displays are incompatible with the [way FluidNC supports displays](http://wiki.fluidnc.com/en/hardware/pendants_displays). See the example config.yaml file for a working OLED Screen configuration.
+FluidNC does not and will not support the displays that typically ship with this controller. The displays are incompatible with the [way FluidNC supports displays](http://wiki.fluidnc.com/en/hardware/pendants_displays). It is probably possible to connect a FluidNC pendant via the expansion port, but as of yet, there is no predesigned adapter for that.
 
 ## Pin Numbers
 
@@ -88,13 +82,6 @@ FluidNC does not and will not support the displays that typically ship with this
 - **i2so.5** Y_STEP
 - **i2so.6** Y_DIR
 - **i2so.7** Beeper / EXP1 LCD Beeper (shared)
-- **i2so.8** Being used as a ground
-- **i2so.10** +5v for the I2 Chip
-- **i2so.11** I2S_BCK (communication with I2S chip)
-- **i2so.12** I2S_WS (same as above)
-- **i2so.13** Also being used as a ground
-- **i2so.14** I2S_DATA (communication with I2S chip)
-- **i2so.15** XYZ_EN (Shared, not needed in config to engage)
 
 ### In Group use order
 

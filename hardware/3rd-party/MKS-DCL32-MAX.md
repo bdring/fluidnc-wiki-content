@@ -14,7 +14,7 @@ dateCreated: 2025-09-09T15:49:02.979Z
 
 ## Overview
 
-This controller uses the ESP32 S3 chip. It must be compiled using the experimental S3 branch. Ask on Discord about this.
+This controller uses the ESP32 S3 chip.  Current FluidNC releases work with it.
 
 ## USB
 
@@ -27,10 +27,6 @@ This is not the CDC USB that is built into the ESP32-S3. That is not available o
 - [Github Repo](https://github.com/makerbase-mks/MKS-DLC32/tree/main/MKS--DLC32-MAX-main)
 - [Operation Manual](https://github.com/makerbase-mks/MKS-DLC32/blob/main/MKS--DLC32-MAX-main/tool/MKS%20DLC32%20MAX%20Manual.pdf)
 - Schematic (can't find one)
-
-## Uploading firmware
-
-Currently you must compile yourself for the S3 chip and upload.
 
 ## Motors
 
