@@ -2,7 +2,7 @@
 title: Existing Hardware
 description: Hardware that runs FluidNC
 published: true
-date: 2026-08-03T20:53:40.367Z
+date: 2026-08-11T15:32:21.416Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T12:57:33.399Z
@@ -125,30 +125,19 @@ These are controller that are still available for purchase as far as we know.
   
 ![4x_cnc_ctrlr_01.jpg](/hardware/4x_cnc_ctrlr_01.jpg =x400)
 
+***
 
-## PiBot FluidNC GRBL CNC Controller V4.7
-
-- **Open Source:** [Yes](https://oshwlab.com/pi3d14/pibot-fluidnc-grbl-cnc-controller-v4-7a)
-- **[Documentation](https://www.pibot.com/pibot-fluidnc-grbl-cnc-controller-v4-7)**
+## PiBot FluidNC grblHAL CNC Controller V5.88 Ultra
+- **Open Source:** NO
+- **[Wiki Documentation](https://wiki.pibot.com/doku.php?id=pibot_cnc_laser_series:v588_ultra:introduction:start)**
 - **FluidNC Supporter:** Yes
 - **Discord Name** @abcpibot
-- **For Sale:** [Yes](https://www.pibot.com/pibot-fluidnc-grbl-cnc-controller-v4-7) (Use coupon code **fluidncpbt**)
-- **Description:** A clone of the original [6x controller](http://wiki.fluidnc.com/en/hardware/existing_hardware#h-6x-cnc-controller) with a plug in ESP32 module and an additional pendant interface.
+- **For Sale:** [Yes](https://www.pibot.com/cnc-laser-electronics/pibot-fluidnc-grblhal-esp32-s3-6-1-axis-cnc-controller-v5-88-ultra) (Use coupon code **fluidncpbt**)
+- **Description:** 6+1 axis controller based on the ESP32-S3. Provides both on-board plug-in driver sockets and external connectors, with SPI driver support and a galvanically isolated RS485 for Modbus VFD spindle control. Supports the PiBot pendant, I/O expander, and SPI TMC5160 driver modules running simultaneously, on a 4-layer PCB.
 
-![pibot_4p7_1.png](/hardware/pibot_4p7_1.png =x500)
+<img src="https://raw.githubusercontent.com/abcpibot/PiBot-V5.88-Docs/refs/heads/main/images/v588-1.jpg" width="650">
 
-## PiBot FluidNC GRBL CNC Controller V4.8
-
-- **Open Source:** [Yes](https://oshwlab.com/pi3d14/pibot-fluidnc-grbl-cnc-controller-v4-8a)
-- **[Documentation](https://www.pibot.com/pibot-fluidnc-grbl-cnc-controller-v4-8)**
-- **FluidNC Supporter:** Yes
-- **Discord Name** @abcpibot
-- **For Sale:** [Yes](https://www.pibot.com/pibot-fluidnc-grbl-cnc-controller-v4-8) (Use coupon code **fluidncpbt**)
-- **Description:** Compatible with the FluidNC “6x CNC Controller” pinmaps, added support for A4988 and other direct-plug stepper motors driver, as well as a relay. We provide a yaml configuration file for a 6 Axis external driver controller that supports a spindle, 0-10V adjust on board, Relay on board, RS485 on board, Lasers with PWM and SD card ect.
-
-![pibot_4p8_2.png](/hardware/pibot_4p8_2.png =x500)
-
-## PiBot FluidNC GRBL CNC Controller V4.96 Pro
+## PiBot FluidNC grblHAL CNC Controller V4.96 Pro
 
 - **Open Source:** NO ([PDF on PiBot Wiki](https://www.pibot.com/image/catalog/V496/sch496.png))
 - **[Wiki Documentation](https://wiki.pibot.com/doku.php?id=pibot_cnc_laser_series:v496_pro:start)**
@@ -159,15 +148,27 @@ These are controller that are still available for purchase as far as we know.
 
 ![pibotv496.png](/hardware/pibotv496.png =x500)
 
-## PiBot FluidNC GRBL CNC Controller V5.88 Ultra
+## PiBot FluidNC grblHAL CNC Controller V5.77 Carrier
+
 - **Open Source:** NO
-- **[Wiki Documentation](https://wiki.pibot.com/doku.php?id=pibot_cnc_laser_series:v588_ultra:introduction:start)**
+- **[Wiki Documentation](https://wiki.pibot.com/doku.php?id=pibot_cnc_laser_series:v577_carrier:introduction:start)**
 - **FluidNC Supporter:** Yes
 - **Discord Name** @abcpibot
-- **For Sale:** [Yes](https://www.pibot.com/cnc-laser-electronics/pibot-fluidnc-grblhal-esp32-s3-6-1-axis-cnc-controller-v5-88-ultra) (Use coupon code **fluidncpbt**)
-- **Description:** 6+1 axis controller based on the ESP32-S3. Provides both on-board plug-in driver sockets and external connectors, with SPI driver support and a galvanically isolated RS485 for Modbus VFD spindle control. Supports the PiBot pendant, I/O expander, and SPI TMC5160 driver modules running simultaneously, on a 4-layer PCB.
+- **For Sale:** [Yes](https://www.pibot.com/pibot-fluidnc-grblhal-esp32-s3-8-axis-cnc-controller-v5-77) (Use coupon code **fluidncpbt**)
+- **Description:** **Description:** An 8-axis FluidNC CNC controller with a replaceable ESP32-S3 module, featuring onboard 0–10V spindle control, RS485, PWM, MOSFET outputs, SD card support, an RJ12 pendant interface, and I/O expander support.
 
-<img src="https://raw.githubusercontent.com/abcpibot/PiBot-V5.88-Docs/refs/heads/main/images/v588-1.jpg" width="650">
+![pibot-577-900.jpg](/hardware/pibot-577-900.jpg =x500)
+
+## PiBot FluidNC grblHAL CNC Controller V4.7B
+
+- **Open Source:** [Yes](https://oshwlab.com/pi3d14/pibot-fluidnc-grbl-cnc-controller-v4-7a)
+- **[Wiki Documentation](https://wiki.pibot.com/doku.php?id=pibot_cnc_laser_series:v47b:introduction:start)**
+- **FluidNC Supporter:** Yes
+- **Discord Name** @abcpibot
+- **For Sale:** [Yes](https://www.pibot.com/pibot-fluidnc-grbl-cnc-controller-v4-7) (Use coupon code **fluidncpbt**)
+- **Description:** A clone of the original [6x controller](http://wiki.fluidnc.com/en/hardware/existing_hardware#h-6x-cnc-controller) with a plug in ESP32 module and an additional pendant interface.
+
+![pibot-47b-900.jpg](/hardware/pibot-47b-900.jpg =x500)
 
 ***
 
