@@ -2,7 +2,7 @@
 title: Machine Coordinates, Work Coordinates, Homing and Zeroing
 description: Explains the difference between machine and work coordinates
 published: true
-date: 2026-08-14T22:46:47.314Z
+date: 2026-08-14T22:49:49.293Z
 tags: 
 editor: markdown
 dateCreated: 2026-08-14T22:38:45.437Z
