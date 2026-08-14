@@ -2,7 +2,7 @@
 title: Help with Machine Space and Homing
 description: 
 published: true
-date: 2026-08-01T19:39:15.401Z
+date: 2026-08-14T22:45:16.836Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T21:52:30.715Z
@@ -16,6 +16,7 @@ If machine space is confusing you while using the machine, just ignore it. It is
 
 With FluidNC you are free to setup the machine range any way you like. It can be any size and you can place that size anywhere you want in space. You can have it in all positive space, all negative space or partially in both.
 
+It is crucial to [understand the difference between Machine and Work Coordinate Systems](/en/support/work_coordinates).
 <img src="https://github.com/bdring/FluidNC/wiki/images/mpos_youtube.png" width="500">
 
 [Here is a good video explaining work coordinate systems](https://www.youtube.com/watch?v=fGtbkVJBXyE) (Uses Grbl, but is still valid for FluidNC)
