@@ -2,7 +2,7 @@
 title: Machine Coordinates, Work Coordinates, Homing and Zeroing
 description: Explains the difference between machine and work coordinates
 published: true
-date: 2026-08-14T22:38:45.437Z
+date: 2026-08-14T22:46:47.314Z
 tags: 
 editor: markdown
 dateCreated: 2026-08-14T22:38:45.437Z
@@ -19,6 +19,9 @@ G-code supports multiple coordinate systems - a special **Machine Coordinate Sys
 
 ## G-code Uses Work Coordinates
 For standard operations, the coordinate numbers in a G-code command are relative to the zero point of a Work Coordinate System — designated by **G54** through **G59.3**.  Having multiple work coordinate systems lets machinists set up several fixtures across the machine bed simultaneously and switch between them. For hobbyist use or single-part jobs, you will typically use just one, the default system **G54**. Most CAM-generated programs include an explicit **G54** near the beginning of the file to ensure the correct coordinate system is active.
+
+
+[This video also explains work coordinate systems](https://www.youtube.com/watch?v=fGtbkVJBXyE) 
 ## Zeroing
 **Zeroing** is the process of setting the reference origin (0,0,0) on your actual workpiece or fixture. This can be done manually by jogging the tool to the edge of the stock, touching off with a probe, or using a corner-finding macro.  Once the reference position is located, the current Work Coordinate System zero is set by pressing a UI *Zero* button (which then sends a G-code command like **G10 L20 P0 X0 Y0**). Regardless of method, zeroing establishes where **X=0, Y=0, Z=0** sits relative to your material, wherever it happens to be clamped on the bed. A subsequent G-code command like **G0 X10** will then move 10 mm (or inches) from that stock origin, rather than 10 mm from the machine corner.
 
