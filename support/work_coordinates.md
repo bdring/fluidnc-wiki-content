@@ -2,14 +2,14 @@
 title: Machine Coordinates, Work Coordinates, Homing and Zeroing
 description: Explains the difference between machine and work coordinates
 published: true
-date: 2026-08-14T23:40:21.437Z
+date: 2026-08-14T23:42:16.032Z
 tags: 
 editor: markdown
 dateCreated: 2026-08-14T22:38:45.437Z
 ---
 
 # Machine Coordinates, Work Coordinates, Homing and Zeroing
-Newcomers to CNC often assume there is only one XYZ coordinate system.  While some kinds of machines like 3D printers (with their special-purpose G-code interpreters) do have only one coordinate system, CNC machines with general-purpose G-code interpreters have multiple coordinate systems.  Some user interface programs present a simplified view, showing you only one coordinate system, but that simplification ultimately leads to confusion.
+Newcomers to CNC often assume there is only one XYZ coordinate system.  While some kinds of machines like 3D printers - with their special-purpose G-code interpreters - do have only one coordinate system, CNC machines with general-purpose G-code interpreters like FluidNC have multiple coordinate systems.  Some user interface programs present a simplified view, showing you only one coordinate system, but that simplification ultimately leads to confusion.
 
 ## Machine and Work Coordinates
 G-code supports multiple coordinate systems - a special **Machine Coordinate System** representing the machine's physical limits (total work area) and up to nine **Work Coordinate Systems** (WCS) defined relative to stock you are working on.  That stock could be placed anywhere inside the machine's total work area.  By analogy, if you were making something on a workbench, the Machine Coordinate System would encompass the entire workbench.  The plan drawings for your part would be in Work Coordinates.  They would not refer to your bench or where you clamped the material on it; instead they would show features relative to the material or the part itself.
