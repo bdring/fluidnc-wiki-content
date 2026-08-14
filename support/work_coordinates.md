@@ -2,7 +2,7 @@
 title: Machine Coordinates, Work Coordinates, Homing and Zeroing
 description: Explains the difference between machine and work coordinates
 published: true
-date: 2026-08-14T22:49:49.293Z
+date: 2026-08-14T23:31:40.490Z
 tags: 
 editor: markdown
 dateCreated: 2026-08-14T22:38:45.437Z
@@ -29,3 +29,12 @@ Internally, the controller calculates and saves the distance between Machine Zer
 
 ## Work Coordinate Offsets (WCOs)
 Internally, when you zero a Work Coordinate System, the software records the location of that relative zero point as a multi-dimensional offset (one number for each axis) from the machine coordinate system zero point.  That is called the Work Coordinate Offset, or WCO.  There is a separate one for each of FluidNC's nine work coordinate systems.  You can display the WCO set by sending **$#** .  Normally you do not have to worry about WCOs directly - you just zero to your stock and let the program take care of the rest - but if you are confused about the coordinates that your UI program is displaying, looking at the WCOs might explain what is going on.
+
+## Homing is Recommended (but Optional)
+Homing, using limit switches to find the machine boundaries, is highly recommended, but not strictly required to run G-code.  If a machine hasn't been homed (or lacks homing switches altogether), it powers up with its Machine Zero set at whatever physical position the tool happens to occupy at startup.
+
+Without homing, the controller cannot enforce soft limits (software boundaries that block out-of-bounds moves). As a result, sending an invalid command or moving too far along an axis can cause the machine to crash into its physical frame. On lightweight desktop CNCs with small stepper motors that stall without damaging anything, this may be acceptable, but on larger or more powerful machines, it can cause physical damage.
+
+Operating without true machine position does not break normal G-code execution. When you zero your Work Coordinate System (via touching off or probing), FluidNC calculates the Work Coordinate Offset relative to that arbitrary startup location. Because that reference point remains stationary as long as the controller stays powered on, your G-code programs will execute normally.
+
+The critical requirement for this usage is that you absolutely must zero the WCS every time you power on the machine - but that is good practice in any case.
