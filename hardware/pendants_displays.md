@@ -2,7 +2,7 @@
 title: Displays and Pendants
 description: How to use displays and pendants with FluidNC
 published: true
-date: 2026-08-01T19:38:15.373Z
+date: 2026-08-15T08:38:02.011Z
 tags: 
 editor: markdown
 dateCreated: 2023-12-27T14:29:45.137Z
@@ -61,7 +61,7 @@ We have a [Github repo with an API written in C and C++](https://github.com/Mitc
 
 <img src="https://github.com/jeyeager65/FluidTouch/blob/main/docs/images/photo.png?raw=true" />
 
-## FluidDial-CYD (Wired or WiFi + Li-Ion Battery)
+## FluidDial-CYD (Wired or Wireless + Li-Ion Battery)
 
 - **Open Source:** [Yes, GPL-3.0](https://github.com/dJOS1475/FluidDial-CYD)
 - **[Documentation](https://github.com/dJOS1475/FluidDial-CYD/blob/main/README.md)**
@@ -70,6 +70,6 @@ We have a [Github repo with an API written in C and C++](https://github.com/Mitc
 - **Firmware Web-Installer:** https://djos1475.github.io/FluidDial-CYD/
 - **Description:** FluidDial-CYD is a custom firmware for CYD-equipped FluidDial CNC pendants. The UI has been rebuilt from the ground up for devices with 3 physical buttons and a jog dial. Supports both resistive (XPT2046) and capacitive (CST816S) CYD screen variants.
 - **Probing:** Includes onboard support for Z Surface Probes, XYZ Probes and 3D Touch probes. Supports Z Surface, XYZ Corner, Bore, and Boss Probing.
-- **WiFi and Li-Ion Battery support**: is included for the Capacitive CYD's and you can switch between them as desired. Note: Resistive CYD's have no built in Li-Ion battery support. 
+- **Wireless and Li-Ion Battery support**: is included for the Capacitive CYD's and you can switch between them as desired. Wireless connectivity is via ESP-NOW which performs extremely well. FluidNC v4.0.4 os required. Note: Resistive CYD's have no built in Li-Ion battery support. 
 
 ![img_4804_2.jpeg](/img_4804_2.jpeg =x550)
