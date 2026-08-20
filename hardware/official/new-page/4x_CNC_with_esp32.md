@@ -2,7 +2,7 @@
 title: 4x CNC with ESP32
 description: 
 published: true
-date: 2025-12-21T04:09:35.558Z
+date: 2026-08-20T16:20:32.502Z
 tags: 
 editor: markdown
 dateCreated: 2024-10-24T14:30:35.264Z
@@ -537,7 +537,7 @@ start:
 > Note: The silkscreen on the back of the v1.1 controller is incorrect for the v1.1 controllers. Use this diagram.
 {.is-warning}
 
-> You may notice GPIO.13 and GPIO.14 reversed orientation wise.
+> Note: The silkscreen on the controller has gpio.13 and gpio.14 swapped.
 {.is-warning}
 
 
