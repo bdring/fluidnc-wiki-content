@@ -2,7 +2,7 @@
 title: Displays and Pendants
 description: How to use displays and pendants with FluidNC
 published: true
-date: 2026-08-15T08:42:13.302Z
+date: 2026-08-23T09:10:44.510Z
 tags: 
 editor: markdown
 dateCreated: 2023-12-27T14:29:45.137Z
@@ -71,6 +71,6 @@ We have a [Github repo with an API written in C and C++](https://github.com/Mitc
 - **Description:** FluidDial-CYD is a custom firmware for CYD-equipped FluidDial CNC pendants. The UI has been rebuilt from the ground up for devices with 3 physical buttons and a jog dial. Supports both resistive (XPT2046) and capacitive (CST816S) CYD screen variants.
 - **Probing:** Includes onboard support for Z Surface Probes, XYZ Probes and 3D Touch probes. Supports Z Surface, XYZ Corner, Bore, and Boss Probing.
 - **Wireless and Li-Ion Battery support**: is included for the Capacitive CYD's and you can switch between them as desired. Wireless connectivity is via ESP-NOW which performs extremely well. FluidNC v4.0.4+ is required on the CNC controller. Pouch cell batteries of less that 3000mAh are ideal and fit under the display in the stock case.
-Note: Resistive CYD's have no built in Li-Ion battery support. 
+Note: Resistive CYD's have no built in Li-Ion battery support but do still support ESP-NOW.
 
 ![img_4804_2.jpeg](/img_4804_2.jpeg =x550)
