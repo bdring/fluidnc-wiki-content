@@ -2,7 +2,7 @@
 title: Modbus VFD Spindles
 description: Using RS485 Modbus VFDs with FluidNC
 published: true
-date: 2026-08-23T09:18:45.245Z
+date: 2026-08-23T09:20:41.766Z
 tags: 
 editor: markdown
 dateCreated: 2026-03-01T22:23:18.741Z
@@ -446,7 +446,7 @@ The most relevant sections are:
 F011 (min frequency)
 F005 (max frequency)
 
-From FluidNC 4.x.x onwards, the following is a working config for a 6X CNC Controller:
+From FluidNC 4.0.3 onwards, the following is a working config for a 6X CNC Controller with H100 VFD. Thsi will read the config direct from the H100 over RS485:
 
 ```yaml
 uart2:
