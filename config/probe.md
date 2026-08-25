@@ -2,7 +2,7 @@
 title: Probe
 description: Configure Probe Devices
 published: true
-date: 2026-08-01T19:33:36.502Z
+date: 2026-08-25T13:00:05.149Z
 tags: en
 editor: markdown
 dateCreated: 2022-07-21T17:51:51.595Z
@@ -101,10 +101,12 @@ If the probe is successful, it will issue a message like this `[PRB:151.000,149.
 
 If the probe fails, it will issue a message like this `[PRB:0.000,0.000,0.000:0]`. The 0 at the end indicates a failed probe.
 
-You need to specify move axis parameters and a feedrate.
-- **[G38.2 Z-5 F200](https://linuxcnc.org/docs/2.6/html/gcode/gcode.html#sec:G38-probe)** This would probe towards the work position Z-5 with a feed rate of 200.
+The move is done in the current distance mode (G90/G91) and feedrate modes. They put on the same line in the examples below for clarity.  
+- **[G38.2 G90 Z-5 F200](https://linuxcnc.org/docs/2.6/html/gcode/gcode.html#sec:G38-probe)** This would probe towards the work position Z-5 with a feed rate of 200.
 - **[G38.2 G91 Z-5 F200](https://linuxcnc.org/docs/2.6/html/gcode/gcode.html#sec:G38-probe)** The G91 parameter will cause it to move down in Z by 5 with a feed rate of 200. Note: Be aware that G91 will persist and affect subsequent g codes. You should reset it to G90 if that was the previous mode.
 - **G53 G38.2 Z-125 F200 P16** This will probe toward Z-125 in machine space (G53)
+
+Note: All modes you change in the probe gcode will persist, like the distance mode, feedrate and G38. 
 
 You can probe towards any point in any or multiple axes at once. Soft limits will be respected. If the command requests a maximum travel that exceeds the range and soft limits are true for the axis, you will get an alarm.
 
