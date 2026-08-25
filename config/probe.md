@@ -2,7 +2,7 @@
 title: Probe
 description: Configure Probe Devices
 published: true
-date: 2026-08-25T13:00:05.149Z
+date: 2026-08-25T13:03:10.563Z
 tags: en
 editor: markdown
 dateCreated: 2022-07-21T17:51:51.595Z
@@ -104,7 +104,7 @@ If the probe fails, it will issue a message like this `[PRB:0.000,0.000,0.000:0]
 The move is done in the current distance mode (G90/G91) and feedrate modes. They put on the same line in the examples below for clarity.  
 - **[G38.2 G90 Z-5 F200](https://linuxcnc.org/docs/2.6/html/gcode/gcode.html#sec:G38-probe)** This would probe towards the work position Z-5 with a feed rate of 200.
 - **[G38.2 G91 Z-5 F200](https://linuxcnc.org/docs/2.6/html/gcode/gcode.html#sec:G38-probe)** The G91 parameter will cause it to move down in Z by 5 with a feed rate of 200. Note: Be aware that G91 will persist and affect subsequent g codes. You should reset it to G90 if that was the previous mode.
-- **G53 G38.2 Z-125 F200 P16** This will probe toward Z-125 in machine space (G53)
+- **G53 G38.2 Z-125 F200 P16** This will probe toward Z-125 in machine space ([G53](http://wiki.fluidnc.com/en/features/supported_gcodes#g53-use-machine-coordinates))
 
 Note: All modes you change in the probe gcode will persist, like the distance mode, feedrate and G38. 
 
