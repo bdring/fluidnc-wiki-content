@@ -2,7 +2,7 @@
 title: Configuring IO Pins
 description: How to configure IO pins
 published: true
-date: 2026-08-01T19:32:42.040Z
+date: 2026-08-28T00:08:46.387Z
 tags: en
 editor: markdown
 dateCreated: 2022-07-21T16:43:02.416Z
@@ -80,8 +80,32 @@ i2so:
 
 ## Input Pin Attributes
 
-- **Active state** Each input feature has an active state. For example, the active state of a switch would be when the switch is pushed. Depending on your switch type and wiring the switch may be connecting to a low voltage (ground) or a logic high voltage to the CPU when the switch is pushed. You specify this in your configuration with the **high** or **low** attribute. Examples: **gpio:14:high** or **gpio.14:low** It will use the default of **high** if it is not specified. If your switch is reporting backwards from what you want, flip the **:high** to **:low** or the other way around. 
--  **Pulling resistor** You can add an internal pull-up or pull-down resistor to input pins that support them. This is done with the **pu** (pull-up) or **pd** (pull-down) attribute. Examples: **gpio.14:high:pd** or  **gpio.14:low:pu**. The default is no pulling resistor. The pin will be floating unless you have an external circuit that pulls it one way or the other. This typically causes incorrect pin readings when the circuit is in the open state. ***Note:*** [Some pins do not support](http://wiki.fluidnc.com/en/hardware/esp32_pin_reference) internal pulling resistors and you must provide an external one.
+### Active State
+
+Every input has an active condition — the real-world situation it is meant to detect. A limit or homing switch is active when it is engaged; a probe is active when it contacts the workpiece; a touchless (proximity) sensor is active when its target is in range.
+
+The circuit between the switch and the ESP32 sets the active-condition GPIO voltage. Depending on the sensor type, normally-open vs. normally-closed wiring, and input circuit details, the pin may be at a high voltage when active, or at a low voltage when active.
+
+The **:high** (default) and **:low** pin attributes tell FluidNC which voltage counts as active:
+
+- **gpio.14 or gpio.14:high** — active when the pin voltage is high.
+- **gpio.14:low** — active when the pin voltage is low.
+
+It is never necessary to explicitly say :high.
+
+This is a purely logical inversion done in software. It is independent of the :pu / :pd (pull-up / pull-down) attributes, which change the pin's electrical behavior rather than its interpretation.
+
+If an input reads as active when it shouldn't — homing stops the instant it starts, or a switch/probe shows as triggered when it is not physically engaged — the configured active level is backwards; add or remove :low.
+### Pulling resistor
+When a GPIO pin is used as an input, its electrical state is typically "floating". If nothing (or just an open switch) is connected to it, the voltage is indeterminate, so the detected input level is not reliable. Typical CNC control boards have circuitry outside the MCU to establish a defined pin voltage.  The most common choice is an external resistor connected to 3.3V (usually in conjunction with a capacitor to reduce noise).  That lets you connect an ordinary switch between the input and ground.  When the switch is open, the resistor "pulls up" the GPIO input voltage to 3.3V.  When the switch is closed, the switch overcomes the resistor and "pulls down" the GPIO input voltage to 0.
+
+If you need to use a GPIO that does not have an external resistor or other similar circuit as an input, you can use the MCU's internal pullup or pulldown resistors instead.  They are switchable.  By default they are not connected to the input pin, but can be enabled by adding **:pu** (pullup) or **:pd** (pulldown) to the pin specification, as with **gpio.14:pu**.
+
+Pulldown resistors are rarely used for CNC controllers, so it is unlikely that you will actually need to use **pd**.
+
+If you have a choice between an internal and external pullup resistor, external is nearly always better.
+
+***Note:*** [Some ESP32 pins do not support](http://wiki.fluidnc.com/en/hardware/esp32_pin_reference) internal pulling resistors and you must provide an external one.
 
 Example:
 ```yaml
@@ -90,9 +114,15 @@ Example:
 
 ## Output Pin Attributes
 
-- **Active state** Each output feature has an active state. This usually means the feature is on. Depending on your circuitry, a low or high output signal will turn on the feature. You specify this in your configuration with the **high** or **low** attribute. Examples: **gpio:14:high** or **gpio.14:low** It will default  **high** if it is not specified.
+### Active state
+When an output is active, it means that the device it controls is supposed to be on. To turn on the device, the MCU IO pin might need to be either high or low, according to the circuit between it and the device, You specify this in the config file with the **high** (default) or **low** attribute.
 
-If your feature is working backwards (inverted, wrong way, flipped) from what you want, like the direction pin for a motor, flip the hi to low, or the other way around.
+- **gpio:14:high or gpio.14** to turn on the device when the pin is high
+- **gpio.14:low** to turn on the device when the pin is low
+
+If your device is off when it should be on, or vice versa, either add or remove **:low** from the pin specification.
+
+This also applies to motor direction pins.  If the motor is moving in the wrong direction, add or remove **:low** from the direction pin spec.  (If the motor always moves in the same direction, regardless of what you asked for, the problem is something else -  the direction signal is not getting to the driver at all.)
 
 Example:
 ```yaml 
