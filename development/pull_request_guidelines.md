@@ -2,7 +2,7 @@
 title: Pull Request Guidelines
 description: 
 published: true
-date: 2026-08-01T19:35:09.782Z
+date: 2026-09-01T23:06:32.584Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T19:51:09.854Z
@@ -13,6 +13,10 @@ dateCreated: 2022-07-21T19:51:09.854Z
 ## Issue
 
 Please create an issue for general discussion regarding the changes in the pull request. Ideally this is done before the pull request is submitted. Pull requests are always welcome and encouraged, but coordinating efforts saves time for everyone. Discussion via Discord is also acceptable. Put a link to the discussion in the PR description.
+
+## Scope
+
+Please limit the scope of a PR to only one concern.  We do not have time to consider omnibus PRs that address several things at once.  PRs that touch a very small number of files are strongly preferred.  If a PR touches a lot of files, it must be a very stylized change that is essentially the same edit across all the files.  The reviewer must be able to verify the change by understanding the transformation once and spot-checking that each file follows it, rather than reading every file on its own.  We will use AI to help, but the core of the change must be easily understandable by a human.
 
 ## Branches
 
