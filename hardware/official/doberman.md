@@ -2,7 +2,7 @@
 title: Doberman CNC Controller
 description: Official support page for the Doberman CNC controller
 published: true
-date: 2026-07-25T18:29:10.615Z
+date: 2026-09-02T13:25:39.970Z
 tags: 
 editor: markdown
 dateCreated: 2025-11-12T19:42:00.540Z
@@ -29,7 +29,7 @@ It also has a CNC I/O module socket in the center of the controller. This can be
 - (8) Stepper motor connectors
 - (10) Input inputs
 - (4) 5V outputs
-- 0-10V Spindle interface
+- 0-10V Spindle interface with (2) isolated open collector circuits for FWD and REV control.
 - Isolated RS485 Spindle interface
 - (2) MOSFET outputs
 - Standard CNC I/O module socket that can add inputs, outputs, MOSFETs, etc.
@@ -279,6 +279,10 @@ The forward and reverse signals use opto to connect to a common ground. This gro
   speed_map: 0=0.000% 1000=0.000% 24000=100.000%
   off_on_alarm: false
 ```
+
+> If you are not using this type of spindle or are not using both FWD and REV, the FWD and REV circuits can be used to control other things, like directly drive a relay.
+{.is-info}
+
 
 # RS485
 
