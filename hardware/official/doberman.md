@@ -2,7 +2,7 @@
 title: Doberman CNC Controller
 description: Official support page for the Doberman CNC controller
 published: true
-date: 2026-09-02T13:25:39.970Z
+date: 2026-09-02T17:47:18.296Z
 tags: 
 editor: markdown
 dateCreated: 2025-11-12T19:42:00.540Z
@@ -280,7 +280,7 @@ The forward and reverse signals use opto to connect to a common ground. This gro
   off_on_alarm: false
 ```
 
-> If you are not using this type of spindle or are not using both FWD and REV, the FWD and REV circuits can be used to control other things, like directly drive a relay.
+> If you are not using this type of spindle or are not using both FWD and REV, the FWD and REV circuits can be used to control other things, like directly drive a relay (24vdc max 45mA max).
 {.is-info}
 
 
