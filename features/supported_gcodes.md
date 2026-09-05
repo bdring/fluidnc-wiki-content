@@ -2,7 +2,7 @@
 title: Supported Gcodes
 description: 
 published: true
-date: 2026-09-05T21:44:44.119Z
+date: 2026-09-05T21:46:26.956Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-31T14:26:24.935Z
@@ -134,7 +134,7 @@ M3 S2000 ;turn on spindle CW with speed 2000
 > When speed is set to 0 you can optionally disable your spindle. See the spindle config documentation. 
 {.is-info}
 
-The S-word value can also be a :-separated sequence of numbers according to [GCode Clustering](/en/features/gcode-clustering).  That is useful for laser rasters that need to change the power setting rapidly.
+The S-word value can also be a :-separated sequence of numbers according to [GCode Clustering](/en/features/gcode-clustering) (first implemented in release v4.1.0).  That is useful for laser rasters that need to change the power setting rapidly. 
 
 ## F Feed Rate
 
