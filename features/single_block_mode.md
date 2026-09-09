@@ -22,14 +22,19 @@ blending occurs across the pause.
 
 This is useful for:
 
-- Dry-running a new program or a new setup, checking each move before it happens
-- Debugging a macro or a hand-written program
+- Dry-running a new program file or a new setup, checking each move before it happens
+- Debugging a macro or a hand-written program file
 - Carefully approaching the work when touching off or proving out fixturing
 
-Single block mode only affects lines that come from a **running job** - a file
-started with [`$SD/Run`](http://wiki.fluidnc.com/en/features/local_file_system),
-`$LocalFS/Run`, or a job streamed by a sender. Commands you type directly at a
-console are never single-stepped.
+Single block mode only affects lines that come from a **running job**: a file
+started with [`$SD/Run`](http://wiki.fluidnc.com/en/features/local_file_system) or
+`$LocalFS/Run`, or a [macro](http://wiki.fluidnc.com/en/config/macros).
+
+It does **not** affect GCode that a sender streams line by line, nor commands you
+type at a console. As far as FluidNC is concerned those are the same thing - plain
+lines arriving on a channel, with no job on the job stack - and there is nothing
+to step through. If you want to prove out a program one line at a time with single
+block mode, put it in a file and run it with `$SD/Run` or `$LocalFS/Run`.
 
 ## Turning it on and off
 
@@ -82,8 +87,8 @@ a "single block" button that toggles the mode with no config entry required.
 
 1. With the machine `Idle`, send `$GB=On` (or flip your switch / press the
    button).
-2. Start the job as usual (`$SD/Run=myfile.nc`, or start streaming from your
-   sender).
+2. Start the job with `$SD/Run=myfile.nc` (or `$LocalFS/Run=...`, or run a
+   macro).
 3. FluidNC drains the planner, prints a preview line, and enters `Hold`:
 
    ```
