@@ -2,7 +2,7 @@
 title: BigTreeTech Rodent
 description: Rodent CNC Controller
 published: true
-date: 2026-07-23T17:08:39.734Z
+date: 2026-09-09T19:51:00.228Z
 tags: 
 editor: markdown
 dateCreated: 2024-11-29T15:01:36.886Z
@@ -67,10 +67,12 @@ JST-XH 2.5mm (3 and 4 position)
 This uses a USB C connector and a CH340K USB/Serial chip.
 
 **Board version 1.0**
-You can power the ESP32 via USB alone if you install the jumper next to the USB connector. Do not apply main power when this jumper is installed.
+You can power the ESP32 via USB alone if you install the jumper next to the USB connector. Do not apply main power when this jumper is installed. 
+BTT did not place any 5.1 kΩ pulldown resistors on the CC lines which are required for full USB-C support. This means the board only works when using a USB-C to USB-A cable. When using a double sided USB-C cord the computer and the board cannot negotiate if they are upstream or downstream devices.
 
 **Board version 1.1**
 The v1.1 does not require a USB jumper to use the USB for programming and serial communication. There will not be any LED indicators that the board is operational when using only USB power. It is ok to have main power applied to VCC while programming the v1.1.
+In this version BTT did place both CC resistors but wired them up wrongly so this version will also only work with USB-C to USB-A cables.
 
 If you have trouble with the USB on MacOS [see this issue](https://github.com/bigtreetech/Rodent/issues/8).  There is an even newer version of the CH340 driver as described [here](/en/support/serial_port_usage#ch340-usbserial-on-mac).
 
