@@ -28,18 +28,16 @@ This is useful for:
 
 Single block mode only affects lines that come from a **running job**: a file
 started with [`$SD/Run`](http://wiki.fluidnc.com/en/features/local_file_system) or
-`$LocalFS/Run`, or a [macro](http://wiki.fluidnc.com/en/config/macros).
+`$LocalFS/Run`, or a [macro](http://wiki.fluidnc.com/en/config/macros). It does
+**not** affect GCode that a sender streams line by line, nor commands you type at
+a console - to FluidNC those are the same thing, plain lines arriving on a channel
+with no job on the job stack, and there is nothing to step through. To prove out a
+program one line at a time this way, put it in a file and run it with `$SD/Run` or
+`$LocalFS/Run`.
 
-It does **not** affect GCode that a sender streams line by line, nor commands you
-type at a console. As far as FluidNC is concerned those are the same thing - plain
-lines arriving on a channel, with no job on the job stack - and there is nothing
-to step through. If you want to prove out a program one line at a time with single
-block mode, put it in a file and run it with `$SD/Run` or `$LocalFS/Run`.
-
-Single-stepping a job that is streamed from a sender is entirely up to the sender:
-it would have to send one line, wait for the `ok`, wait for the user to say
-"continue", then send the next line. That is a sender feature, and nothing FluidNC
-does can add it to a sender that lacks it.
+Single-stepping a *streamed* job is up to the sender itself: it would have to send
+one line, wait for the `ok`, wait for you to say "continue", then send the next.
+That is a sender feature; FluidNC cannot add it to a sender that lacks it.
 
 ## Turning it on and off
 
@@ -63,14 +61,10 @@ $GB=On
 ok
 ```
 
-`$GB` can only **enable** single block mode while the machine is `Idle`. Enabling
-it in the middle of a running job would strand the machine at the next line with
-no way to release the pause from the same channel, so that is rejected with
-`error: cannot execute in non-Idle state`.
-
-**Disabling** with `$GB=Off` works at any time, including from a console or
-sender while a job is running and paused. Issue `$GB=Off`, then one more cycle
-start, and the rest of the job runs at full speed.
+`$GB` works in any state and from any channel, including while a job is running.
+Enabling it mid-job simply makes the job pause before its next line. To let a
+running job finish without stops, send `$GB=Off` and then one more cycle start;
+the change takes effect at the next line.
 
 ### `single_block_pin`
 
@@ -87,11 +81,6 @@ control:
 
 ### WebUI / pendant button
 
-Single block mode is always reachable through the FluidNC pin-event mechanism on
-every channel (UART, USB, Telnet, WebSocket, pendant), whether or not
-`single_block_pin` is configured. A sender or pendant that supports it can present
-a "single block" button that toggles the mode with no config entry required.
-
 The FluidNC build of **WebUI version 2** has a **turtle** icon that toggles single
 block mode. It is only in WebUI 2's **tablet mode** (the tablet-optimized layout
 with the GCode visualizer), not the standard WebUI 2 screen. Click the turtle to
@@ -100,29 +89,34 @@ turn the mode on. While a job is paused before a line, click the normal
 turtle again to turn the mode off; the next Resume then lets the job finish
 without further stops.
 
+Under the hood the turtle drives the same channel-independent pin event that
+`single_block_pin` uses, registered on every channel whether or not a
+`single_block_pin` is configured. Any other UI - a custom WebUI, a pendant - can
+toggle the mode the same way without a config entry.
+
 ## Running a job in single block mode
 
-1. With the machine `Idle`, send `$GB=On` (or click the turtle icon in WebUI 2
-   tablet mode, or flip your `single_block_pin` switch).
+1. Send `$GB=On` (or click the turtle icon in WebUI 2 tablet mode, or flip your
+   `single_block_pin` switch).
 2. Start the job with `$SD/Run=myfile.nc` (or `$LocalFS/Run=...`, or run a
-   macro).
+   macro). You can also enable the mode after a job is already running - it takes
+   effect at the next line.
 3. FluidNC drains the planner, prints a preview line, and enters `Hold`:
 
    ```
-   [MSG:INFO: Step /sd/myfile.nc:12 G1 X10.0 Y10.0 F30...]
+   [MSG:INFO: Step /sd/myfile.nc:12 G1 X10.000 Y10.000 F...]
    ```
 
    The preview shows the job channel name, the line number within the file, and
-   the first 20 characters of the line (`...` if it was longer).
+   the first 20 characters of the line (`...` when the line is longer).
 4. Issue a **cycle start** to run that one line: the `~` real time character, the
    **Resume** (play) button in your sender or the WebUI, or a switch on
    [`cycle_start_pin`](http://wiki.fluidnc.com/en/config/control#cycle_start_pin).
 5. The line runs, motion completes, and FluidNC pauses again before the next
    line. Repeat from step 4.
 
-To finish the rest of the job at full speed, send `$GB=Off` (or click the turtle
-icon again in WebUI 2 tablet mode, or toggle the pin) and then issue one more
-cycle start / press Resume. The change takes effect at the next line.
+To stop stepping and let the job run to the end, turn the mode off (`$GB=Off`, the
+turtle icon, or the pin) and issue one more cycle start / press Resume.
 
 ## Status reporting
 
@@ -137,16 +131,15 @@ While single block mode is enabled, the `?` status report includes `Q` in the
 
 ## Interaction with other features
 
-- **Check mode (`$C`)** - When [GCode check mode](http://wiki.fluidnc.com/en/features/commands_and_settings) is
-  active, single block mode still forces each line to be parsed on its own, but it
-  does **not** pause, so a check-mode run completes without needing cycle starts.
+- **Check mode (`$C`)** - When [GCode check mode](http://wiki.fluidnc.com/en/features/commands_and_settings)
+  is active, single block mode does **not** pause, so a check run completes
+  without needing cycle starts.
 - **Reset** - A soft reset (Ctrl-X) issued while paused in single block mode
   discards the pending line, just like a reset at any other time. That line is
   not run when you next start a job.
-- **Feed hold / cycle start** - The pause is an ordinary feed hold, so anything
-  that responds to `Hold` state (overrides, jogging is not available in `Hold`,
-  etc.) behaves normally. The same cycle start that resumes a feed hold advances
-  to the next line.
+- **Feed hold / cycle start** - The pause is an ordinary feed hold, so the usual
+  `Hold`-state behavior applies (feed and spindle overrides work; jogging does
+  not). The same cycle start that resumes a feed hold advances to the next line.
 - **Spindle and coolant** - These are not turned off at each pause. Only motion
   is stopped. If you want the spindle off between steps, that is not what this
   feature does - use `M0` breaks in the program instead.
