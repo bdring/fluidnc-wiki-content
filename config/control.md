@@ -117,6 +117,15 @@ Performs a hard stop, causing all motion to cease at once without deceleration, 
 This will do a home all ($H) when activated.
 <!-- /config-item -->
 
+<!-- config-item path="control.single_block_pin" -->
+### single_block_pin
+- **Type:** [Pin](/config/config_IO#configuring-pins) (input)
+- **Range:** gpio
+- **Default:** `NO_PIN`
+
+Toggles [single block mode](http://wiki.fluidnc.com/en/features/single_block_mode) when activated, so a job runs one GCode line at a time. This pin is optional - single block mode can also be toggled with the `$GB` command or a WebUI/pendant button - and, unlike the other control pins, an active `single_block_pin` at startup does **not** raise an "active at startup" alarm.
+<!-- /config-item -->
+
 ## Initial State
 
 All control inputs must be in the non active state at turn on. This is to prevent you from using a machine with a stuck switch. The active state can be changed using the [high/low attributes](http://wiki.fluidnc.com/en/config/config_IO#Input-Pin-Attributes). You will get an "active at startup" alarm if you restart or reset with an active switch.
@@ -149,5 +158,6 @@ control:
   fault_pin: gpio.34
   estop_pin: gpio.2
   homing_button_pin: NO_PIN
+  single_block_pin: NO_PIN
 ```
 
