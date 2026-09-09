@@ -92,10 +92,16 @@ every channel (UART, USB, Telnet, WebSocket, pendant), whether or not
 `single_block_pin` is configured. A sender or pendant that supports it can present
 a "single block" button that toggles the mode with no config entry required.
 
+In the FluidNC build of **WebUI version 2**, click the **turtle** icon to toggle
+single block mode. While a job is paused before a line, click the normal
+**Resume** (play) button to run that line and advance to the next one. Click the
+turtle again to turn the mode off; the next Resume then lets the job finish
+without further stops.
+
 ## Running a job in single block mode
 
-1. With the machine `Idle`, send `$GB=On` (or flip your switch / press the
-   button).
+1. With the machine `Idle`, send `$GB=On` (or click the WebUI 2 turtle icon, or
+   flip your `single_block_pin` switch).
 2. Start the job with `$SD/Run=myfile.nc` (or `$LocalFS/Run=...`, or run a
    macro).
 3. FluidNC drains the planner, prints a preview line, and enters `Hold`:
@@ -107,14 +113,14 @@ a "single block" button that toggles the mode with no config entry required.
    The preview shows the job channel name, the line number within the file, and
    the first 20 characters of the line (`...` if it was longer).
 4. Issue a **cycle start** to run that one line: the `~` real time character, the
-   play/resume button in your sender or the WebUI, or a switch on
+   **Resume** (play) button in your sender or the WebUI, or a switch on
    [`cycle_start_pin`](http://wiki.fluidnc.com/en/config/control#cycle_start_pin).
 5. The line runs, motion completes, and FluidNC pauses again before the next
    line. Repeat from step 4.
 
-To finish the rest of the job at full speed, send `$GB=Off` (or toggle the
-pin/button) and then issue one more cycle start. The change takes effect at the
-next line.
+To finish the rest of the job at full speed, send `$GB=Off` (or click the WebUI 2
+turtle icon again, or toggle the pin) and then issue one more cycle start / press
+Resume. The change takes effect at the next line.
 
 ## Status reporting
 
