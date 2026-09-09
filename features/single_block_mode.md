@@ -36,6 +36,11 @@ lines arriving on a channel, with no job on the job stack - and there is nothing
 to step through. If you want to prove out a program one line at a time with single
 block mode, put it in a file and run it with `$SD/Run` or `$LocalFS/Run`.
 
+Single-stepping a job that is streamed from a sender is entirely up to the sender:
+it would have to send one line, wait for the `ok`, wait for the user to say
+"continue", then send the next line. That is a sender feature, and nothing FluidNC
+does can add it to a sender that lacks it.
+
 ## Turning it on and off
 
 There are three independent ways to control single block mode. Any of them turns
