@@ -63,14 +63,14 @@ $GB=On
 ok
 ```
 
-`$GB` can only **enable** single block mode while the machine is `Idle`.
+`$GB` can only **enable** single block mode while the machine is `Idle`. Enabling
+it in the middle of a running job would strand the machine at the next line with
+no way to release the pause from the same channel, so that is rejected with
+`error: cannot execute in non-Idle state`.
 
-`$GB` also does not work **while a job is running** - in either direction. A `$`
-command sent on a channel other than the one running the job is rejected with
-`error: another interface is busy` while that job is active, so you cannot use
-`$GB=Off` to drop out of single block mode partway through a job. Use a
-`single_block_pin` or a WebUI/pendant button (below), which act through the
-pin-event mechanism and work regardless of job state.
+**Disabling** with `$GB=Off` works at any time, including from a console or
+sender while a job is running and paused. Issue `$GB=Off`, then one more cycle
+start, and the rest of the job runs at full speed.
 
 ### `single_block_pin`
 
