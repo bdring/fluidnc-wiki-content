@@ -92,16 +92,18 @@ every channel (UART, USB, Telnet, WebSocket, pendant), whether or not
 `single_block_pin` is configured. A sender or pendant that supports it can present
 a "single block" button that toggles the mode with no config entry required.
 
-In the FluidNC build of **WebUI version 2**, click the **turtle** icon to toggle
-single block mode. While a job is paused before a line, click the normal
+The FluidNC build of **WebUI version 2** has a **turtle** icon that toggles single
+block mode. It is only in WebUI 2's **tablet mode** (the tablet-optimized layout
+with the GCode visualizer), not the standard WebUI 2 screen. Click the turtle to
+turn the mode on. While a job is paused before a line, click the normal
 **Resume** (play) button to run that line and advance to the next one. Click the
 turtle again to turn the mode off; the next Resume then lets the job finish
 without further stops.
 
 ## Running a job in single block mode
 
-1. With the machine `Idle`, send `$GB=On` (or click the WebUI 2 turtle icon, or
-   flip your `single_block_pin` switch).
+1. With the machine `Idle`, send `$GB=On` (or click the turtle icon in WebUI 2
+   tablet mode, or flip your `single_block_pin` switch).
 2. Start the job with `$SD/Run=myfile.nc` (or `$LocalFS/Run=...`, or run a
    macro).
 3. FluidNC drains the planner, prints a preview line, and enters `Hold`:
@@ -118,9 +120,9 @@ without further stops.
 5. The line runs, motion completes, and FluidNC pauses again before the next
    line. Repeat from step 4.
 
-To finish the rest of the job at full speed, send `$GB=Off` (or click the WebUI 2
-turtle icon again, or toggle the pin) and then issue one more cycle start / press
-Resume. The change takes effect at the next line.
+To finish the rest of the job at full speed, send `$GB=Off` (or click the turtle
+icon again in WebUI 2 tablet mode, or toggle the pin) and then issue one more
+cycle start / press Resume. The change takes effect at the next line.
 
 ## Status reporting
 
