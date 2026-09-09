@@ -2,7 +2,7 @@
 title: BigTreeTech Rodent
 description: Rodent CNC Controller
 published: true
-date: 2026-09-09T19:51:54.237Z
+date: 2026-09-09T20:24:07.235Z
 tags: 
 editor: markdown
 dateCreated: 2024-11-29T15:01:36.886Z
@@ -68,7 +68,7 @@ This uses a USB C connector and a CH340K USB/Serial chip.
 
 **Board version 1.0**
 You can power the ESP32 via USB alone if you install the jumper next to the USB connector. Do not apply main power when this jumper is installed. 
-BTT did not place any 5.1 kΩ pulldown resistors on the CC lines which are required for full USB-C support. This means the board only works when using a USB-C to USB-A cable. When using a double sided USB-C cord the computer and the board cannot negotiate if they are upstream or downstream devices and the board does not connect.
+BTT did not place any 5.1 kΩ pulldown resistors on the CC lines which are required for full USB-C support. This means the board only works when using a USB-C to USB-A cable. When using a double sided USB-C cord the computer and the board cannot negotiate if they are upstream or downstream devices, the computer will not provide power and a connection cannot be established, even when powered externally.
 
 **Board version 1.1**
 The v1.1 does not require a USB jumper to use the USB for programming and serial communication. There will not be any LED indicators that the board is operational when using only USB power. It is ok to have main power applied to VCC while programming the v1.1.
