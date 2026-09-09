@@ -63,10 +63,14 @@ $GB=On
 ok
 ```
 
-Single block mode can only be **enabled** with `$GB` while the machine is `Idle`.
-Once a job is running, the console is no longer polled for line commands, so `$GB`
-would never be seen. Use a pin or a WebUI/pendant button (below) to toggle it
-mid-job.
+`$GB` can only **enable** single block mode while the machine is `Idle`.
+
+`$GB` also does not work **while a job is running** - in either direction. A `$`
+command sent on a channel other than the one running the job is rejected with
+`error: another interface is busy` while that job is active, so you cannot use
+`$GB=Off` to drop out of single block mode partway through a job. Use a
+`single_block_pin` or a WebUI/pendant button (below), which act through the
+pin-event mechanism and work regardless of job state.
 
 ### `single_block_pin`
 
