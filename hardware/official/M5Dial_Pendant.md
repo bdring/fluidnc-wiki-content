@@ -2,7 +2,7 @@
 title: FluidDial Pendant
 description: A simple pendant demonstration using an M5Dial.
 published: true
-date: 2025-11-23T20:26:08.528Z
+date: 2026-09-09T19:35:39.657Z
 tags: 
 editor: markdown
 dateCreated: 2023-11-22T20:58:40.799Z
@@ -112,11 +112,18 @@ uart_channel1:
 
 # Usage (version 2.x)
 
+## Basic Navigation
+
+- **Buttons** There are (3) buttons, one is the red external button, one is the green external button and one is built into the orange rotating bezel. When a screen has some red, green or orange text at the botton. The corrosponding button will execute that feature.
+- **Previous Screen** Swiping the screen from right to left will move to the previous screen.
+
 ## Menu Screen
 
 ![fluiddial_menu_v2.jpg](/hardware/fluiddial/fluiddial_menu_v2.jpg =x320)
 
-This screen allows you to navigate to all other screens. Many of the icons are disabled in the N/C state (not communicating yet). You can select a menu item by rotating the dial, then pushing the bezel button. You can also go directly to a new screen by touching the icon. A third way is to touch the center and flick your finger towards the icon.
+This screen allows you to navigate to other screens. Many of the icons are disabled in the N/C state (not communicating yet). You can select a menu item by rotating the dial, then pushing the bezel button. You can also go directly to a new screen by touching the icon. A third way is to touch the center and flick your finger towards the icon.
+
+The center text will show the current state of the machine (Idle, Run, Hold, etc.) The text below that will show you the currently selected menu icon. Above that it will show the signal strength if you are wirelessly connected. 
 
 ## Status Screen
 
@@ -196,9 +203,23 @@ If you don't have any macros setup, the screen cannot be used.
 
 This screen gives some basic info about the FluidDial and FluidNC configuration.
 
-## Power Screen
+## Settings Screen
 
-This screen allows you to power cycle the pendant or put it to sleep. Sleep is basically off, but you can restart from the red button.
+The contents of this screen depnds on the connection mode. (wired, WiFi TCP, or ESPNOW)
+
+- **Wired (UART) Mode**
+
+- **WiFi Mode**
+
+- **ESPNOW**
+  - **Machines** This screen is for setting up an ESPNOW connection.
+- **More** The more selection will take you to a secondary screen.
+  - **Restart**
+  - **Sleep** - This puts the FluidDial into low power sleep mode. You can wake it up by holding down the orange dial button for a couple seconds. You can also wake it up by power cycling it.
+  - **Brightness** - This adjusts the brightness of the screen
+  - **OTA Update**
+
+
 
 # Connections to Controllers
 
