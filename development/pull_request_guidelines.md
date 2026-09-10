@@ -40,6 +40,8 @@ Add your name to the top of the files. Include your @github and @discord user na
 
 - **ISRs:** The ISRs have to be very fast. They block all processing, including RTOS tasks. The ESP32 has a [floating point bug](https://esp32.com/viewtopic.php?t=1292) related to ISRs and the FPU. Do not use floats in ISRs or anything that could be called by an ISR. Doubles can be used. They bypass the FPU, but require a lot of time to process.  
 
+- **New RTOS tasks:** Adding a FreeRTOS task is frowned upon. Every task needs its own stack, and stack memory is one of the scarcest resources on the ESP32 - a WiFi build has very little contiguous heap left after the radio and network stack come up, and a few kilobytes of task stack can be the difference between a feature working and an out-of-memory failure somewhere unrelated. If you think you need a task, first look for another approach: hand the work to a task that already exists via a queue it drains, run it from a Module's periodic `poll()`, or use an event or callback. If a task really is unavoidable, raise it in the issue or PR discussion first and be prepared to justify the stack size.
+
 ## Review and approval process.
 
 We are typically working on several things at the same time. These are typically on branches or PRs. We determine what we want included in the next release. Only the items we plan on releasing next will be merged with main. Feel free to try to convince us to add it to the next release via Discord, but be respectful of our decision.
