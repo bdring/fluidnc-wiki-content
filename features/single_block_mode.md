@@ -62,9 +62,10 @@ ok
 ```
 
 `$GB` works in any state and from any channel, including while a job is running.
-Enabling it mid-job simply makes the job pause before its next line. To let a
+Enabling it partway through a job does not stop the machine right away - see
+[Enabling it during a running job](#enabling-it-during-a-running-job). To let a
 running job finish without stops, send `$GB=Off` and then one more cycle start;
-the change takes effect at the next line.
+the change takes effect at the next line boundary.
 
 ### `single_block_pin`
 
@@ -99,8 +100,9 @@ toggle the mode the same way without a config entry.
 1. Send `$GB=On` (or click the turtle icon in WebUI 2 tablet mode, or flip your
    `single_block_pin` switch).
 2. Start the job with `$SD/Run=myfile.nc` (or `$LocalFS/Run=...`, or run a
-   macro). You can also enable the mode after a job is already running - it takes
-   effect at the next line.
+   macro). You can also enable the mode after a job is already running, but see
+   [Enabling it during a running job](#enabling-it-during-a-running-job) below -
+   it does not take effect immediately.
 3. FluidNC drains the planner, prints a preview line, and enters `Hold`:
 
    ```
@@ -117,6 +119,26 @@ toggle the mode the same way without a config entry.
 
 To stop stepping and let the job run to the end, turn the mode off (`$GB=Off`, the
 turtle icon, or the pin) and issue one more cycle start / press Resume.
+
+### Enabling it during a running job
+
+Turning single block mode on while a job is already running does **not** stop the
+machine at the next line. It only gates GCode lines that FluidNC has not read from
+the file yet, and by the time a job is up and cutting it has usually read well
+ahead of the tool:
+
+- The planner holds up to `planner_blocks` moves of look-ahead (16 by default),
+  already parsed and committed. Single block cannot claw those back.
+- One more line sits in the command queue, and a long `G2`/`G3` arc counts as one
+  line no matter how many segments it becomes.
+- For a short job, or one enabled near the end, the whole rest of the file may
+  already be in that pipeline - and once the file reaches end-of-file the job
+  detaches even while motion continues, so the mode never gets a line to stop on.
+
+So after you enable it mid-job and press cycle start, expect the machine to run
+out the buffered moves first - often 10-15 of them - and only then pause before
+the first not-yet-read line. To single-step reliably from the start, enable the
+mode **before** you run the job.
 
 ## Status reporting
 
