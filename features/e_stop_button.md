@@ -2,7 +2,7 @@
 title: E Stop Buttons
 description: E-Stops and Alternatives
 published: true
-date: 2026-08-01T19:35:48.808Z
+date: 2026-09-12T19:51:45.577Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T16:33:43.347Z
@@ -25,6 +25,7 @@ If you want to stop quickly, but it is not a true emergency and the firmware is 
 - **Feed Hold**. This very quickly stops the machine without loss of position. It can be resumed with cycle start. The feed hold command is the "!" character. The hardware pin is setup with **feed_hold_pin**.
 - **Reset**. This immediately stops the machine and spindle, but position is lost and you will need to re-home. Motors will stay engaged if your **idle_ms** value is 255. The command is CTRL-X  (0x18).  The hardware pin is setup with **reset_pin**. This could be used in parallel with a true e-stop. The power will be cut and FluidNC will reset.
 - **Door/Parking**. This feature is used for an enclosure door. If the door is opened during a job, the motion will quickly stop, the bit will retract, the spindle will stop and retract further from the work. The command is character 0x84. The hardware pin is setup with **safety_door_pin**. 
+- **estop** This is a type of [control pin](http://wiki.fluidnc.com/en/config/control#estop_pin) that will alarm and stop the system, but is still not a true estop.
 
 ```yaml
 control:
