@@ -133,6 +133,10 @@ $firmware/info
 FW version: FluidNC v3.7,2-pre3 (FaultPin-cd7ec064) # FW target:grbl-embedded  # FW HW:Direct SD  # primary sd:/sd # secondary sd:none  # authentication:no # webcommunication: Sync: 81:192.168.0.1 # hostname:fluidnc(AP mode) # axis:3
 ```
 
+## $GCode/BlockMode or $GB
+
+- This toggles [single block mode](http://wiki.fluidnc.com/en/features/single_block_mode), which runs a job one GCode line at a time, pausing in `Hold` before each line until you issue a cycle start. `$GB` toggles, `$GB=On` enables, `$GB=Off` disables. It can only be enabled from a console while the machine is `Idle`; use a `single_block_pin` or a WebUI/pendant button to toggle it during a running job.
+
 ## $GCode/Check or $C
 
 - This toggles the gcode check mode. This is an old Grbl feature that lets you run gcode virtually. The machine will run through all the gcode without actually moving and will tell you if anything would have caused an alarm or error. Be sure to toggle it back off to leave check mode.
