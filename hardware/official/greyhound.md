@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-17T14:54:19.602Z
+date: 2026-09-17T18:57:26.582Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -13,6 +13,8 @@ dateCreated: 2026-09-17T14:49:53.603Z
 > This page is a working progress. The first set of prototype controllers have not arrived yet.
 {.is-info}
 
+![greyhound_render1.png](/hardware/greyhound/greyhound_render1.png)
+
 
 # Overview
 
@@ -22,7 +24,29 @@ This is designed for people who prefer screw terminals over crimp connectors. If
 
 # Features
 
+- (6) Motor connectors for [external stepper drivers](http://wiki.fluidnc.com/en/support/external_stepper_motor_drivers). Each motor has separate step, direction and enable signals. LEDs are on each signal to help with setup.
+- (10) Inputs for switches (limits, probes, control)
+- (2) 3A MOSFETs to drive relays, solenoids and valves.
+- (4) 5V Output signals with PWM capability
+- Micro SD card socket for local storage of gcode files
+- CNC I/O Module socket for added I/O and advanced features like wired Ethernet
+- RJ12 expansion connector for I/O expanders, displays and pendants.
+- (2) USB-C connectors
+   - The primary one is a USB to serial adapter to connect to gcode senders and programmers.
+   - The secondary one is a native USB interface to the ESP32.
+- Spindles (many types supported). Multi-spindle arrangements are possible like RS485 & laser on the same machine.
+  - Isolated RS485 circuit for VFD Spindles
+  - 0-10V controlled spindles with additional forward and reverse direction signals
+  - PWM Speed controllers with optional separate enable signals
+  - Relay (on/off) controlled spindles.
+  - BESC (Brushless Motor) based spindles
+  - Lasers with PWM and enable
+- Reverse voltage protection on the input voltage.
+
+
 # Where to buy it
+
+Elecrow coming soon.
 
 # Getting Started
 
@@ -34,11 +58,43 @@ It is strongly recommended that you use the configuration wizard to create confi
 
 # Power
 
+The controller should be powered by 12V. Your power supply should be able to provide about 1A for the basic controller functions plus whatever current is attached to the MOSFET terminal. The terminal block is rated for 10A. It should be connected to the "Vin" pins on the green terminal block. Double check the polarity before powering on, but there is reverse polarity protection.
+
+A green LED will light in the center of the conntroller when power is properly applied. Depending on the state of the controller other LEDs may also light or blink.
+
+> You cannot power the controller with either USB connector. Nothing will work until the primary power connected for anything to work including USB.
+{.is-warning}
+
 # ESP32 Chip Type
+
+It is an ESP32-S3-WROOM-1U-N8R2.
+
+- 1U = Antenna connector rather than a built in one. 
+- N8 = 8 MB (Quad SPI) Flash
+- R2 = 2 MB (Quad SPI) PSRAM
+  
+## ESP32 Antenna
+
+The antenna connector is an IPEX connector type. It ships with a basic one like this. You can easily find larger or more directional ones on Amazon or AliExpress. You should always have an antenna connected when using the Wifi or Bluetooth modes.
+
+<img src="https://github.com/bdring/FluidNC/wiki/images/ipex_antenna.png" width="200">
 
 # USB
 
-# Programming
+## Primary (USB1)
+
+The primary USB-C connector (upper one) is used for the basic interface of the controller. It creates a COM port on your computer when it is connected and power is on. It is used for programming and connecting gcode senders.
+
+## Secondary (USB2)
+
+**This feature is experimental at this time**
+
+The other USB connector, labeled USB CDC, connects directly to the ESP32. By default this native USB will be a CDC (communication device class) USB/Serial UART. Most computers will already have a driver for this.
+
+This USB can also work in host mode, where it can communicate and power devices like keyboards, joysticks, wire ethernet and jog controllers.
+
+>  At this time FluidNC has no support for any devices in host mode. The connector was tested using simple example sketches of host mode. There is no guarantee that FluidNC will ever support this. This was just an attempt to future proof the controller and work as a development platform.  
+{.is-warning}
 
 # Motor Driver Terminals
 
@@ -83,7 +139,25 @@ The MOSFETs share pins with (2) 5V outputs. If you are using the wizard, please 
 
 The VMot terminals are always connected to VMot. Terminals labeled with the io pin numbers switch to ground when the io pins are active. If you need to operate devices with other voltages than VMot, you can use a separate DC power supply as long as it shares a common ground with the controller.
 
-# Expansion Module Socket
+# RJ12 Expansion Port
+
+Here is a config file example.
+
+```yaml
+uart1:
+  txd_pin: gpio.0
+  rxd_pin: gpio.35
+  rts_pin: NO_PIN
+  cts_pin: NO_PIN
+  baud: 1000000
+  mode: 8N1
+
+uart_channel1:
+  report_interval_ms: 75
+  uart_num: 1
+```
+
+# CNC I/O Module Socket
 
 The expansion socket is compatible with all existing CNC I/O Module designs (4 I/O pins). It also adds (3) extra pins that are connected to the SPI bus that the SD card also uses.
 
@@ -91,6 +165,21 @@ The expansion socket is compatible with all existing CNC I/O Module designs (4 I
 
 ## Wired Ethernet Module
 
+You need to install a separately purchased ethernet module and install it like this.
+
+![gh_eth.png](/hardware/greyhound/gh_eth.png =x300)
+
+Here is what you need in the config file. [See this wiki page](http://wiki.fluidnc.com/en/features/wifi_bt#wired-ethernet).
+
+```yaml
+ethernet:
+  cs_pin: gpio.14
+  int_pin: gpio.13
+  rst_pin: gpio.10
+  phy_type: w5500
+  phy_addr: 1
+  frequency_hz: 1000000
+```
 
 # Source Files
 
