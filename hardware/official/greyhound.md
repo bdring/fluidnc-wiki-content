@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-17T14:49:53.603Z
+date: 2026-09-17T14:54:19.602Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -42,9 +42,9 @@ It is strongly recommended that you use the configuration wizard to create confi
 
 # Motor Driver Terminals
 
-The motor drivers circuits use (2) STMicro STP16CP05 chip. These are constant current LED sink driver shift register chips. We use the Is2o feature of the ESP32 to output the shift register signals. 
+The motor drivers circuits use (2) [STMicro STP16CP05](https://item.szlcsc.com/datasheet/STP16CP05TTR/138548.html) chips. These are constant current, LED sink driver, shift register chips. We use the Is2o feature of the ESP32 to output the shift register signals. 
 
-The constant current feature is setup for about 20mA. This means a 20mA or lower current will be driven constantly. This should be way more than the optos motors drivers use. This method was chosen to protect the pins from some accidental mis-wires, like a short to ground or a positive voltage.
+The constant current feature is setup for about 20mA. This means a 20mA or lower current will be driven constantly. This should be way more than the optos motors drivers use. This method was chosen to protect the pins from some accidental mis-wires, like a short to ground or a positive voltage. Anything attempting to pull more current will cause them to PWM to lower the average current, or shut off completely.
 
 They sink current which means the signals must be connected to the minus side of the optos and the plus side should be connect to +5V. In the off state the pins are floating (not connected to any voltage)
 
