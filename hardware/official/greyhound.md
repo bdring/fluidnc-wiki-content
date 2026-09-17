@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-17T19:47:33.433Z
+date: 2026-09-17T22:28:56.047Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -50,9 +50,26 @@ Elecrow coming soon.
 
 # Getting Started
 
+The controller ships with a version of FluidNC that was current when the controller was built. You should upgrade the firmware using the web installer.
+
+1. Do not install your config file yet.
+2. Do not connect any external devices yet.
+3. Connect the antenna. You should only operate when the antenna is connected. A missing antenna can cause the ESP32 chip to overheat. 
+5. Connect main power. Be sure the polarity is correct before you turn on the power.
+6. Turn on the main power and confirm that the 5v LED (green, near the center of the PCB) is lit.
+7. Connect a USB-C cable between your computer and the controller. Use the USB connector labeled **USB1** . Check to see that your computer has added a serial port.
+8. Go to the [web installer](https://installer.fluidnc.com/). Connect to your controller.
+9. Click the button to open the terminal. Enter the command $localfs/run=test.nc. This should sequencially blink all of the I/O test LEDs on the controller.
+10. Do an upgrade (not full installation).
+11. You may want to connect to your wifi at this time.
+12. Open the [configuration wizard](https://mitchbradley.github.io/FluidNC-config-wizard/) on your browser, select the greyhound controller and create a config file.
+13. Power down and connect all your devices. It might be helpful to connect just a few at a time and test as you go.
+
 # Config Files
 
-It is strongly recommended that you use the configuration wizard to create config files.
+It is strongly recommended that you use the [configuration wizard](https://mitchbradley.github.io/FluidNC-config-wizard/) to create config files. You can see a demonstration video here.
+
+
 
 # Asking for Help
 
@@ -106,6 +123,44 @@ They sink current which means the signals must be connected to the minus side of
 
 > Any usused signal, plus the extra 6 i2so pins on the 8 pin header connector, can be used as outputs to control other features. Keep in mind that these current sync to ground in the active state and float in the inactive state.
 {.is-info}
+
+```yaml
+# motor 1
+      standard_stepper:
+        step_pin: I2SO.1
+        direction_pin: I2SO.2
+        disable_pin: I2SO.0
+
+# motor2
+      standard_stepper:
+        step_pin: I2SO.4
+        direction_pin: I2SO.5
+        disable_pin: I2SO.3
+
+# motor3
+      standard_stepper:
+        step_pin: I2SO.7
+        direction_pin: I2SO.8
+        disable_pin: I2SO.6
+
+# motor4
+      standard_stepper:
+        step_pin: I2SO.17
+        direction_pin: I2SO.18
+        disable_pin: I2SO.16
+
+# motor 5
+      standard_stepper:
+        step_pin: I2SO.20
+        direction_pin: I2SO.21
+        disable_pin: I2SO.19
+
+# motor 6
+      standard_stepper:
+        step_pin: I2SO.23
+        direction_pin: I2SO.24
+        disable_pin: I2SO.22
+```
 
 ## Motor Wiring example
 
