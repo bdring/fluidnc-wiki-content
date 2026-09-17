@@ -2,7 +2,7 @@
 title: Wifi and Bluetooth
 description: 
 published: true
-date: 2026-08-01T19:36:52.468Z
+date: 2026-09-17T18:51:49.659Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-22T14:15:58.208Z
@@ -112,7 +112,7 @@ In this mode your router will assign an address. You will be able to see it in t
 Wired Ethernet is currently supported using the W5500 SPI Interface Ethernet Module.
 
 - Use the Wifi version of the firmware
--  Set `$network/type
+-  Set `$network/type=Ethernet`
 - Add a section like this to your config file.
 
 ```yaml
