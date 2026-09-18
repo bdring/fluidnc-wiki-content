@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-17T22:28:56.047Z
+date: 2026-09-18T18:06:30.853Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -69,10 +69,6 @@ The controller ships with a version of FluidNC that was current when the control
 
 It is strongly recommended that you use the [configuration wizard](https://mitchbradley.github.io/FluidNC-config-wizard/) to create config files. You can see a demonstration video here.
 
-
-
-# Asking for Help
-
 # Power
 
 The controller should be powered by 12V. Your power supply should be able to provide about 1A for the basic controller functions plus whatever current is attached to the MOSFET terminal. The terminal block is rated for 10A. It should be connected to the "Vin" pins on the green terminal block. Double check the polarity before powering on, but there is reverse polarity protection.
@@ -112,6 +108,21 @@ This USB can also work in host mode, where it can communicate and power devices 
 
 >  At this time FluidNC has no support for any devices in host mode. The connector was tested using simple example sketches of host mode. There is no guarantee that FluidNC will ever support this. This was just an attempt to future proof the controller and work as a development platform.  
 {.is-warning}
+
+# SD Card
+
+The micro SD card uses SPI and must be configured like this.
+
+```yaml
+spi:
+  miso_pin: gpio.2
+  mosi_pin: gpio.1
+  sck_pin: gpio.21
+
+sdcard:
+  card_detect_pin: NO_PIN
+  cs_pin: gpio.9
+```
 
 # Motor Driver Terminals
 
@@ -180,11 +191,105 @@ All of the inputs have external pullup resistors. You do not need to add :pu in 
 
 For normally open switches you need the **:low** attribute on all inputs. Normally closed are active high. You can add the ***:high*** attribute, but it is not needed because that is default in FluidNC.
 
+Here is the basic input circuit. SW# represents your switch.
+
+![gh_input_circuit.png](/hardware/greyhound/gh_input_circuit.png =x300)
+
 # 5V Outputs
 
+The 5V outputs are on the (4) 2 pin red connectors. They can do digital or PWM.  They are driven by a 74AHCT125 chip. They can do 20mA each, but only 50mA in total for all 4 outputs.
 
+The outputs are from left to right.
+
+- gpio.4 (note this will also activate MOSFET1)
+- gpio.5 (note this will also activate MOSFET2)
+- gpio.46
+- gpio.45
 
 # Spindles
+
+## 0-10V Spindle
+
+This uses an op-amp and a low pass filter to create an analog voltage. It can be adjusted with a trim pot for a max voltage of 5V to 10V. Measure and adjust the voltage before connecting to your spindle speed controller. A good way to do this is to send the gcode for max spindle speed like ([M3 S24000](http://wiki.fluidnc.com/en/features/supported_gcodes#s-spindle-speed) or whatever your max is) and then adjust the pot until you get the desired max voltage. It is best to set the max voltage before connecting to your VFD.
+
+> Most VFDs have a 10V output. Do not connect this to the controller. Connect the 10V signal to the 10V input on the VFD.
+{.is-warning}
+
+The forward and reverse signals use opto to connect to a common ground. This ground needs to come from the VFD.
+
+![doberman_10v_schm.png](/hardware/doberman/doberman_10v_schm.png =x400)
+
+```yaml
+10V:
+  forward_pin: gpio.7
+  reverse_pin: gpio.8
+  pwm_hz: 5000
+  output_pin: gpio.6
+  enable_pin: NO_PIN
+  direction_pin: NO_PIN
+  disable_with_s0: false
+  s0_with_disable: true
+  spinup_ms: 0
+  spindown_ms: 0
+  tool_num: 0
+  speed_map: 0=0.000% 1000=0.000% 24000=100.000%
+  off_on_alarm: false
+```
+
+> If you are not using this type of spindle or are not using both FWD and REV, the FWD and REV circuits can be used to control other things, like directly drive a relay (24vdc max 45mA max).
+{.is-info}
+
+## RS485
+
+The RS485 circuit is fully isolated. It also has automatic direction control, so it **does not** use an rts_pin 
+
+There are LEDs to show and help debug communications issues.
+
+- **TX LED** (labeled "485 Tx") You should see the TX blink a couple times per second. If you do not, something is wrong in your setup on the CNC controller side.
+- **Rx LED** (labeled "485 Rx") The Rx should blink at the same rate (immediately after) as the Tx LED when communicating with the VFD. If the Rx LED stays on, try swapping the wires on the VFD side. If it does not light at all, there is probably a setup or other problem on the VFD side. **Note:** When no RS485 wires are connected the state of the LED is meaningless. Ignore that LED when not using RS485.
+
+
+> Note: The circuit is a UART to RS485 converter. The LEDs represent the state of UART side IO.
+{.is-info}
+
+
+> RS485 is a lot more complicated to setup than other types of spindles. It requires a lot of [setup on the VFD](http://wiki.fluidnc.com/en/config/config_spindles#using-rs485-to-control-spindles) side and good wiring. If you are having trouble, you should consider using the 0-10V method to control the spindle. It is very hard for us to support RS485 remotely.
+{.is-warning}
+
+### RS485 Wiring
+
+You should use 22-24AWG wires that are tightly twisted with at least 1 twist per inch. You can also use a twisted pair from some CAT5/6 cable. 
+
+You generally do not need a shield over the wires. If you do use a shield it should be grounded at the Doberman side. Do not connect the ground on the Doberman side to the VFD. This will defeat the isolation feature of the circuit.
+
+VFDs are very noisy devices, especially the cheap ones. Some people have persistent communication problems that cannot be fixed. 
+
+### RS485 Config File
+
+Here is a typical RS485 config file section. You must also setup the VFD and get the wiring correct. For general information about VFD setup see the [spindle wiki page](http://wiki.fluidnc.com/en/config/config_spindles#using-rs485-to-control-spindles).
+
+For the my Huanyang, I connect the terminal labeled **RS485 A** on the controller to **RS+** on the VFD and **RS485 B** on the controller to **RS-** on the VFD. Most people **should not** connect the ground terminal. 
+
+```
+# Begin Huanyang
+uart1:
+  txd_pin: gpio.12
+  rxd_pin: gpio.11
+  baud: 9600
+  mode: 8N1
+
+Huanyang:
+  uart_num: 1
+  modbus_id: 1
+  tool_num: 0
+  speed_map: 0=0% 0=25% 6000=25% 24000=100%
+  off_on_alarm: false
+```
+
+## Other Spindles
+
+Use the 5V outputs to control PWM spindles and lasers. You can also use the 5V outputs for enables and direction signals. 
+
 
 # MOSFETs
 
