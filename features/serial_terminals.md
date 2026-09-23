@@ -2,20 +2,32 @@
 title: Serial Terminals
 description: 
 published: true
-date: 2026-08-01T19:36:28.145Z
+date: 2026-09-23T23:19:54.834Z
 tags: 
 editor: markdown
 dateCreated: 2022-08-18T21:26:40.117Z
 ---
 
-## Sending data
+# Serial Terminals
+The most basic way to interact with FluidNC is via a USB-Serial connection to a host computer.  A USB cable plugs into a USB port on the host and the micro-USB or USB-C connector on the FluidNC system.  A program running on the host computer sends and receives characters from the USB serial port, using a device driver system component that supports the USB Serial chip on the FluidNC system.  That serial chip is usually a variant of either CP2102, CH340, or a "USB-CDC virtual COM port" from an built-in USB block on the MCU.  Sometimes it is necessary to install a driver for that chip on your host system.
 
-FluidNC processes serial data a character at a time. With some special characters like ? (status) and CTRL+X (reset) it will act extremely fast. We call those immediate characters. With other characters, it stores them in a buffer until it sees a line end character. The line ending can be a carriage return (CR) or a line feed (LF). When it sees the line end character it processes the whole line. This is used for things like gcode, commands or settings. 
+There are many programs that can interact with FluidNC over such a serial connection, as described below.  They include standalone terminal emulator programs, GCode senders, and serial monitor components of programming IDEs.
 
-## Immediate characters.
+## Line-oriented Commands
 
-Immediate characters get processed as soon as they are seen even if they are in the middle of a command. Example: if you try to set the AP SSID to "Hello?world", you will have trouble. It will strip out the ? (status command), send the status and then set the value to "Helloworld". See below. As soon as FluidNC saw the ?, it returned the status.
+FluidNC receives serial data a character at a time. Most characters are entered into a line buffer (possibly edited by arrow keys and other control characters; see [Advanced Terminal Mode](#Advanced_Terminal_Mode) below) for execution when the line is finished by the receipt of a linefeed or carriage return character. Most commands are line-oriented, including GCode and FluidNC-specific commands (which usually begin with **$**).
 
+When a line-oriented command is accepted, FluidNC acknowledges it by responding with **ok** if it was handled correctly or **error: N** (N is a numeric error code) otherwise.
+
+GCode commands can take awhile to execute - for example a long move at a slow rate might take several seconds to finish.  The **ok** for such commands is issued as soon as the command is accepted, not after the motion is complete.  FluidNC can accept some number of GCode commands in advance, allowing it to coordinate smooth motion across the boundary between moves.  If the buffer for pre-sent commands fills up, FluidNC will delay the **ok** until it has space for the new command. GCode senders use this to adjust their sending to avoid losing data by sending faster than FluidNC can process.
+
+## Realtime characters
+
+A few special characters are acted on immediately without waiting for a complete line. They are called realtime characters or realtime commands.  Realtime commands include status reports (?), reset (Ctrl-X), feedhold (!), cycle start (~), and overrides to adjust spindle speed and feedrate dynamically when a job is running.  The overrides are 8-bit characters with the high bit set, which are difficult to enter directly from a keyboard.
+
+Realtime characters are not acknowledged with **ok** or **error:N**, although some of them like **?** (status report) do cause output.
+
+If a realtime character is entered in the middle of a line, it will not go into the line.  Instead, FluidNC will process it instantly, possibly producing output that could be interspersed with the input line.  This can cause confusion if you are trying to enter a WiFi SSID that contains such a character, as shown below. In the attempt to set the AP SSID to "Hello?world", FluidNC acted on the **?**, sent status and then set the value to "Helloworld".
 ```
 $AP/SSID=Hello<Idle|WPos:-26.000,-51.000,0.000|FS:0.000,0>
 world
@@ -23,53 +35,45 @@ ok
 $AP/SSID
 $AP/SSID=Helloworld
 ```
+If you need to enter a realtime character into a line, you can use the HTTP quoting method, replacing **?** by **%3f**, **!** by **%21** and **~** by **%7e**.  For example `$AP/SSID=Hello%3fworld`
 
-There are only three immediate characters that are standard printable characters. This limits the number of characters that cause the problem listed above. These are ones you cannot send from the serial port for any other purpose. If you must use them in a WiFi password, etc, you should do that via the WebUI. That handles sending strings a little differently.
-
-- ? - Status
-- ! - Feed hold
-- ~ Cycle Start (resume from feed hold)
-
-The rest are non printing characters. They are usually sent by senders using the key code for that character. There is a list of them in [Serial.h](https://github.com/bdring/FluidNC/blob/main/FluidNC/src/Serial.h). The character for Reset can be sent with many serial terminals with the CTRL-X from the keyboard.
-
-> Immediate characters do not respond with an ok. You can send them at any time. We recommend 10Hz as the max rate to send ? for status.
-{.is-info}
-
-
-## Commands, Settings and GCode
-
-Everything except for immediate characters is a line-oriented command, which is a sequence of printable characters ending with a newline character. Line-oriented commands include standard GCode lines and FluidNC-specific commands which usually begin with '$'.  FluidNC processes line-oriented commands as they are received, responding with an "ok" when the line has been accepted. There is a buffer for gcode lines. If you send a command for a slow, long move, it will say 'ok' right away even though the move has not finished. It can store several commands. Eventually, if you send a lot of gcode commands before the motion is complete, FluidNC will wait for some of the earlier commands to complete before sending the 'ok'. You should wait for the OK to send another command, to prevent sending commands faster than FluidNC can accept them. Advanced gcode senders can internally count characters and track buffers, but that is beyond the scope of this wiki page.
+Most senders and graphical UI have buttons to send realtime characters, including the non-printing overrides that are difficult to type on a keyboard.  Most terminal emulator programs do not an easy way to send them (but FluidTerm does).
 
 ## Serial Terminal Types
 
-The best serial terminals for use with debugging FluidNC issue are the terminal in the [Web Installer](https://installer.fluidnc.com/) and [FluidTerm](http://wiki.fluidnc.com/en/fluidterm/fluidterm_usage).
+Most host computer operating systems have several choices for standalone serial terminal programs, either preinstalled or downloadable.  Most work with FluidNC, but there are two serial terminal programs that we recommend because of their FluidNC-specific features. The browser-based [Web Installer](https://installer.fluidnc.com/) has a Terminal pane with good FluidNC integration. Web Installer requires no downloads or installation; you simply browse to its URL.
 
-There are many types of serial terminals. Some are stand alone programs and some are built into programs, like programming IDEs and gcode senders. Most stand alone serial terminals send characters as soon as you type them. The ones built into other programs often have you type the characters into a text box, then click the send button. The enter key also usually sends that line. It sends the whole line and adds a line ending. 
+The other is [FluidTerm](http://wiki.fluidnc.com/en/fluidterm/fluidterm_usage), which does require downloading (it is included in the FluidNC release .zip files), but it can be used from an ordinary command/terminal/shell window, without a browser.
 
-## Whole Line Sending Terminals
+Serial terminal features are often included in other programs like programming IDEs (e.g. Arduino IDE Serial Monitor and VSCode's monitor pane) and GCode senders, which usually have a "Console" window that behaves like a serial terminal.
 
-Some terminal programs, like FluidTerm, send each character as soon as you type it.  Others, like the Arduino IDE serial port monitor most gcode senders, collect characters into a line on the screen, and only send the complete line to FluidNC after you type the Enter key or hit the Send button.  For line-oriented commands, there is little difference in the way you use immediate-send programs and line-collecting programs.  But with immediate commands you will notice a difference.  On an immediate-send program, if you type '?', FluidNC will see it instantly and respond with a status report, even if you are in the middle of typing a line - and you will not see an "ok" because there was no newline character to trigger the line parser.  On a line-collecting program, if you type '?', nothing will happen until you type Enter or hit Send.  Then you will get the status report in addition to an "ok", because the program sent both the '?' immediate command and also a newline.
+### Character Terminals
 
-Line-collecting terminals typically have no way to send unprintable characters like CTRL-X, but GCode sender programs with built-in terminals usually have special buttons for sending unprintable immediate characters like CTRL-X (reset) and overrides.
+Standalone terminal programs usually send characters one at a time, as soon as you type them.  They depend on the device at the other end to echo the character and implement intra-line editing.  Programs like this do not have a separate "Send Line" box; the characters that you type are interspersed with device output in the same display area.
 
-## Character at a Time Terminals
+With a character terminal, if you type a printable realtime character like **?**, **!** or **~**, FluidNC will handle it immediately, without you having to type Enter.
 
-These terminals send each character at a time and can also send compound keys like CTRL-X. The line ending that is sent with the enter key is usually configurable. This should be LF.
+### Line Terminals
 
-The character-at-a-time terminals recommended above do not need to be configured, since they are preset to work properly with FluidNC.
+GCode senders and things like Arduino Serial Monitor usually have a separate area for entering a line to be sent, editing it locally before sending the complete line with a Send button.
 
-**Local Echo** FluidNC does not normally echo characters back to the sender, for compatibility with plain Grbl. See the advanced mode below for an alternate method with many convenience features. 
+With a line terminal, to send a printable realtime character, you must also type Enter or hit Send, because line terminals do not know that **?**, **!** and **~** are special.  FluidNC acts on the realtime character and also sees an end-of-line character which it interprets as a separate empty line, acknowledging that line with **ok**.
 
-## Advanced Terminal Mode
+### Echoing and Intra-line Editing
 
-A good serial terminal looks like a shell terminal of an operating system. Shell terminals have some nice features we tried to emulate with FluidNC, for example intra-line editing with arrow keys, and arrow up/down to recall commands you have already sent. In this mode FluidNC echo the characters and handles all the line editing. When FluidNC starts, the advanced mode is off to preserve Grbl compatibility. You can trigger the mode by sending any one of the special editing keys such as backspace.  If you reboot, advance mode will be off and you must reenter it if desired.
+Historically, Grbl accepted characters without echoing them back to the sending program, and had no facilities for correcting typing mistakes within a line.  That worked well with line-oriented terminals that display and edit locally in the send line box.  It was very difficult to use with character terminals, since you had to type "blind" and could not correct mistakes.
 
->  CTRL+L turns off local echo to revert to GRBL line mode.
-{.is-info}
+FluidNC supports two modes - no-echo Grbl-compatibility mode and advanced mode.  FluidNC starts in compatibility mode to avoid confusing old senders that do not expect echoing.
 
-Below are the special keys for the advanced editing mode.
+### Advanced Terminal Mode
 
-> Terminals like the one in VSCode do not send all of the non printing keys listed below, often mapping them to other functions such as controlling the window layout. It can only partially use the advanced mode features. FluidTerm supports them all.
+In Advanced Terminal Mode, FluidNC behaves like the shell terminal of an operating system.  It echos printable characters as soon as you type them, and lets you edit the line with arrow keys, Backspace and Delete.  Previous lines can be recalled with up-arrow.  If you type the first few characters of a $ command, the tab key cycles through a list of matching commands.
+
+FluidNC starts in no-echo Grbl compatibility mode, but you can enable advanced mode by typing any editing key like right-arrow.  Line terminals only send printable characters and end-of-line, so they do not trigger advanced mode.  If you are in advanced mode and want to go back to compatibility mode, send Ctrl-L.  Senders can use this preemptively in case they connect to a FluidNC session that is already in advanced mode.
+
+The special keys for advanced editing mode are shown below:
+
+> Some terminals in multi-pane IDEs like VSCode might not send all of the non printing keys listed below, often mapping them to other functions such as switching between  windows. FluidTerm supports them all.
 {.is-warning}
 
 ```
