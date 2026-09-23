@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-18T18:06:30.853Z
+date: 2026-09-23T18:18:50.620Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -67,7 +67,7 @@ The controller ships with a version of FluidNC that was current when the control
 
 # Config Files
 
-It is strongly recommended that you use the [configuration wizard](https://mitchbradley.github.io/FluidNC-config-wizard/) to create config files. You can see a demonstration video here.
+It is strongly recommended that you use the [configuration wizard](https://mitchbradley.github.io/FluidNC-config-wizard/) to create config files. You can see a [demonstration video](https://www.youtube.com/watch?v=-XGuEP5ZOOY) here.
 
 # Power
 
