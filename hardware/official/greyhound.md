@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-23T18:18:50.620Z
+date: 2026-09-27T17:24:21.285Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -349,5 +349,12 @@ Source files will be provided when the controller is ready for sale,
 
 > The config wizard is also very good way to determine the pin numbers.
 {.is-info}
+
+# Errata and version info
+
+- V0.9 Protototype
+  - There is no version number on the controller
+  - FETS are both labeled FET 1. The lower one should be FET 2 
+
 
 
