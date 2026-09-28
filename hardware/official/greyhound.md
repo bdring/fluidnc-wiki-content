@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-27T17:24:21.285Z
+date: 2026-09-28T12:15:55.363Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -352,9 +352,10 @@ Source files will be provided when the controller is ready for sale,
 
 # Errata and version info
 
-- V0.9 Protototype
+- V0.9 Protototype issues
   - There is no version number on the controller
-  - FETS are both labeled FET 1. The lower one should be FET 2 
+  - FETS are both labeled FET 1. In production they will be labeled FET4 and FET5 to match the gpio numbers they use. 
+  - Minor misalignment of the module support hole. 
 
 
 
