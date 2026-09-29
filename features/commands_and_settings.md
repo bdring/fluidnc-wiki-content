@@ -2,7 +2,7 @@
 title: Commands and Settings
 description: 
 published: true
-date: 2026-08-01T19:35:44.075Z
+date: 2026-09-29T21:43:52.655Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T21:46:55.183Z
@@ -112,6 +112,10 @@ Input Matrix
 9 HSPIQ_in 19
 10 HSPID_in 23
 ```
+
+## $network/type
+
+This is used to select bewteen **WiFi** and **Ethernet**. [See this wiki section](http://wiki.fluidnc.com/en/features/wifi_bt#wired-ethernet).
 
 ## $Errors/List or $E
 
