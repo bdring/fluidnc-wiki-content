@@ -2,7 +2,7 @@
 title: Commands and Settings
 description: 
 published: true
-date: 2026-09-29T21:43:52.655Z
+date: 2026-09-29T21:44:35.692Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T21:46:55.183Z
@@ -88,30 +88,6 @@ $FakeLaserMode or $32
 $FakeMaxSpindleSpeed or $30
 ```
 ````
-
-## $GPIO/Dump
-
-- Shortcut: `GD`
-- Shows detailed information on all gpio pins. Pins configured as input have the prefix `I`, and pins configured as output have the prefix `O`. The status of the pin is either `0` (low) or `1` (high). In the example below, pin 2, `GPIO2 I0`, means gpio2 is configured as an input and was read as a logic 0, or low.
-
-```none
-0 GPIO0 I1
-1 U0TXD
-2 GPIO2 I0
-3 U0RXD
-4 GPIO4 I0
-5 GPIO5 O1
-6 SPICLK
-7 GPIO7 O0 I1 SPIQ_out
-8 GPIO8 O0 I0 SPID_out
-9 GPIO9 O0 I1 SPIHD_out
-...
-Input Matrix
-1 SPIQ_in 7
-...
-9 HSPIQ_in 19
-10 HSPID_in 23
-```
 
 ## $network/type
 
