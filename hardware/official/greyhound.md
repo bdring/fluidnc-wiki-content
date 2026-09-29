@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-29T00:25:35.478Z
+date: 2026-09-29T21:49:44.431Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -327,7 +327,7 @@ You need to install a separately purchased ethernet module and install it like t
 
 ![gh_eth.png](/hardware/greyhound/gh_eth.png =x300)
 
-Here is what you need in the config file. [See this wiki page](http://wiki.fluidnc.com/en/features/wifi_bt#wired-ethernet).
+Here is what you need in the config file. [See this wiki page on how to use wired Ethernet](http://wiki.fluidnc.com/en/features/wifi_bt#wired-ethernet).
 
 ```yaml
 ethernet:
