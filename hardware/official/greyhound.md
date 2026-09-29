@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-28T12:15:55.363Z
+date: 2026-09-29T00:25:35.478Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -173,9 +173,7 @@ They sink current which means the signals must be connected to the minus side of
         disable_pin: I2SO.22
 ```
 
-## Motor Wiring example
-
- 
+ ![greyhound_motor_wiring.png](/hardware/greyhound/greyhound_motor_wiring.png =x400)
 
 ### Closed loop motors
 
