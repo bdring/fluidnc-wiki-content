@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-09-29T21:49:44.431Z
+date: 2026-10-01T18:36:03.895Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -18,7 +18,7 @@ dateCreated: 2026-09-17T14:49:53.603Z
 
 # Overview
 
-This is the second generation of the popular [6x controller](http://wiki.fluidnc.com/en/hardware/official/6x_CNC_Controller). This uses the ESP32-S3 MCU to gain a few extra pins and features.
+This is the second generation of the popular [6x controller](http://wiki.fluidnc.com/en/hardware/official/6x_CNC_Controller). This uses the ESP32-S3-WROOM-1U-N8R2 MCU to gain a few extra pins and features plus 2Meg of extra RAM.
 
 This is designed for people who prefer screw terminals over crimp connectors. If you prefer connectors, I suggest the very similar [Doberman controller](http://wiki.fluidnc.com/en/hardware/official/doberman).
 
