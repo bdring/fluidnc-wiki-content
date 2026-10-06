@@ -607,6 +607,66 @@ This is used to set the PWM level of an [analog output](http://wiki.fluidnc.com/
   M67 E0 Q23.76
   ```
 
+## M70, M71, M72, M73 Save and Restore Modal State
+
+These save the current modal state and restore it later, so a macro or a file run from another file can change modes without disturbing the code that called it. They work like their [LinuxCNC counterparts](https://linuxcnc.org/docs/stable/html/gcode/m-code.html#mcode:m70).
+
+> Added in FluidNC [PR #1898](https://github.com/bdring/FluidNC/pull/1898); not yet in a release.
+{.is-info}
+
+- `M70` Save the modal state.
+- `M71` Invalidate the saved state. A later `M72` is then an error.
+- `M72` Restore the saved state. It is an error (`error:182`) if nothing has been saved. The saved state is not used up, so you can restore it more than once.
+- `M73` Save the modal state, and restore it automatically when the current macro or file ends.
+
+The saved state includes:
+
+- Units (G20, G21)
+- Plane (G17, G18, G19)
+- Distance mode (G90, G91)
+- Feed rate mode (G93, G94)
+- Coordinate system (G54 through G59.3)
+- Tool length offset (G43.1, G49), including the offset values
+- Feed rate (F) and spindle speed (S)
+- Spindle state (M3, M4, M5)
+- Coolant state (M7, M8, M9), mist and flood separately
+- Parking override control (M56)
+
+The motion mode (G0, G1, etc.) is **not** saved or restored.
+
+Restoring has the same effect as sending the codes themselves. For example, restoring a running spindle turns the spindle on, and restoring a different coordinate system changes your work coordinates.
+
+### Call Levels
+
+Each running macro or file has its own saved state, separate from the state saved by the file that ran it. The saved state is discarded when that macro or file ends. Commands you type or stream from a sender share one saved state of their own, which is cleared by a reset.
+
+### M73 Automatic Restore
+
+Put `M73` near the start of a macro or a file that is run from another file. When it reaches the end, the modal state is put back the way it was at the `M73`, so the caller carries on in the modes it expects.
+
+```gcode
+M73        ; save, and restore when this file ends
+G20 G91    ; free to change modes here
+G0 X1
+; the caller's G21/G90 come back automatically at the end of the file
+```
+
+- The state is **not** restored if the job is aborted (reset or alarm), or if it ends with `M2` or `M30`.
+- `M71` cancels the automatic restore.
+- `M73` typed or streamed outside of any macro or file just saves the state, like `M70`, since there is no end of file to restore it at.
+- In [single block mode](/en/features/single_block_mode), the automatic restore is an extra step, so it takes one more cycle start at the end of the macro or file.
+
+### Restrictions
+
+`M70` through `M73` cannot share a line with other G or M codes or with value words like `F` or `X`. A line number (`N`) is allowed.
+
+```gcode
+M70        ; ok
+N10 M72    ; ok
+M70 G0     ; error:21 (modal group violation)
+M72 X1     ; error:36 (unused words)
+```
+
 # Modal States and Modal Groups
 
 There are certain gcode that set a persistent state, like G21 (metric mode). Once this commands occurs the rest of the gcode stays in G21 mode. If you send G1 X20, you are in G1 mode. From now on if you just send X20, it will assume G1.
@@ -660,7 +720,7 @@ The first line of your gcode files should reset all of the modal values. You nee
 G0 G54 G17 G21 G90 G94
 ```
 
-> If you create macros, you should also keep this in mind. You might want to return the modal values to defaults.
+> If you create macros, you should also keep this in mind. You might want to return the modal values to defaults. Or start the macro with [M73](#m70-m71-m72-m73-save-and-restore-modal-state) to put the caller's modal values back automatically when it ends.
 {.is-info}
 
 # % Character support
