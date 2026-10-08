@@ -2,7 +2,7 @@
 title: Supported Gcodes
 description: 
 published: true
-date: 2026-10-08T13:42:04.780Z
+date: 2026-10-08T18:32:22.852Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-31T14:26:24.935Z
@@ -460,6 +460,34 @@ It is left over from the hand coding days. If you hand code a bunch of gcode for
 Modern CAM does everything for you. If you want 2 parts, just copy the part in CAM.
 
 G92 Does not affect soft limits. Soft limits work in machine space and are not affected by any offsets (G92, G54-G59)
+
+### G92.1 Reset Offset
+
+Turn off G92 offsets.
+
+```gcode
+G0 x10 Y20 Z30
+ok
+<Idle|WPos:10.000,20.000,30.000|Bf:15,128|FS:0,0>
+G92 X0 Y0 Z0
+ok
+<Idle|WPos:0.000,0.000,0.000|Bf:15,128|FS:0,0>
+$#
+[G54:0.000,0.000,0.000]
+...
+[G92:10.000,20.000,30.000]
+[TLO:0.000,0.000,0.000]
+ok
+G92.1
+<Idle|WPos:10.000,20.000,30.000|Bf:15,128|FS:0,0>
+ok
+$#
+[G54:0.000,0.000,0.000]
+...
+[G92:0.000,0.000,0.000]
+[TLO:0.000,0.000,0.000]
+ok
+```
 
 ## G93, G94 Feedrate Modes
 
