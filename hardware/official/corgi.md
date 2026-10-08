@@ -2,7 +2,7 @@
 title: Corgi CNC Controller
 description: 
 published: true
-date: 2026-07-23T22:10:53.613Z
+date: 2026-10-08T12:50:35.053Z
 tags: 
 editor: markdown
 dateCreated: 2025-07-31T13:45:22.446Z
@@ -276,7 +276,7 @@ There are LEDs to show and help debug communications issues.
 - **Rx LED** (labeled (RS485 Rx) The Rx should blink at the same rate (immediately after) as the Tx LED when communicating with the VFD. If the Rx LED stays on, try swapping the wires on the VFD side. If it does not light at all, there is probably a setup or other problem on the VFD side. **Note:** When no RS485 wires are connected the state of the LED is meaningless. Ignore that LED when not using RS485.
 
 
-> Note: The circuit is a UART to RS485 converter. The LEDs represent the state of UART side IO. The idle state of a UART Tx is high, so the TX blinks are from on to off. The RTS LED will blink from off to on. It may be hard to see the Tx off blinks because the LED is bright and the off time is so brief. Try covering the other LEDs to see the blinks.
+> Note: The circuit is a UART to RS485 converter. The LEDs represents the state of UART side IO. The idle state of a UART Tx is high, so the TX blinks are from on to off. The RTS LED will blink from off to on. It may be hard to see the Tx off blinks because the LED is bright and the off time is so brief. Try covering the other LEDs to see the blinks.
 {.is-info}
 
 
