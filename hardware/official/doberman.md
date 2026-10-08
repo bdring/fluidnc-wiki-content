@@ -2,7 +2,7 @@
 title: Doberman CNC Controller
 description: Official support page for the Doberman CNC controller
 published: true
-date: 2026-09-02T17:47:18.296Z
+date: 2026-10-08T13:02:15.667Z
 tags: 
 editor: markdown
 dateCreated: 2025-11-12T19:42:00.540Z
@@ -57,7 +57,7 @@ The controller ships with a version of FluidNC that was current when the control
 9. Click the button to open the terminal. Enter the command $localfs/run=test.nc. This should sequencially blink all of the I/O test LEDs on the controller.
 10. Do an upgrade (not full installation). Be sure to select the ESP32-S3 processor type.
 11. You may want to connect to your wifi at this time.
-12. Now create and load a config file for your machine.
+12. Now create and load a config file for your machine. We strongly recommend using the [configuration wizard](http://wiki.fluidnc.com/en/hardware/official/doberman#getting-started) to do that.
 13. Power down and connect all your devices. It might be helpful to connect just a few at a time and test as you go.
 
 
@@ -90,7 +90,7 @@ The antenna connector is an IPEX connector type. It ships with a basic one like 
 
 ![usb_uart.png](/hardware/doberman/usb_uart.png =x250)
 
-The primary USB, labeled USB UART, is a Silcon Labs CP2102 USB/Serial chip. Most computers ship with a driver for that. You can [get the latest driver](https://www.silabs.com/software-and-tools/usb-to-uart-bridge-vcp-drivers?tab=downloads) from them if it is not working.
+The primary USB, labeled USB UART, is a Silicon Labs CP2102 USB/Serial chip. Most computers ship with a driver for that. You can [get the latest driver](https://www.silabs.com/software-and-tools/usb-to-uart-bridge-vcp-drivers?tab=downloads) from them if it is not working.
 
 The USB connection has nothing to do with the firmware or the ESP32. If you are not getting a connection, it is not a firmware issue. It is most likely a driver or cable issue.
 
@@ -241,9 +241,9 @@ The outputs are from left to right.
 
 ## MOSFETs
 
-The (2) NPN MOSFETs are rated for 3A continuous and 5A peak. There are flyback diodes connected to VMot to make them safe for use with inductive loads, such as relays, small motors and solenoids.
+The (2) NPN [MOSFETs](https://www.lcsc.com/product-detail/C189606.html) are rated for 3A continuous and 5A peak. There are flyback diodes connected to VMot to make them safe for use with inductive loads, such as relays, small motors and solenoids.
 
-The VMot terminals are always connected to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active. If you need to operate devices with other voltages than 12v, you can use a separate DC power supply as long as it shares a common ground with the controller.
+The VMot terminals are always connected to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active. If you need to operate devices with other voltages than 12v, you can use a separate DC power supply (60V max) as long as it shares a common ground with the controller.
 
 - FET1 gpio.4 (this will also activate one of the 5V outputs)
 - FET2 gpio.5 (this will also activate one of the 5V outputs)
