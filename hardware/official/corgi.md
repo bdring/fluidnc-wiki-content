@@ -2,7 +2,7 @@
 title: Corgi CNC Controller
 description: 
 published: true
-date: 2026-10-08T12:52:08.858Z
+date: 2026-10-08T13:20:15.773Z
 tags: 
 editor: markdown
 dateCreated: 2025-07-31T13:45:22.446Z
@@ -68,7 +68,7 @@ The mating connectors are female JST XH (2.54mm) 2, 3 and 5 pin connectors. They
 
 ### Main power
 
-The controller should be powered by 12V. I recommend a minimum of about 3A. It should be connected to the "Vin" pins on the 6 pin green terminal block. Double check the polarity before powering on. There is reverse polarity protection.
+The controller should be powered by 12V. I recommend a minimum of about 3A. It should be connected to the "Vin" pins on the 6 pin green terminal block. Double check the polarity before powering on. There is reverse polarity protection. There is no fuse.
 
 On the schematic and documatation you may see references to VMot, Vin. These are all connected to the 12V.
 
@@ -92,6 +92,15 @@ A red LED will light in the center of the conntroller when power is properly app
 The controller comes with FluidNC installed and a basic config file. The version is probably not current, so you should do an upgrade via the Web Installer. Be sure to do an update rather than a full install or you will lose any existing config files.
 
 If you are having trouble getting into bootloader mode, there are boot and reset buttons. To enter bootloader mode, hold the boot button, click reset and the release the boot button. This will enter the bootloader mode until the next reset.
+
+## USB
+
+The USB is a Silicon Labs CP2102 USB/Serial chip. Most computers ship with a driver for that. You can get the latest driver from them if it is not working.
+
+You do not need to have a USB connected. You can connect and disconnect at any time without affecting operation.
+
+The USB connection has nothing to do with the firmware or the ESP32. If you are not getting a connection, it is not a firmware issue. It is most likely a driver or cable issue.
+
 
 ## Motor driver outputs
 
@@ -203,6 +212,8 @@ This is how to wire a typical proximity switch. Make sure your Vcc is compatible
 
 The 5V outputs are on the (4) 2 pin red connectors. They can do digital or PWM.  They are driven by a 74AHCT125 chip. They can do 20mA each, but only 50mA in total for all 4 outputs.
 
+The default state at power up is off. The chips can fail in the on state, so account for that in your safety plan.
+
 ## MOSFETs
 
 The (2) NPN MOSFETs are rated for 3A continuous and 5A peak. There are flyback diodes connected to VMot to make them safe for use with inductive loads, such as relays, small motors and solenoids.
@@ -210,6 +221,8 @@ The (2) NPN MOSFETs are rated for 3A continuous and 5A peak. There are flyback d
 The MOSFETs use gpio.4 and gpio.12. These I/O pins also activate 5V outputs.
 
 The VMot terminals are always connected to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active. If you need to operate devices with other voltages than 12v, you can use a separate DC power supply as long as it shares a common ground with the controller.
+
+The default state at power up is off. MOSFETs can fail in the on state, so account for that in your safety plan.
 
 ## Spindles
 
