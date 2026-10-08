@@ -2,7 +2,7 @@
 title: Corgi CNC Controller
 description: 
 published: true
-date: 2026-10-08T12:50:35.053Z
+date: 2026-10-08T12:52:08.858Z
 tags: 
 editor: markdown
 dateCreated: 2025-07-31T13:45:22.446Z
@@ -177,7 +177,9 @@ All of the inputs have external pullup resistors except for gpio.2. You should a
 
 For normally open switches you need the ***:low** attribute on all inputs. Normally closed are active high. You can add the ***:high*** attribute, but it is not needed because that is default in FluidNC. The LED indicates when the circuit is closed. It will not match the "active" state of the FluidNC function if you use the **:high** attribute
 
-Each input has an LED to show when the circuit is low state (signal connected to ground). This can be helpful to diagnose wiring issues.  Note: If the gpio.2 input is not configured, the LED may light. Ignore it.
+Each input has an LED to show when the circuit is low state (signal connected to ground). This can be helpful to diagnose wiring issues.  
+
+**Note:** If the gpio.2 input is not configured, the LED may light. Ignore it.
 
 ![corgi_inputs.png](/hardware/corgi/corgi_inputs.png =x400)
 
