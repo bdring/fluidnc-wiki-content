@@ -2,7 +2,7 @@
 title: Supported Gcodes
 description: 
 published: true
-date: 2026-09-05T21:46:26.956Z
+date: 2026-10-08T13:42:04.780Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-31T14:26:24.935Z
@@ -506,6 +506,7 @@ Both of these commands have the following effects:
 - The spindle is stopped (like M5).
 - The current motion mode is set to feed (like G1).
 - Coolant is turned off (like M9).
+- User outputs M62, M63, M64, M65, M67 Are not affected (We are researching to see if this should be changed) 
 
 ## M3 Spindle CW
 
