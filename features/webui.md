@@ -62,7 +62,7 @@ The WebUI will automatically be installed with the firmware if you are using the
 
 ## Multiple WebUIs
 
-Besides the WebUI in the local file system, FluidNC can serve any number of WebUIs from the directory given by `$HTTP/UIDir`, which is `/sd/ui` by default. Each WebUI goes in its own subdirectory, which holds its `index.html.gz` (or `index.html`):
+**[since v4.1.2]** Besides the WebUI in the local file system, FluidNC can serve any number of WebUIs from the directory given by `$HTTP/UIDir`, which is `/sd/ui` by default. Each WebUI goes in its own subdirectory, which holds its `index.html.gz` (or `index.html`):
 
 ```
 /sd/ui/webui2/index.html.gz
