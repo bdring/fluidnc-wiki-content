@@ -851,6 +851,14 @@ Port number for HTTP connections, default 80
 
 **[since v3.6.8]** Prevents serving files from LocalFS when the machine is running
 
+## $HTTP/UIDir
+
+A directory, on either file system, whose subdirectories each hold a WebUI. The one in subdirectory `<name>` is served at `/ui/<name>/`, and `/ui/` lists them. Default `/sd/ui`. An empty value turns this off. See [Multiple WebUIs](http://wiki.fluidnc.com/en/features/webui#multiple-webuis).
+
+## $HTTP/DefaultUI
+
+The subdirectory of `$HTTP/UIDir` whose WebUI opens at `/`. If it is empty, or that WebUI is not present, `/` serves the WebUI in the local file system. Default empty.
+
 ## $WiFi/Mode
 
 Value is one of:

@@ -55,6 +55,8 @@ Other settings
 - **$HTTP/Enable**
 - **$HTTP/Port**
 - **$HTTP/BlockDuringMotion** [since v3.6.8] Prevents serving files from LocalFS when the machine is running
+- **$HTTP/UIDir** Directory whose subdirectories each hold a WebUI, served at `/ui/<subdirectory>/`. Default `/sd/ui`. See [Multiple WebUIs](http://wiki.fluidnc.com/en/features/webui#multiple-webuis)
+- **$HTTP/DefaultUI** The subdirectory of `$HTTP/UIDir` whose WebUI opens at `/`. Default empty
 - **$Telnet/Enable**
 - **$Telnet/Port**
 - **$WiFi/Mode** (AP, Off, STA or STA>AP) This is the mode the wifi will use. STA>AP means it will attempt to use STA, then fall back to AP mode

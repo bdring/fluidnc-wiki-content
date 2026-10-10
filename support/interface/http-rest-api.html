@@ -37,7 +37,27 @@ dateCreated: 2025-11-12T04:18:06.900Z
       <tr>
         <td style="background-color:transparent;"><code>/</code></td>
         <td style="background-color:transparent;">GET</td>
-        <td style="background-color:transparent;">Fetches the WebUI application for execution in a browser from either LocalFS:/index.html or LocalFS:/index.html.gz (usually the latter for space reasons). &nbsp;If neither of those files is present on the localfs filesystem, or if the URL argument “forcefallback=yes” is&nbsp;present, returns a rudimentary web page that will let you upload files to localfs.&nbsp;</td>
+        <td style="background-color:transparent;">If <strong>$HTTP/DefaultUI</strong> names a WebUI that is present under <strong>$HTTP/UIDir</strong>, redirects to <code>/ui/<i>NAME</i>/</code>. &nbsp;Otherwise fetches the WebUI application for execution in a browser from either LocalFS:/index.html or LocalFS:/index.html.gz (usually the latter for space reasons). &nbsp;If neither of those files is present on the localfs filesystem, or if the URL argument “forcefallback=yes” is&nbsp;present, returns a rudimentary web page that will let you upload files to localfs. &nbsp;“forcefallback=yes” also skips the <strong>$HTTP/DefaultUI</strong> redirect.</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/ui/</code></td>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">Lists the WebUIs in the subdirectories of the directory set by <strong>$HTTP/UIDir</strong> (default /sd/ui).</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/ui/<i>NAME</i>/</code></td>
+        <td style="background-color:transparent;">GET</td>
+        <td style="background-color:transparent;">Fetches the WebUI in subdirectory <i>NAME</i> of <strong>$HTTP/UIDir</strong>, from its index.html or index.html.gz, and sets a <code>uiSession</code> cookie with <code>Path=/ui/<i>NAME</i>/</code>. &nbsp;A WebSocket upgrade request to the same URL opens a WebSocket in that session. &nbsp;See <a href="/en/features/webui#multiple-webuis">Multiple WebUIs</a>.</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/ui/<i>NAME</i>/command</code><br><code>/ui/<i>NAME</i>/command_silent</code></td>
+        <td style="background-color:transparent;">ANY</td>
+        <td style="background-color:transparent;">Like /command and /command_silent, in the session of the WebUI in <i>NAME</i>.</td>
+      </tr>
+      <tr>
+        <td style="background-color:transparent;"><code>/ui/<i>NAME</i>/<i>PATH</i></code></td>
+        <td style="background-color:transparent;">GET, PUT</td>
+        <td style="background-color:transparent;">GET fetches a file in the WebUI's subdirectory. &nbsp;PUT writes one, with the request body as the file's contents, creating any missing subdirectories; it answers 201 for a new file, 204 for a replaced one, and 503 while the machine is moving if <strong>$HTTP/BlockDuringMotion</strong> is on.</td>
       </tr>
       <tr>
         <td style="background-color:transparent;"><code>/command</code></td>
