@@ -2,7 +2,7 @@
 title: CNC I/O Modules
 description: Standard modules for CNC controllers
 published: true
-date: 2026-08-01T19:37:40.235Z
+date: 2026-10-12T17:50:24.861Z
 tags: 
 editor: markdown
 dateCreated: 2024-03-21T16:27:09.227Z
@@ -44,6 +44,12 @@ Many controllers are I/O limited. They typically have some GPIO, some input only
 VMot is whatever VMot is on the base controller. If you need a special voltage, like 3.3V, you will need to generate that on the board. You should pull no more than about 1 amp from either the 5V or VMot. If you need more current, you should bring that in on an edge connector.
 
 If VMot has a range limitation, you should label that on your module or documentation.
+
+### SPI Bus Implementation
+
+The greyhound controller uses the data bus pins for SPI. The SPI is shared between the SD card and the module socket, so no extra MCU pins are needed. Use this pinout for future compatibility if you are using SPI. 
+
+![module_v2.png](/hardware/greyhound/module_v2.png =x200)
 
 ## Dimensions
 
