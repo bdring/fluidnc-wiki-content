@@ -67,7 +67,7 @@ Select **WebUIs** to browse that directory. It works like the LocalFS view, exce
 
 1. Select **WebUIs**.
 2. Click the folder with the **+** and type a name for the WebUI, such as `webui3`. Use only letters, digits, `-`, `_` and `.`.
-3. Open the new directory.
+3. Click on the new directory to open it.
 4. Upload the WebUI's `index.html.gz` (or `index.html`) into it.
 5. Reload the page. A **webui3** button appears.
 
