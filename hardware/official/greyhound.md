@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-10-01T18:36:03.895Z
+date: 2026-10-12T13:02:24.009Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -10,10 +10,11 @@ dateCreated: 2026-09-17T14:49:53.603Z
 
 # Greyhound 6x-S3 Controller
 
-> This page is a work in progress. The first set of prototype controllers have not arrived yet.
+> The first set of controllers are in production and due in early November 2026.
 {.is-info}
 
-![greyhound_render1.png](/hardware/greyhound/greyhound_render1.png =x500)
+
+![grey1.jpg](/hardware/greyhound/grey1.jpg =x500)
 
 
 # Overview
