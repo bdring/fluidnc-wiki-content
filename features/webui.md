@@ -72,7 +72,7 @@ The WebUI will automatically be installed with the firmware if you are using the
 
 This lets you try another WebUI, or a newer version of yours, without replacing the one you use. It also gives a home to WebUI builds that are too large for the local file system.
 
-Subdirectory names can contain letters, digits, `-`, `_` and `.`. Other subdirectories are ignored.
+Subdirectory names can contain letters, digits, `-`, `_` and `.`. Other subdirectories are ignored. The name `localfs` is reserved for the WebUI in the local file system (see below), so a subdirectory with that name is not used.
 
 `$HTTP/UIDir` can name a directory on either file system, for example `/localfs/ui`. Set it to an empty value to turn this feature off.
 
@@ -80,8 +80,9 @@ Subdirectory names can contain letters, digits, `-`, `_` and `.`. Other subdirec
 
 - `http://fluidnc.local/ui/` lists the installed WebUIs. Click one to open it.
 - `http://fluidnc.local/ui/webui3/` opens the WebUI in the `webui3` subdirectory. You can bookmark it.
-- To open a WebUI from the plain address `http://fluidnc.local/`, set `$HTTP/DefaultUI` to its subdirectory name, for example `$HTTP/DefaultUI=webui3`. If that WebUI is not present, `/` serves the local file system's WebUI as before.
-- `http://fluidnc.local/?forcefallback=yes` always shows the built-in file manager page, whatever is installed.
+- `http://fluidnc.local/ui/localfs/` opens the WebUI in the local file system, the one `http://fluidnc.local/` has always opened. Use it to reach that WebUI when `$HTTP/DefaultUI` sends `/` elsewhere.
+- To open a WebUI from the plain address `http://fluidnc.local/`, set `$HTTP/DefaultUI` to its subdirectory name, for example `$HTTP/DefaultUI=webui3`, or to `localfs`. If that WebUI is not present, `/` serves the local file system's WebUI as before.
+- `http://fluidnc.local/?forcefallback=yes` always shows the built-in WebUI Uploader page, whatever is installed. It has buttons for each WebUI, including `localfs`.
 
 Different browser tabs can use different WebUIs at the same time.
 

@@ -47,7 +47,7 @@ dateCreated: 2025-11-12T04:18:06.900Z
       <tr>
         <td style="background-color:transparent;"><code>/ui/<i>NAME</i>/</code></td>
         <td style="background-color:transparent;">GET</td>
-        <td style="background-color:transparent;">Fetches the WebUI in subdirectory <i>NAME</i> of <strong>$HTTP/UIDir</strong>, from its index.html or index.html.gz, and sets a <code>uiSession</code> cookie with <code>Path=/ui/<i>NAME</i>/</code>. &nbsp;A WebSocket upgrade request to the same URL opens a WebSocket in that session. &nbsp;See <a href="/en/features/webui#multiple-webuis">Multiple WebUIs</a>.</td>
+        <td style="background-color:transparent;">Fetches the WebUI in subdirectory <i>NAME</i> of <strong>$HTTP/UIDir</strong>, from its index.html or index.html.gz (for <i>NAME</i> <code>localfs</code>, the WebUI in the root of LocalFS), and sets a <code>uiSession</code> cookie with <code>Path=/ui/<i>NAME</i>/</code>. &nbsp;A WebSocket upgrade request to the same URL opens a WebSocket in that session. &nbsp;See <a href="/en/features/webui#multiple-webuis">Multiple WebUIs</a>.</td>
       </tr>
       <tr>
         <td style="background-color:transparent;"><code>/ui/<i>NAME</i>/command</code><br><code>/ui/<i>NAME</i>/command_silent</code></td>
@@ -57,7 +57,7 @@ dateCreated: 2025-11-12T04:18:06.900Z
       <tr>
         <td style="background-color:transparent;"><code>/ui/<i>NAME</i>/<i>PATH</i></code></td>
         <td style="background-color:transparent;">GET, PUT</td>
-        <td style="background-color:transparent;">GET fetches a file in the WebUI's subdirectory. &nbsp;PUT writes one, with the request body as the file's contents, creating any missing subdirectories; it answers 201 for a new file, 204 for a replaced one, and 503 while the machine is moving if <strong>$HTTP/BlockDuringMotion</strong> is on.</td>
+        <td style="background-color:transparent;">GET fetches a file in the WebUI's subdirectory (the root of LocalFS for <code>localfs</code>). &nbsp;PUT writes one, with the request body as the file's contents, creating any missing subdirectories; it answers 201 for a new file, 204 for a replaced one, and 503 while the machine is moving if <strong>$HTTP/BlockDuringMotion</strong> is on.</td>
       </tr>
       <tr>
         <td style="background-color:transparent;"><code>/command</code></td>

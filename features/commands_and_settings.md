@@ -857,7 +857,7 @@ Port number for HTTP connections, default 80
 
 ## $HTTP/DefaultUI
 
-**[since v4.1.2]** The subdirectory of `$HTTP/UIDir` whose WebUI opens at `/`. If it is empty, or that WebUI is not present, `/` serves the WebUI in the local file system. Default empty.
+**[since v4.1.2]** The subdirectory of `$HTTP/UIDir` whose WebUI opens at `/`, or `localfs` for the WebUI in the local file system. If it is empty, or that WebUI is not present, `/` serves the WebUI in the local file system. Default empty.
 
 ## $WiFi/Mode
 
