@@ -23,6 +23,8 @@ Here are some example implementations of the protocol in different programming l
 Before files are sent to the FluidNC controller you must enter the `$Xmodem/Receive=<filename>` (or `$XR=<filename>`) command. You will see the 'C' character outputting on the terminal. You must then initiate the xmodem transfer on your terminal program. It will timeout if the transfer is not started after a period of time.
 
 > The default location of the LocalFS, but you can specify it with **/sd/** or **/localfs/**, like `$Xmodem/Receive=/sd/test.gcode`
+
+> Missing parent directories in the filename are created automatically (FluidNC later than v4.1.1), so `$Xmodem/Receive=/localfs/ui/figui/index.html.gz` works even if `ui/figui` does not exist yet.
 {.is-info}
 
 

@@ -68,6 +68,10 @@ Send **$Localfs/Delete=\<filename\>**
 
 Send `$Localfs/Rename=oldname>newname` to rename an existing file on the localfs. 
 
+## Directories
+
+Send `$LocalFS/Mkdir=<path>` to create a directory, including any missing parent directories (FluidNC later than v4.1.1). `$LocalFS/Delete` deletes a directory and everything in it, and `$LocalFS/Rename` renames directories as well as files. `$LocalFS/List` shows the whole tree, with `[DIR:...]` lines for directories and contents indented by depth.
+
 ## Getting the Size
 
 Send **$LocalFS/Size**. The results will look similar to the report below.

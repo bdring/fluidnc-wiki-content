@@ -390,6 +390,15 @@ ok
 
 ## $LocalFS/Migrate =path
 
+## $LocalFS/Mkdir =path
+
+Create a directory on the local filesystem, along with any missing parent directories. An existing directory is not an error. Requires a FluidNC version later than v4.1.1.
+
+```
+$LocalFS/Mkdir=/ui/figui
+ok
+```
+
 ## $LocalFS/Restore =path
 
 ## $Log/Msg or $LM
@@ -508,6 +517,15 @@ Display the contents of a file on the SD card (similar to `cat`).
 ```
 $SD/Show=/sd/localfs/macro1.g
 $MD
+```
+
+## $SD/Mkdir=path
+
+Create a directory on the SD card, along with any missing parent directories. An existing directory is not an error. Requires a FluidNC version later than v4.1.1.
+
+```
+$SD/Mkdir=/jobs/2026
+ok
 ```
 
 ## $SD/Rename=current_name\>new_name
