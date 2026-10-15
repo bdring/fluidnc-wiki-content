@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-10-12T13:02:24.009Z
+date: 2026-10-15T16:47:38.952Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -315,6 +315,10 @@ uart_channel1:
   report_interval_ms: 75
   uart_num: 1
 ```
+
+## Airedale I/O Expander
+
+[See this page](http://wiki.fluidnc.com/en/hardware/official/airedale) if you are using the the expansion port for an Airedale. 
 
 # CNC I/O Module Socket
 
