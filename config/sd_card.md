@@ -2,7 +2,7 @@
 title: SD Card
 description: 
 published: true
-date: 2026-08-01T19:33:41.276Z
+date: 2026-10-15T15:03:44.403Z
 tags: en
 editor: markdown
 dateCreated: 2022-07-21T19:12:02.483Z
@@ -156,6 +156,12 @@ ok
 
 The number following **SIZE:** is the file size. 
 
+## $SD/Mkdir - Creates a new folder.
+
+Example: `$SD/Mkdir=/newdir` and `$SD/Mkdir=/folder1/newdir` to put it into an existing folder. 
+
+You can delete a folder with the `$SD/Delete` command.
+
 ## $SD/Rename=oldname\>newname
 
 Renames existing files on the SD card.
@@ -193,9 +199,12 @@ Or you can add files by moving the SD card to a PC, or [via the WebUI](http://wi
 
 To add a file to a subdirectory, add the subdirectory like this /sd/foo/text.nc`
 
-## $SD/Delete - Delete a File
+## $SD/Delete - Delete a File or Folder
+
+
 
 Sending `$SD/Delete=/Foo.nc` will delete **/Foo.nc**.
+
 
 ## $SD/FallbackCS - Access SD without a config file
 
