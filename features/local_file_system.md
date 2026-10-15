@@ -2,7 +2,7 @@
 title: Local File System (Flash Memory)
 description: Using the File System on the ESP32
 published: true
-date: 2026-08-01T19:36:18.327Z
+date: 2026-10-15T15:04:58.106Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T19:53:36.361Z
@@ -60,9 +60,15 @@ Send **$LocalFS/Run=\<filename\>**. This is used to run gcode files.  Use this o
 
 Send **$LocalFS/Format**. This will reformat the LocalFS. If you are having trouble loading files when there should be enough space, try reformatting.
 
-## Deleting Files
+## Deleting Files or Folders
 
 Send **$Localfs/Delete=\<filename\>**
+
+## $SD/Mkdir - Creates a new folder.
+
+Example: `$Localfs/Mkdir=/newdir` and `$Localfs/Mkdir=/folder1/newdir` to put it into an existing folder. 
+
+You can delete a folder with the `$Localfs/Delete` command.
 
 ## Renaming files.
 
