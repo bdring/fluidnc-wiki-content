@@ -2,7 +2,7 @@
 title: Wifi and Bluetooth
 description: 
 published: true
-date: 2026-10-16T04:40:27.752Z
+date: 2026-10-16T09:44:25.819Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-22T14:15:58.208Z
@@ -30,6 +30,7 @@ $Sta/SSID=MyWifiSSID
 If you have been using wired Ethernet, you can switch back to Wifi using this command:
 ```
 $Network/Type=WiFi
+$Bye
 ```
 
 Below are all the settings.
