@@ -2,7 +2,7 @@
 title: Wifi and Bluetooth
 description: 
 published: true
-date: 2026-09-17T18:51:49.659Z
+date: 2026-10-16T04:40:27.752Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-22T14:15:58.208Z
@@ -26,6 +26,10 @@ To change one of these settings, you can use [FluidTerm](en/fluidterm/fluidterm_
 
 ```
 $Sta/SSID=MyWifiSSID
+```
+If you have been using wired Ethernet, you can switch back to Wifi using this command:
+```
+$Network/Type=WiFi
 ```
 
 Below are all the settings.
