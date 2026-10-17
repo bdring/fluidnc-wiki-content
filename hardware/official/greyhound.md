@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-10-15T16:47:38.952Z
+date: 2026-10-17T20:07:16.652Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -84,7 +84,7 @@ A green LED will light in the center of the conntroller when power is properly a
 It is an ESP32-S3-WROOM-1U-N8R2.
 
 - 1U = Antenna connector rather than a built in one. 
-- N8 = 8 MB (Quad SPI) Flash
+- N8 = 8 MB Flash
 - R2 = 2 MB (Quad SPI) PSRAM
   
 ## ESP32 Antenna
@@ -346,7 +346,7 @@ ethernet:
 
 # Source Files
 
-Source files will be provided when the controller is ready for sale,
+- [PCB Design Files](https://oshwlab.com/bdring/project_solvsdbx) 
 
 # Pinout Reference
 
