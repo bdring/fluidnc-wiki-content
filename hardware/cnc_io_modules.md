@@ -2,7 +2,7 @@
 title: CNC I/O Modules
 description: Standard modules for CNC controllers
 published: true
-date: 2026-10-12T17:50:24.861Z
+date: 2026-10-23T19:02:36.829Z
 tags: 
 editor: markdown
 dateCreated: 2024-03-21T16:27:09.227Z
@@ -233,6 +233,15 @@ This module was designed to simplify the wiring for the [FluidDial Penadant usin
 ![module_rj12.jpg](/hardware/fluiddial/module_rj12.jpg =x300)
 
 - Source Files: [EasyEDA](https://oshwlab.com/bdring/simple-pendant-module)
+
+## Wired Ethernet Module
+
+This modules gives wired Ethernet to your controller. It is only compatible with CNC I/O Module sockets with additional SPI bus pins, like the [Greyhound](http://wiki.fluidnc.com/en/hardware/official/greyhound#cnc-io-module-socket). 
+
+![eth_module_1.jpg](/hardware/greyhound/eth_module_1.jpg =x300)
+![module_v2.png](/hardware/greyhound/module_v2.png =x300)
+
+- Source Files: [EasyEDA](https://oshwlab.com/bdring/project_iskgaknx)
 
 ## Prototype Module
 
