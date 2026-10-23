@@ -2,7 +2,7 @@
 title: Existing Hardware
 description: Hardware that runs FluidNC
 published: true
-date: 2026-08-11T15:32:21.416Z
+date: 2026-10-23T18:44:41.422Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T12:57:33.399Z
@@ -20,9 +20,20 @@ If you want to add something to this page, [read this first](http://wiki.fluidnc
 
 ***
 
-# Controllers still in production
+# Avaialable Controllers
 
-These are controller that are still available for purchase as far as we know.
+These are controller that are available for purchase as far as we know.
+
+## Greyhound
+
+- **Open Source:** [Yes](https://oshwlab.com/bdring/project_solvsdbx)
+- **Wiki Page:** [Yes](http://wiki.fluidnc.com/en/hardware/official/greyhound)
+- **FluidNC Supporter:** Yes (project founder)
+- **Discord Name** @bartdring 
+- **For Sale:** Available Mid November 2026 at [Elecrow](http://www.elecrow.com)
+- **Description:** 6 Axis ESP32-S3 Controller designed for use with external stepper driver modules. It supports wired Ethernet via optional module. [See wiki page for full details.](http://wiki.fluidnc.com/en/hardware/official/greyhound)
+
+![grey1.jpg](/hardware/greyhound/grey1.jpg =x500)
 
 ##  6x CNC Controller
 
@@ -31,7 +42,7 @@ These are controller that are still available for purchase as far as we know.
 - **FluidNC Supporter:** Yes (project founder)
 - **Discord Name** @bartdring 
 - **For Sale:** [With ESP32 on board](https://www.tindie.com/products/33366583/6x-cnc-controller-for-fluidnc-integrated-esp32/) or [Uses ESP32 Module](https://www.tindie.com/products/33366583/6x-cnc-controller-for-fluidnc/) or via my [International Distributor Elecrow](https://www.elecrow.com/6x-cnc-controller-for-fluidnc.html)
-- **Description:** 6 Axis external driver controller that supports many spindle types.
+- **Description:** 6 Axis external driver controller that supports many spindle types. Supports 
 
 
 ![6x_cnc_controller.jpg](/hardware/6x_cnc_controller.jpg =x500)
