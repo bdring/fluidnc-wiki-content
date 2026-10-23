@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-10-23T18:37:20.409Z
+date: 2026-10-23T19:04:15.299Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -329,7 +329,7 @@ The expansion socket is compatible with all existing CNC I/O Module designs (4 I
 
 ## Wired Ethernet Module
 
-You need to install a separately purchased ethernet module and install it like this.
+You need to install a separately purchased ethernet module and install it [like this](http://wiki.fluidnc.com/en/hardware/cnc_io_modules#wired-ethernet-module).
 
 ![gh_eth.png](/hardware/greyhound/gh_eth.png =x300)
 
