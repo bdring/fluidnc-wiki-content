@@ -2,7 +2,7 @@
 title: TMC2209 Pen Laser V2
 description: A 2 Axis controller with integrated TMC2209 drivers and ESP32 microcontroller
 published: true
-date: 2026-10-24T13:43:48.147Z
+date: 2026-10-24T13:52:03.235Z
 tags: 
 editor: markdown
 dateCreated: 2024-03-20T16:26:02.659Z
@@ -37,6 +37,20 @@ Before asking for help, please search all areas of this wiki. Your questions hav
 See this [help page](http://wiki.fluidnc.com/en/support/requesting_help) if you still have problems.
 
 Please ask all other questions via our [discord server](http://wiki.fluidnc.com/en/support/discord).
+
+# Getting Started
+
+The controller ships with a version of FluidNC that was current when the controller was built. You should upgrade the firmware using the web installer.
+
+1. Do not install your config file yet.
+2. Do not connect any external devices yet. 
+3. Connect main power. Be sure the polarity is correct before you turn on the power.
+4. Turn on the main power and confirm that the 3.3v LED (top left corner) is lit.
+5. Connect a USB-C cable between your computer and the controller. Check to see that your computer has added a serial port.
+6. Go to the [web installer](https://installer.fluidnc.com/). Connect to your controller.
+7. Do an upgrade (not full installation).
+8. Now create and load a config file for your machine. We strongly recommend using the [configuration wizard](http://wiki.fluidnc.com/en/hardware/official/doberman#getting-started) to do that.
+9. Power down and connect all your devices. It might be helpful to connect just a few at a time and test as you go.
 
 # Built in ESP32
 
