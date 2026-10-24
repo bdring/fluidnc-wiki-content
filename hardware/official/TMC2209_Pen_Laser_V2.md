@@ -1,8 +1,8 @@
 ---
 title: TMC2209 Pen Laser V2
-description: A 2 Axis controller with integrated TMC2209 drivers and ESP32 microcontroller 
+description: A 2 Axis controller with integrated TMC2209 drivers and ESP32 microcontroller
 published: true
-date: 2025-11-19T19:27:40.672Z
+date: 2026-10-24T13:43:48.147Z
 tags: 
 editor: markdown
 dateCreated: 2024-03-20T16:26:02.659Z
@@ -44,11 +44,18 @@ This uses a USB-C connector. The main power must be supplied via the terminal bl
 
 # Power Supply
 
-The controller must be powered via a 12-30VDC power supply. It should be able to supply a minimum of 3A.  If you are attaching external devices to any of the VMot connections, you should add those currents. 
+The controller must be powered via a 12-30VDC power supply. It should be able to supply a minimum of 3A.  If you are attaching external devices to any of the VMot connections, you should add those currents. Nothing will work with USB power only.
 
 > Be very careful getting the voltage polarity correct. There is no reverse polariy protection, so you will destroy the controller and probably some connected items. 
 {.is-warning}
 
+# USB
+
+The USB is a Silicon Labs CP2102 USB/Serial chip. Most computers ship with a driver for that. You can [get the latest driver](https://www.silabs.com/software-and-tools/usb-to-uart-bridge-vcp-drivers?tab=downloads) from them if it is not working.
+
+The USB connection has nothing to do with the firmware or the ESP32. If you are not getting a connection, it is not a firmware issue. It is most likely a driver or cable issue.
+
+You must have primary power for the USB to work.
 
 # Programming
 
