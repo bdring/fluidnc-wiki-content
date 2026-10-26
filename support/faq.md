@@ -2,7 +2,7 @@
 title: Frequently Asked Questions
 description: 
 published: true
-date: 2026-08-01T19:38:54.488Z
+date: 2026-10-26T19:18:04.050Z
 tags: 
 editor: markdown
 dateCreated: 2022-07-21T19:39:12.775Z
@@ -155,9 +155,9 @@ Having trouble understanding machine space, [see this page](https://github.com/b
 
 There is a big power spike when the radios turn on. This can cause a crash if the 3.3V cannot handle the spike. Try adding some capacitance between 3.3V and ground. Typically it is around 47uF. See if 100uF helps.
 
-## Is wired ethernet supported
+## Is wired ethernet supported?
 
-No. That is not supported and we have no plans to support at this time.
+Yes, see [this wiki page](http://wiki.fluidnc.com/en/features/wifi_bt#wired-ethernet).
 
 ## Special Character Issue
 
