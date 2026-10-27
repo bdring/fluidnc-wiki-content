@@ -871,7 +871,7 @@ Port number for HTTP connections, default 80
 
 ## $HTTP/UIDir
 
-**[since v4.1.2]** A directory, on either file system, whose subdirectories each hold a WebUI. The one in subdirectory `<name>` is served at `/ui/<name>/`, and `/ui/` lists them. Default `/sd/ui`. An empty value turns this off. See [Multiple WebUIs](http://wiki.fluidnc.com/en/features/webui#multiple-webuis).
+**[since v4.1.2]** A directory, on either file system, whose subdirectories each hold a WebUI. The one in subdirectory `<name>` is served at `/ui/<name>/`, and `/ui/` lists them. Default empty, which turns this off, so that FluidNC does not access the SD card at startup unless you use this feature. `/sd/ui` is the usual choice. See [Multiple WebUIs](http://wiki.fluidnc.com/en/features/webui#multiple-webuis).
 
 ## $HTTP/DefaultUI
 

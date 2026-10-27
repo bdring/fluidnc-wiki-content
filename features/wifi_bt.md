@@ -60,7 +60,7 @@ Other settings
 - **$HTTP/Enable**
 - **$HTTP/Port**
 - **$HTTP/BlockDuringMotion** [since v3.6.8] Prevents serving files from LocalFS when the machine is running
-- **$HTTP/UIDir** [since v4.1.2] Directory whose subdirectories each hold a WebUI, served at `/ui/<subdirectory>/`. Default `/sd/ui`. See [Multiple WebUIs](http://wiki.fluidnc.com/en/features/webui#multiple-webuis)
+- **$HTTP/UIDir** [since v4.1.2] Directory whose subdirectories each hold a WebUI, served at `/ui/<subdirectory>/`. Default empty (off); `/sd/ui` is the usual choice. See [Multiple WebUIs](http://wiki.fluidnc.com/en/features/webui#multiple-webuis)
 - **$HTTP/DefaultUI** [since v4.1.2] The subdirectory of `$HTTP/UIDir` whose WebUI opens at `/`, or `localfs`. Default empty
 - **$Telnet/Enable**
 - **$Telnet/Port**

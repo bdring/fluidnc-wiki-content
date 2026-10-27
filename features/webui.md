@@ -62,7 +62,13 @@ The WebUI will automatically be installed with the firmware if you are using the
 
 ## Multiple WebUIs
 
-**[since v4.1.2]** Besides the WebUI in the local file system, FluidNC can serve any number of WebUIs from the directory given by `$HTTP/UIDir`, which is `/sd/ui` by default. Each WebUI goes in its own subdirectory, which holds its `index.html.gz` (or `index.html`):
+**[since v4.1.2]** Besides the WebUI in the local file system, FluidNC can serve any number of WebUIs from the directory given by `$HTTP/UIDir`. That setting is empty by default, which turns this feature off, so set it first. The SD card is the usual place:
+
+```
+$HTTP/UIDir=/sd/ui
+```
+
+Each WebUI goes in its own subdirectory, which holds its `index.html.gz` (or `index.html`):
 
 ```
 /sd/ui/webui2/index.html.gz
@@ -74,7 +80,7 @@ This lets you try another WebUI, or a newer version of yours, without replacing 
 
 Subdirectory names can contain letters, digits, `-`, `_` and `.`. Other subdirectories are ignored. The name `localfs` is reserved for the WebUI in the local file system (see below), so a subdirectory with that name is not used.
 
-`$HTTP/UIDir` can name a directory on either file system, for example `/localfs/ui`. Set it to an empty value to turn this feature off.
+`$HTTP/UIDir` can name a directory on either file system, for example `/localfs/ui`. Set it to an empty value (`$HTTP/UIDir=`) to turn this feature off.
 
 ### Opening a WebUI
 
