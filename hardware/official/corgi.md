@@ -2,7 +2,7 @@
 title: Corgi CNC Controller
 description: 
 published: true
-date: 2026-10-08T13:20:15.773Z
+date: 2026-10-29T13:54:26.769Z
 tags: 
 editor: markdown
 dateCreated: 2025-07-31T13:45:22.446Z
@@ -220,7 +220,7 @@ The (2) NPN MOSFETs are rated for 3A continuous and 5A peak. There are flyback d
 
 The MOSFETs use gpio.4 and gpio.12. These I/O pins also activate 5V outputs.
 
-The VMot terminals are always connected to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active. If you need to operate devices with other voltages than 12v, you can use a separate DC power supply as long as it shares a common ground with the controller.
+The VMot terminals are directly connected to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active.
 
 The default state at power up is off. MOSFETs can fail in the on state, so account for that in your safety plan.
 
