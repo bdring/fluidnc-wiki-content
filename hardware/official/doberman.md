@@ -2,7 +2,7 @@
 title: Doberman CNC Controller
 description: Official support page for the Doberman CNC controller
 published: true
-date: 2026-10-29T13:53:05.898Z
+date: 2026-10-29T13:57:12.044Z
 tags: 
 editor: markdown
 dateCreated: 2025-11-12T19:42:00.540Z
@@ -243,7 +243,7 @@ The outputs are from left to right.
 
 The (2) NPN [MOSFETs](https://www.lcsc.com/product-detail/C189606.html) are rated for 3A continuous and 5A peak. There are flyback diodes connected to VMot to make them safe for use with inductive loads, such as relays, small motors and solenoids.
 
-The 12V terminals are connected directly to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active.
+The terminals labeled VMot are connected directly to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active.
 
 - FET1 gpio.4 (this will also activate one of the 5V outputs)
 - FET2 gpio.5 (this will also activate one of the 5V outputs)
