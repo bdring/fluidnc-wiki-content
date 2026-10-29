@@ -56,7 +56,13 @@ Select **SD** to browse the SD card, starting at its top directory. It works the
 
 ## The WebUIs View
 
-FluidNC can hold several WebUIs at once and you can switch between them. Each WebUI lives in its own subdirectory of the directory named by the `$HTTP/UIDir` setting, which is `/sd/ui` by default. A WebUI named `webui3` is in `/sd/ui/webui3/`, and you open it at `http://fluidnc.local/ui/webui3/`.
+FluidNC can hold several WebUIs at once and you can switch between them. Each WebUI lives in its own subdirectory of the directory named by the `$HTTP/UIDir` setting. That setting is empty by default, and the WebUIs view appears only once it is set. To keep WebUIs on the SD card, enter:
+
+```
+$HTTP/UIDir=/sd/ui
+```
+
+Then reload the page. A WebUI named `webui3` is in `/sd/ui/webui3/`, and you open it at `http://fluidnc.local/ui/webui3/`.
 
 Select **WebUIs** to browse that directory. It works like the LocalFS view, except that the top level is the WebUI directory:
 
