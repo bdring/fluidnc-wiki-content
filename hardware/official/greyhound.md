@@ -2,7 +2,7 @@
 title: Greyhound 6x S3 Controller
 description: The 2nd generation 6x controller
 published: true
-date: 2026-10-23T19:04:15.299Z
+date: 2026-10-29T13:57:51.121Z
 tags: 
 editor: markdown
 dateCreated: 2026-09-17T14:49:53.603Z
@@ -297,7 +297,7 @@ The (2) NPN MOSFETs are rated for 3A continuous and 5A peak. There are flyback d
 
 The MOSFETs share pins with (2) 5V outputs. If you are using the wizard, please assign the MOSFET beforee the 5V outputs so you know which 5v pins are still available.
 
-The VMot terminals are always connected to VMot. Terminals labeled with the io pin numbers switch to ground when the io pins are active. If you need to operate devices with other voltages than VMot, you can use a separate DC power supply as long as it shares a common ground with the controller.
+The terminals labeled 12V are always connected to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active.
 
 # RJ12 Expansion Port
 
