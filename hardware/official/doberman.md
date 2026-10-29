@@ -2,7 +2,7 @@
 title: Doberman CNC Controller
 description: Official support page for the Doberman CNC controller
 published: true
-date: 2026-10-08T13:02:15.667Z
+date: 2026-10-29T13:53:05.898Z
 tags: 
 editor: markdown
 dateCreated: 2025-11-12T19:42:00.540Z
@@ -243,14 +243,14 @@ The outputs are from left to right.
 
 The (2) NPN [MOSFETs](https://www.lcsc.com/product-detail/C189606.html) are rated for 3A continuous and 5A peak. There are flyback diodes connected to VMot to make them safe for use with inductive loads, such as relays, small motors and solenoids.
 
-The VMot terminals are always connected to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active. If you need to operate devices with other voltages than 12v, you can use a separate DC power supply (60V max) as long as it shares a common ground with the controller.
+The 12V terminals are connected directly to 12V. Terminals labeled with the io pin numbers switch to ground when the io pins are active.
 
 - FET1 gpio.4 (this will also activate one of the 5V outputs)
 - FET2 gpio.5 (this will also activate one of the 5V outputs)
 
 ### Using Relays with the MOSFETs
 
-You can attach relays directly to the MOSFET terminal block. The coil voltage of the relay must be 12V unless you are supplying an external voltage. If the coil has + and - labeled for the coil, be sure to get that connected to the controller correctly.
+You can attach relays directly to the MOSFET terminal block. The coil voltage of the relay must be 12V. If the coil has + and - labeled for the coil, be sure to get that connected to the controller correctly.
 
 # 0-10V Spindle
 
