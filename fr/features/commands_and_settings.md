@@ -298,6 +298,8 @@ ok
 
 ## $LocalFS/Migrate =path
 
+Convertit un système de fichiers local SPIFFS en LittleFS en conservant ses fichiers (nécessite une carte SD). Disponible uniquement dans FluidNC v4.1.1 et antérieures ; les versions suivantes ne prennent en charge que LittleFS. Voir [File System Migration](/en/support/filesystem_migration) (en anglais).
+
 ## $LocalFS/Restore =path
 
 ## $Macros/Run ou $RM

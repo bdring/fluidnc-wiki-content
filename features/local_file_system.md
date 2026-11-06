@@ -12,7 +12,7 @@ dateCreated: 2022-07-21T19:53:36.361Z
 
 The local file system is on the ESP32 device, in its FLASH memory. It is used to store the WebUI files, config files and small gcode files for macros. The space is very limited, so not much can fit on it. It works very similar to the SD card with the commands being prefixed with **LocalFS**, rather than **SD**.
 
-> Note: The local file system is implemented with either **SPIFFS** or, going forward, **LittleFS**. Both are ways to store files in a FLASH device. If you see a reference to either SPIFFS or LittleFs, it is the same thing as LocalFS in this case.
+> Note: The local file system uses **LittleFS**. FluidNC v4.1.1 and earlier could also use the older **SPIFFS**; later versions cannot read SPIFFS, so see [File System Migration](/en/support/filesystem_migration) before upgrading. You may still see "spiffs" in some names, such as the flash partition or `/spiffs/` paths. Those refer to the LocalFS too.
 {.is-info}
 
 > By default the FluidNC webserver will refuse to fetch any files from the Flash filesystem (including reloading WebUI) unless your machine is idle. This prevents FS access from hogging FLASH bandwidth when the CPU might need to load more code to memory.
@@ -83,7 +83,7 @@ Send `$LocalFS/Mkdir=<path>` to create a directory, including any missing parent
 Send **$LocalFS/Size**. The results will look similar to the report below.
 
 ```
-SPIFFS  Total:169.38 KB Used:124.52 KB
+LocalFS  Total:169.38 KB Used:124.52 KB
 ```
 
 # WebUI Use
