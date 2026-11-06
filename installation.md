@@ -37,7 +37,8 @@ WebInstaller usually works, but there are infrequent cases where it has trouble 
  - Connect the ESP32 via USB. It is best to remove all other USB/Serial devices while installing it because it might try the wrong one.
  - Run either **install-wifi.bat** or **install-bt.bat** (.sh on other OS's). Make sure you are running the script while in that folder. It will run FluidTerm after it does the install. There are likely to be a few warnings, but they should go away after you do the next step. Close FluidTerm and do the next step. 
  - If you are doing a first time install, run **install-fs.bat** (or .sh) to install the file system, including the WebUI. If you already have a config file or other files on an ESP32, they will be deleted, so this is not recommended for upgrading firmware.
- - You may notice a message like this `E (38) SPIFFS: mount failed, -10025` on the first run of the firmware. This is normal. It only happens on the first boot and is formatting the flash file system. It could take a long time on ESP32s with larger flash memories.
+ - If the local file system area of the flash is empty, the first boot creates a file system there. This is normal and only happens once. It could take a long time on ESP32s with larger flash memories.
+ - Upgrading from v4.1.1 or earlier? FluidNC versions later than v4.1.1 do not support the older SPIFFS file system. See [File System Migration](/en/support/filesystem_migration) before you upgrade.
  - You now need to load a config file. The instructions on how to do this [are here](http://wiki.fluidnc.com/en/config/overview).
  
  - ## Using Windows
@@ -135,7 +136,7 @@ Find this section of the platformio.ini file and uncomment one of these three li
  
 
 ```ini
-board_build.partitions = min_spiffs.csv ; For 4M ESP32
+board_build.partitions = min_littlefs.csv ; For 4M ESP32
 ; board_build.partitions = FluidNC/ld/esp32/app3M_spiffs1M_8MB.csv  ; For 8Meg ESP32
 ; board_build.partitions = FluidNC/ld/esp32/app3M_spiffs9M_16MB.csv ; For 16Meg ESP32
 ```

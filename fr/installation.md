@@ -28,7 +28,8 @@ L'objectif de ce projet est de supprimer la nécessité de compiler pour la plup
  - Connectez l'ESP32 via USB. Il est préférable de supprimer tous les autres périphériques USB/série lors de l'installation, car l'ESP32 pourrait essayer le mauvais périphérique.
  - Exécutez **install-wifi.bat** ou **install-bt.bat** (.sh sur d'autres systèmes d'exploitation). Assurez-vous que vous exécutez le script dans ce dossier. Il lancera FluidTerm après l'installation. Il y aura probablement quelques avertissements, mais ils devraient disparaître après l'étape suivante. Fermez FluidTerm et passez à l'étape suivante. 
  - Si vous effectuez une première installation, exécutez **install-fs.bat** (ou .sh) pour installer le système de fichiers, y compris l'interface Web. Si vous avez déjà un fichier de configuration ou d'autres fichiers sur un ESP32, ils seront supprimés, ce qui n'est pas recommandé pour la mise à jour du micrologiciel.
- - Vous pouvez remarquer un message comme celui-ci `E (38) SPIFFS : mount failed, -10025` lors de la première exécution du microprogramme. C'est normal. Il ne se produit qu'au premier démarrage et formate le système de fichiers flash. Cela peut prendre beaucoup de temps sur les ESP32s avec des mémoires flash plus grandes.
+ - Si la zone du système de fichiers local dans la mémoire flash est vide, le premier démarrage y crée un système de fichiers. C'est normal et cela ne se produit qu'une fois. Cela peut prendre beaucoup de temps sur les ESP32s avec des mémoires flash plus grandes.
+ - Vous mettez à jour depuis la v4.1.1 ou une version antérieure ? Les versions de FluidNC postérieures à la v4.1.1 ne prennent plus en charge l'ancien système de fichiers SPIFFS. Consultez [File System Migration](/en/support/filesystem_migration) (en anglais) avant la mise à jour.
  - Vous devez maintenant charger un fichier de configuration. Les instructions pour le faire [sont ici](http://wiki.fluidnc.com/fr/config/overview).
  
  
@@ -102,7 +103,7 @@ La seule façon de le faire est de compiler soi-même en modifiant le fichier pl
 Trouvez cette section du fichier platformio.ini et décommentez l'une de ces trois lignes.
 
 ```ini
-board_build.partitions = min_spiffs.csv ; For 4M ESP32
+board_build.partitions = min_littlefs.csv ; For 4M ESP32
 ; board_build.partitions = FluidNC/ld/esp32/app3M_spiffs1M_8MB.csv  ; For 8Meg ESP32
 ; board_build.partitions = FluidNC/ld/esp32/app3M_spiffs9M_16MB.csv ; For 16Meg ESP32
 ```
