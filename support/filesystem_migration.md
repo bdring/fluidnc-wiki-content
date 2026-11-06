@@ -45,7 +45,7 @@ Your files are still there.  You can either:
 - Reinstall v4.1.1, convert as described above, then upgrade again; or
 - Send `$LocalFS/Format` to erase the old file system and create a LittleFS one, then upload your files again (for example with install-fs from the installer, WebUI, or FluidTerm).
 
-The same message appears if a LittleFS file system has been damaged.  `$LocalFS/Format` fixes that too.
+A damaged LittleFS file system is different: its files cannot be read, so FluidNC reformats it at startup and reports `Local FS is damaged; reformatting`.  Upload your files again.
 
 ### Other commands
 
