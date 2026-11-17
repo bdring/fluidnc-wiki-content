@@ -17,6 +17,8 @@ dateCreated: 2022-07-20T23:05:11.393Z
 
 See [Installation](/en/installation) for a quick start guide to installing FluidNC on your machine.
 
+To try FluidNC before installing it, use the [FluidNC Demonstration](/en/demo). It runs the real firmware in your web browser, with no hardware needed, and lets you try out the different FluidNC user interfaces.
+
 ## Wiki Search
 
 > **Wiki Search:** Not all wiki content is linked via the navigation panel. Please use the search feature if you are not finding what you are looking for. You can also change the navigation panel to a file browser type interface to see all pages. 
@@ -52,6 +54,8 @@ FluidNC includes a built-in browser-based Web UI ([ESP3D-WebUI](https://github.c
 To use the WebUI, install the WiFi version of FluidNC, set FluidNC to connect to your local WiFi network, and browse to `fluidnc.local`
 
 WebUI now has two main versions, 2 and 3.  The standard FluidNC installation gets you version 2, but you can replace it with version 3 by going to https://github.com/michmela44/ESP3D-WEBUI/tree/3.0-FluidNCDev .
+
+To compare the WebUIs before installing one, try them in the [FluidNC Demonstration](/en/demo).
 
 ## Credits
 
