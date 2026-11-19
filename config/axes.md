@@ -10,7 +10,7 @@ dateCreated: 2022-07-21T17:00:13.765Z
 
 # FluidNC Axes Setup
 
-FluidNC supports 12 motors on 6 axes. This page details the different ways steps are generated, settings and integration with different hardware. 
+FluidNC supports up to nine axes (X, Y, Z, A, B, C, U, V, W) with up to two motors per axis. The practical number depends on the controller board, kinematics, and stepping engine; for example, PARLIO (Experimental) on ESP32-P4 can drive eight axes with independent step and direction signals. This page details the different ways steps are generated, settings and integration with different hardware.
 
 ## Stepping:
 
@@ -19,12 +19,16 @@ This is an important section for the motors.
 <!-- config-item path="stepping.engine" -->
 ### engine
 - **Type:** [Enumeration](/config/overview#enum)
-- **Range:** **RMT** | **TIMED** | **I2S_STATIC** | **I2S_STREAM** (some boards also support **Simulator** or **PIO**)
+- **Range:** **RMT** | **PARLIO** (Experimental) | **TIMED** | **I2S_STATIC** | **I2S_STREAM** (some boards also support **Simulator** or **PIO**)
 - **Default:** board-dependent (there is no single hardcoded default -- each board picks the engine matching its hardware)
 
-This determines the method used to generate the steps in firmware. Controller board hardware is designed for either RMT or I2S stepping so you must choose a method that your controller board hardware uses. It is not possible to mix and match stepping types on different motors. The supported types are:
+This determines the method used to generate the steps in firmware. Controller board hardware is designed for RMT, PARLIO (Experimental), or I2S stepping, so you must choose a method that your controller board hardware uses. It is not possible to mix and match stepping types on different motors. The supported types are:
+
+> For a comparison of all engines, including how they work, pros and cons, and supported hardware, see [Stepping Engines](/config/engines).
+{.is-info}
 
 - **RMT** results in simpler hardware for projects that are not limited by GPIO pin count. It is typically used on controller boards with no more than 4 independent motor ports. It uses the [RMT](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/rmt.html) feature of the ESP32 chip to handle step pulse generation without wasting time in delay loops. It does so by planning a sequence of voltage transitions in advance and then triggered for each step pulse. The step and direction pins are native GPIO pins. So, if there are lots of motors, few GPIOs will be left for other uses.
+- **PARLIO** (Experimental) is the ESP32-P4 parallel stepping engine and the default on P4. It sends every step and direction bit as one 16-bit word at 1 MHz, so up to eight single-motor axes can move with no measurable cross-axis step skew. It requires a `parlio:` section with a clock GPIO and one data GPIO per step/dir signal, and motor pins use the `parlio.N` namespace. See [PARLIO pins](/config/config_IO#parlio-section) for wiring and configuration, and [Stepping Engines](/config/engines) for a comparison with RMT.
 - **TIMED** has the same pin limitations as RMT but is less efficient so there is no reason to use it. It uses the CPU to drive steppers directly which requires delays that waste CPU cycles.
 - **I2SO** (I2S Output Only) Is a way to drive motors with fewer GPIO pins by using the ESP32's I2S bus interface hardware. It requires specific external hardware on the controller board ([read more](/hardware/controller_design_guidelines#IS2O_Chips)). If using I2SO hardware, there must be a valid I2SO definition in your config file. The [6-pack controller](https://www.tindie.com/products/33366583/6-pack-universal-cnc-controller) was the original board to utilize this engine. Others have since used the core design for different boards such as MKS DLC32 and TinyBee. **I2S_STATIC** and **I2S_STREAM** are identical. The two distinct names exist for historical reasons, when there were two variants with different trade-offs for speed vs latency. Now, choosing either will invoke the same code, giving high-speed, low-latency, jitter-free stepping.
 - **Simulator** and **PIO** are additional engines available only on boards built with simulator or RP2040-PIO support compiled in; most controller boards won't offer them.
@@ -416,19 +420,19 @@ axes:
 <!-- config-item path="axes.<letter>.motorN.standard_stepper.step_pin" -->
 ### step_pin
 - **Type:** [Pin](/config/overview#pin) (output)
-- **Range:** gpio or i2so
+- **Range:** gpio, i2so, or parlio
 - **Default:** `NO_PIN`
 
-Step pulse output to the driver. Some external drivers require an inverted step pulse. You can invert the pulse by changing the [active state attribute](/config/config_IO#input-pin-attributes) (**:high** or **:low**)
+Step pulse output to the driver. Some external drivers require an inverted step pulse. You can invert the pulse by changing the [active state attribute](/config/config_IO#input-pin-attributes) (**:high** or **:low**). On ESP32-P4 builds using PARLIO (Experimental), use `parlio.N`; the number must match a defined `dataN_pin` in the `parlio:` section.
 <!-- /config-item -->
 
 <!-- config-item path="axes.<letter>.motorN.standard_stepper.direction_pin" -->
 ### direction_pin
 - **Type:** [Pin](/config/overview#pin)
-- **Range:** gpio or i2so
+- **Range:** gpio, i2so, or parlio
 - **Default:** `NO_PIN`
 
-This is used to control the direction. You can invert the direction by changing the [active state attribute](/config/config_IO#input-pin-attributes) (**:high** or **:low**)
+This is used to control the direction. You can invert the direction by changing the [active state attribute](/config/config_IO#input-pin-attributes) (**:high** or **:low**). On ESP32-P4 builds using PARLIO (Experimental), use `parlio.N`; the number must match a defined `dataN_pin` in the `parlio:` section.
 <!-- /config-item -->
 
 <!-- config-item path="axes.<letter>.motorN.standard_stepper.disable_pin" -->
@@ -437,7 +441,7 @@ This is used to control the direction. You can invert the direction by changing 
 - **Range:** gpio or i2so
 - **Default:** `NO_PIN`
 
-This is used if your controller uses individual disable pins for each driver. Most basic controllers use a common disable pin for all drivers and that is set elsewhere in the config file. You can invert the active state by changing the [active state attribute](/config/config_IO#input-pin-attributes) (**:high** or **:low**)
+This is used if your controller uses individual disable pins for each driver. Most basic controllers use a common disable pin for all drivers and that is set elsewhere in the config file. You can invert the active state by changing the [active state attribute](/config/config_IO#input-pin-attributes) (**:high** or **:low**). `parlio.N` cannot be used for enable/disable; use `gpio.N` or `i2so.N`.
 <!-- /config-item -->
 
 Use this one for external drivers or when only step direction and enable are needed.
