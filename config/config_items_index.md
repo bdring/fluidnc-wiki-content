@@ -50,6 +50,7 @@ The section paths shown (e.g. `axes/<letter>/motorN/tmc_2130:`) use the same `/`
 ### `parlio:` (Experimental)
 
 - [`clk_pin`](/config/config_IO#clk_pin)
+- [`drive_ma`](/config/config_IO#drive_ma)
 - [`data0_pin`](/config/config_IO#data0_pin)
 - [`data1_pin`](/config/config_IO#data1_pin)
 - [`data2_pin`](/config/config_IO#data2_pin)

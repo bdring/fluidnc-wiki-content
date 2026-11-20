@@ -49,6 +49,7 @@ PARLIO (Experimental) uses the ESP32-P4 parallel I/O peripheral. It is the defau
 
 - **Hardware:** ESP32-P4 only. It uses one PARLIO clock GPIO and up to 16 data GPIOs. No external shift registers are required.
 - **Pins:** `parlio.N`; the `parlio:` section assigns the physical GPIOs. See [parlio section](/config/config_IO#parlio-section).
+- **Pad drive:** `parlio.drive_ma` sets the clock and data pad drive strength to 5, 10, 20, or 40 mA; the default is 10 mA. Higher settings increase edge rate and simultaneous switching current.
 - **Pros:** up to eight axes with step and direction; all axes update together; no measurable cross-axis skew; low CPU load; no external hardware.
 - **Axis limit:** FluidNC can define up to nine axes, but PARLIO's 16 data bits provide eight independent step/dir pairs.
 - **Cons:** P4 only; experimental; one clock plus data pins; up to 64 µs motion-start latency; 1 µs word resolution; not a general-purpose I/O expander.

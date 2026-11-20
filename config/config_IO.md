@@ -95,6 +95,19 @@ If you use `parlio.N` pins, you must have a `parlio:` section in your config fil
 PARLIO bus clock output. Must be a native GPIO output. Required when `stepping.engine` is `PARLIO`.
 <!-- /config-item -->
 
+<!-- config-item path="parlio.drive_ma" -->
+### drive_ma
+- **Type:** Integer
+- **Range:** `5` | `10` | `20` | `40`
+- **Default:** `10`
+
+PARLIO pad drive strength in mA. The value is applied to the clock pad and every defined data pad. The default `10` mA is the recommended setting; `5` mA reduces the edge rate further, while `20` and `40` mA provide more drive for long or heavily loaded lines but also increase edge rate and simultaneous switching current.
+
+The unit is part of the key, not the value: write `drive_ma: 10`, not `drive_ma: 10mA`. The value is validated while parsing. An invalid value keeps the safe `10` mA default and sets `ConfigAlarm`, so it never reaches the PARLIO engine.
+
+Higher drive settings are not a substitute for good supply, ground return, and series-termination design. Use the lowest setting that gives reliable edges on the target board.
+<!-- /config-item -->
+
 ### data pins
 
 At least one of `data0_pin` through `data15_pin` must be defined. Each entry must be a native GPIO output, and no GPIO can be used twice. Unused data bits can be omitted or set to `NO_PIN`.
