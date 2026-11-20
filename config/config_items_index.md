@@ -37,12 +37,36 @@ The section paths shown (e.g. `axes/<letter>/motorN/tmc_2130:`) use the same `/`
 
 ### `stepping:`
 
+> For a comparison of engine types, see [Stepping Engines](/config/engines).
+{.is-info}
+
 - [`engine`](/config/axes#engine)
 - [`idle_ms`](/config/axes#idle_ms)
 - [`pulse_us`](/config/axes#pulse_us)
 - [`dir_delay_us`](/config/axes#dir_delay_us)
 - [`disable_delay_us`](/config/axes#disable_delay_us)
 - [`segments`](/config/axes#segments)
+
+### `parlio:` (Experimental)
+
+- [`clk_pin`](/config/config_IO#clk_pin)
+- [`drive_ma`](/config/config_IO#drive_ma)
+- [`data0_pin`](/config/config_IO#data0_pin)
+- [`data1_pin`](/config/config_IO#data1_pin)
+- [`data2_pin`](/config/config_IO#data2_pin)
+- [`data3_pin`](/config/config_IO#data3_pin)
+- [`data4_pin`](/config/config_IO#data4_pin)
+- [`data5_pin`](/config/config_IO#data5_pin)
+- [`data6_pin`](/config/config_IO#data6_pin)
+- [`data7_pin`](/config/config_IO#data7_pin)
+- [`data8_pin`](/config/config_IO#data8_pin)
+- [`data9_pin`](/config/config_IO#data9_pin)
+- [`data10_pin`](/config/config_IO#data10_pin)
+- [`data11_pin`](/config/config_IO#data11_pin)
+- [`data12_pin`](/config/config_IO#data12_pin)
+- [`data13_pin`](/config/config_IO#data13_pin)
+- [`data14_pin`](/config/config_IO#data14_pin)
+- [`data15_pin`](/config/config_IO#data15_pin)
 
 ### `axes:`
 

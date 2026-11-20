@@ -14,14 +14,15 @@ You must assign a pin number and attributes to each pin used in your configurati
 
 ## Pin Numbers
 
-There are currently two types of pins that can be used, **gpio** and **i2so**. You specify a pin with the type, followed by a period, followed by the pin number. For example, **gpio.14** or **i2so.24**
+The most common pin types are **gpio**, **i2so**, and **parlio** (Experimental). You specify a pin with the type, followed by a period and the pin number. For example, **gpio.14**, **i2so.24**, or **parlio.3**.
 
 -  **gpio** These are native ESP32 pins. They are quite flexible and can be used for most features.
 - **i2so** These are on external I2S chips. They are output only and cannot be used for advanced things like PWM. They are only available on controller hardware that implements them, like the 6 Pack. **Note:** At initial power on, these will often turn on briefly. Keep this in mind if you are using them to turn on devices. Consider powering those on after booting.
+- **parlio** (Experimental) These are output-only virtual pins on the ESP32-P4 PARLIO parallel bus. They are used only for stepper motor step and direction signals. The physical GPIOs are assigned with the `parlio:` section. See [PARLIO section](#parlio-section).
 
 ## i2so section
 
-If you use i2so output pins you must have an **i2so** section in your config file. These are the control pins for the i2so chips.
+If you use i2so output pins you must have an **i2so** section in your config file. These are the control pins for the i2so chips. See [Stepping Engines](/config/engines) for the engine comparison.
 
 <!-- config-item path="i2so.bck_pin" -->
 ### bck_pin
@@ -75,6 +76,94 @@ i2so:
   data_pin: gpio.21
   ws_pin: gpio.17
   min_pulse_us: 2
+```
+
+## parlio section
+
+> **Experimental:** PARLIO is new and still under validation. Its configuration, timing, and behavior may change. Test it on your machine before relying on it for production work.
+{.is-warning}
+
+On ESP32-P4, `parlio.N` pins are virtual outputs driven by the PARLIO parallel bus. The bus is defined in the `parlio:` section, which assigns a clock GPIO and up to 16 data GPIOs. See [Stepping Engines](/config/engines) for the engine description and a comparison with RMT.
+
+If you use `parlio.N` pins, you must have a `parlio:` section in your config file. It assigns the physical GPIOs for the clock and data lines.
+
+<!-- config-item path="parlio.clk_pin" -->
+### clk_pin
+- **Type:** Pin (output)
+- **Default:** `NO_PIN`
+
+PARLIO bus clock output. Must be a native GPIO output. Required when `stepping.engine` is `PARLIO`.
+<!-- /config-item -->
+
+<!-- config-item path="parlio.drive_ma" -->
+### drive_ma
+- **Type:** Integer
+- **Range:** `5` | `10` | `20` | `40`
+- **Default:** `10`
+
+PARLIO pad drive strength in mA. The value is applied to the clock pad and every defined data pad. The default `10` mA is the recommended setting; `5` mA reduces the edge rate further, while `20` and `40` mA provide more drive for long or heavily loaded lines but also increase edge rate and simultaneous switching current.
+
+The unit is part of the key, not the value: write `drive_ma: 10`, not `drive_ma: 10mA`. The value is validated while parsing. An invalid value keeps the safe `10` mA default and sets `ConfigAlarm`, so it never reaches the PARLIO engine.
+
+Higher drive settings are not a substitute for good supply, ground return, and series-termination design. Use the lowest setting that gives reliable edges on the target board.
+<!-- /config-item -->
+
+### data pins
+
+At least one of `data0_pin` through `data15_pin` must be defined. Each entry must be a native GPIO output, and no GPIO can be used twice. Unused data bits can be omitted or set to `NO_PIN`.
+
+| Item | Type | Default | Description |
+|---|---|---|---|
+| <a id="data0_pin"></a>`data0_pin` | Pin (output) | `NO_PIN` | Data bit 0, used by `parlio.0`. |
+| <a id="data1_pin"></a>`data1_pin` | Pin (output) | `NO_PIN` | Data bit 1, used by `parlio.1`. |
+| <a id="data2_pin"></a>`data2_pin` | Pin (output) | `NO_PIN` | Data bit 2, used by `parlio.2`. |
+| <a id="data3_pin"></a>`data3_pin` | Pin (output) | `NO_PIN` | Data bit 3, used by `parlio.3`. |
+| <a id="data4_pin"></a>`data4_pin` | Pin (output) | `NO_PIN` | Data bit 4, used by `parlio.4`. |
+| <a id="data5_pin"></a>`data5_pin` | Pin (output) | `NO_PIN` | Data bit 5, used by `parlio.5`. |
+| <a id="data6_pin"></a>`data6_pin` | Pin (output) | `NO_PIN` | Data bit 6, used by `parlio.6`. |
+| <a id="data7_pin"></a>`data7_pin` | Pin (output) | `NO_PIN` | Data bit 7, used by `parlio.7`. |
+| <a id="data8_pin"></a>`data8_pin` | Pin (output) | `NO_PIN` | Data bit 8, used by `parlio.8`. |
+| <a id="data9_pin"></a>`data9_pin` | Pin (output) | `NO_PIN` | Data bit 9, used by `parlio.9`. |
+| <a id="data10_pin"></a>`data10_pin` | Pin (output) | `NO_PIN` | Data bit 10, used by `parlio.10`. |
+| <a id="data11_pin"></a>`data11_pin` | Pin (output) | `NO_PIN` | Data bit 11, used by `parlio.11`. |
+| <a id="data12_pin"></a>`data12_pin` | Pin (output) | `NO_PIN` | Data bit 12, used by `parlio.12`. |
+| <a id="data13_pin"></a>`data13_pin` | Pin (output) | `NO_PIN` | Data bit 13, used by `parlio.13`. |
+| <a id="data14_pin"></a>`data14_pin` | Pin (output) | `NO_PIN` | Data bit 14, used by `parlio.14`. |
+| <a id="data15_pin"></a>`data15_pin` | Pin (output) | `NO_PIN` | Data bit 15, used by `parlio.15`. |
+
+Data pins do not have to be consecutive. Any data bit can be a step or a direction; the engine does not require steps on low bits and directions on high bits. `parlio.N` is the virtual pin for data bit N; for example, `parlio.8` uses `data8_pin`. `parlio.N` supports the `:low` attribute to invert a step or direction signal.
+
+`parlio.N` pins are output-only and are only for stepper step and direction. Use `gpio.N` for enable pins, relays, lasers, and other on/off outputs.
+
+> The PARLIO clock is not a step signal. It is the bus clock for the parallel interface. In a direct step/dir application the drivers use the data pins; the clock pin is still reserved by the engine.
+{.is-info}
+
+Because up to 16 outputs can switch at the same instant, pay attention to power, ground return, and series termination on a production board.
+
+### Config Example
+
+The GPIO numbers below are examples; substitute the pins used by your controller.
+
+```yaml
+parlio:
+  clk_pin: gpio.53
+  data0_pin: gpio.8
+  data1_pin: gpio.9
+  data2_pin: gpio.20
+  data8_pin: gpio.41
+  data9_pin: gpio.42
+  data10_pin: gpio.43
+```
+
+Motor step and direction pins use the matching virtual bits:
+
+```yaml
+axes:
+  x:
+    motor0:
+      standard_stepper:
+        step_pin: parlio.0
+        direction_pin: parlio.8
 ```
 
 
@@ -158,7 +247,8 @@ spi:
 
 ## Pin Types and Their Uses
 
-There are three basic pin types
+The main pin types are
 * GPIO - a pin that is directly driven or sensed by the ESP32 chip.  As far as the ESP32 is concerned, a GPIO pin can be used for either input or output, but controller boards usually have circuitry between the ESP32's pin and the  connector on the edge of the board.  That circuitry often limits the use of the particular pin.  For example, if there is a buffer/driver chip to provide a 5V output, its GPIO cannot be used as an input.  Similarly, if there is an input conditioning circuit, its GPIO cannot be used as an output.  The only way to know is to consult documentation or schematics for the specific board.
 * I2SO - an output-only pin that is driven by a shift register output.  The chain of shift registers is in turn driven by ESP32 pins that are configured to use the "I2S" bus.  This is only available on specific boards that include the shift registers.  I2SO pins are especially useful for driving the step, dir, and enable pins on stepper drivers.  They can be used for a few other purposes, such as chip select pins for SPI-configured TMC drivers and spindle output enables.  I2SO pins cannot be used for PWM outputs.  If a board supports I2SO, the stepper signals will always be wired as i2so pins.  It is not possible to drive some steppers from i2so and others from gpio.
+* PARLIO (Experimental) - an output-only virtual pin driven by the ESP32-P4 PARLIO parallel bus.  It is used only for stepper step and direction signals; the bus GPIOs are assigned in the `parlio:` section.  Unlike I2SO, PARLIO does not use external shift registers.  It is available only on ESP32-P4.
 * uart_channel - a pin that is driven or sensed by an external "IO Expander" device that communicates with the ESP32 via a serial UART channel. IO Expander pins can be used for inputs, outputs that control on/off devices, and PWM for controlling spindle speeds.  They cannot be used for stepper driver step/dir/enables.
